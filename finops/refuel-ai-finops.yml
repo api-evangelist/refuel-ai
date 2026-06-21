@@ -1,0 +1,103 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Refuel
+providerId: refuel-ai
+created: '2026-06-21'
+modified: '2026-06-21'
+reconciled: false
+tags:
+- AI
+- LLM
+- Data Labeling
+- Data Enrichment
+- Autolabel
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Refuel spend. Refuel Cloud is a sales-led enterprise platform
+  with no published list pricing; cost is driven by data volume and the number
+  of rows transformed through datasets, tasks, and deployed applications, plus
+  any custom finetuning. The open-source autolabel library has no Refuel cost -
+  spend flows entirely to the underlying LLM provider's per-token rates. Specific
+  Refuel Cloud rates are not reconciled in this artifact.
+notes: >-
+  Refuel does not publish public rates; verify cost structure with Refuel sales
+  during reconciliation. For autolabel OSS, track spend at the configured LLM
+  provider (OpenAI, Anthropic, Google, HuggingFace, vLLM, or Refuel-hosted).
+sources:
+- https://www.refuel.ai
+- https://docs.refuel.ai
+- https://github.com/refuel-ai/autolabel
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Refuel
+serviceCategory: AI and Machine Learning
+billingModel:
+  pricingCategory: Usage-Based
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Usage
+  - Purchase
+  - Adjustment
+focusColumns:
+  ServiceName: Refuel Cloud
+  ServiceCategory: AI and Machine Learning
+  ProviderName: Refuel
+  PublisherName: Refuel
+  InvoiceIssuerName: Refuel
+  BillingCurrency: USD
+  ChargeCategory: Usage
+  PricingCategory: Usage-Based
+meters:
+- name: rows_transformed
+  description: Rows of data labeled / enriched through datasets, tasks, and deployed applications.
+  unit: rows
+  aggregation: sum
+  dimensions:
+  - account
+  - application
+  - task
+- name: label_requests
+  description: Realtime calls to the application label endpoint.
+  unit: requests
+  aggregation: sum
+  dimensions:
+  - account
+  - application
+- name: finetuning_runs
+  description: Custom model finetuning runs executed on the platform.
+  unit: runs
+  aggregation: sum
+  dimensions:
+  - account
+  - model
+- name: llm_provider_tokens
+  description: >-
+    Tokens consumed at the underlying LLM provider when using the open-source
+    autolabel library; billed by that provider, not by Refuel.
+  unit: tokens
+  aggregation: sum
+  dimensions:
+  - account
+  - provider
+  - model
+principles:
+- name: Visibility
+  description: Track rows transformed and label requests per application; for autolabel OSS, monitor token burn at the LLM provider.
+- name: Allocation
+  description: Tag applications, tasks, and API keys per workload/team; map to internal cost centers.
+- name: Optimization
+  description: Use batch processing and scheduled runs for non-realtime work; prefer smaller / finetuned models where accuracy allows; cache and reuse labeled datasets.
+- name: Accountability
+  description: Assign owners per project/application; review transformation volume and provider token spend against budget.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,52 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Refuel
+providerId: refuel-ai
+created: '2026-06-21'
+modified: '2026-06-21'
+reconciled: false
+tags:
+- AI
+- LLM
+- Data Labeling
+- Data Enrichment
+- Autolabel
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  The Refuel Cloud REST API documents a rate limit of 300 requests per minute and
+  up to 100 concurrent requests against the application label endpoint. Requests
+  beyond these limits are throttled and return HTTP 429. The open-source autolabel
+  library is not rate limited by Refuel; throughput is governed by the underlying
+  LLM provider's limits.
+notes: >-
+  Limits are as published in Refuel's introduction documentation; account- or
+  plan-specific values may differ and should be verified with Refuel during
+  reconciliation. Autolabel OSS rate limits are imposed by whichever LLM provider
+  you configure, not by Refuel.
+sources:
+- https://docs.refuel.ai/catalog/introduction
+- https://docs.refuel.ai
+responseCodes:
+  throttled: 429
+limits:
+- name: Requests Per Minute (RPM)
+  scope: account
+  metric: requests
+  limit: 300
+  notes: Documented limit of 300 requests per minute on the Refuel Cloud label endpoint.
+- name: Concurrent Requests
+  scope: account
+  metric: concurrent_requests
+  limit: 100
+  notes: Up to 100 concurrent requests; excess requests are throttled with HTTP 429.
+policies:
+- name: Throttling
+  description: Requests exceeding RPM or concurrency limits return HTTP 429.
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter and retry on 429.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

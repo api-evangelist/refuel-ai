@@ -1,0 +1,103 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Refuel
+providerId: refuel-ai
+created: '2026-06-21'
+modified: '2026-06-21'
+reconciled: false
+tags:
+- AI
+- LLM
+- Data Labeling
+- Data Enrichment
+- Autolabel
+- Plans
+description: >-
+  Refuel Cloud is a sales-led, enterprise platform; public list pricing is not
+  published. Engagements are quoted based on data volume, transformations, and
+  scale, with pricing framed around large reductions in labeling cost versus
+  human annotation. The open-source autolabel library is free (you pay only the
+  underlying LLM provider for tokens). Specific Refuel Cloud rates are not
+  reconciled in this artifact.
+notes: >-
+  Refuel does not publish a public pricing page; contact Refuel sales for a
+  quote. The autolabel OSS library is free to use - costs come from the LLM
+  provider you point it at (OpenAI, Anthropic, Google, HuggingFace, vLLM, or
+  Refuel-hosted models). Verify all terms with Refuel during reconciliation.
+sources:
+- https://www.refuel.ai
+- https://docs.refuel.ai
+- https://github.com/refuel-ai/autolabel
+plans:
+- id: refuel-autolabel-oss
+  name: Autolabel (Open Source)
+  type: free
+  description: >-
+    The open-source refuel-autolabel Python library is free under its open-source
+    license; you run it yourself and pay only your chosen LLM provider for tokens.
+  entries:
+  - label: Autolabel Library
+    name: autolabel_oss
+    type: free
+    metric: usage
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: free (self-hosted; LLM provider token costs apply)
+    userMultiplied: false
+  elements:
+  - name: Classification
+  - name: Named Entity Recognition
+  - name: Entity Matching
+  - name: Question Answering
+- id: refuel-cloud
+  name: Refuel Cloud
+  type: enterprise
+  description: >-
+    Hosted Refuel Cloud platform - datasets, tasks, deployed applications,
+    finetuned models, and the realtime label REST API. Sales-led pricing based
+    on data volume and scale.
+  entries:
+  - label: Refuel Cloud Platform
+    name: refuel_cloud
+    type: usage
+    metric: rows
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Datasets
+  - name: Tasks
+  - name: Applications
+  - name: Labeling and Predict
+  - name: Models and Finetuning
+- id: refuel-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Enterprise agreements with in-environment deployment, integrations (S3, GCS,
+    Snowflake, Databricks), custom finetuned models, dedicated support, and
+    negotiated terms. Contact Refuel sales.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Custom Volume Pricing
+  - name: In-Environment Deployment
+  - name: Custom Finetuned Models
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

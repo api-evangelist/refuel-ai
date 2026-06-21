@@ -1,0 +1,73 @@
+{
+  "info": {
+    "name": "Refuel Cloud API",
+    "description": "REST API for the Refuel Cloud data-labeling and data-enrichment platform. Deployed applications transform rows of data in realtime via the label endpoint. Authentication uses a Refuel API key as a Bearer token.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{apiKey}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://cloud-api.refuel.ai"
+    },
+    {
+      "key": "applicationName",
+      "value": "resume-parsing"
+    }
+  ],
+  "item": [
+    {
+      "name": "Applications",
+      "description": "Deployed applications served behind the Refuel Cloud REST API.",
+      "item": [
+        {
+          "name": "Transform rows with a deployed application",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/applications/{{applicationName}}/label",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "applications",
+                "{{applicationName}}",
+                "label"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[{\n  \"resume_link\": \"https://path/to/resume.pdf\"\n}]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Submit a JSON array of input rows to a deployed application to run LLM labeling / prediction in realtime. Each row is an object whose keys match the application's expected input fields. The application applies its Task guidelines and returns the transformed (labeled / enriched) output for each row. Subject to a documented rate limit of 300 requests per minute and up to 100 concurrent requests; excess returns HTTP 429."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

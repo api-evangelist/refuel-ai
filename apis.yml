@@ -1,0 +1,177 @@
+aid: refuel-ai
+url: https://raw.githubusercontent.com/api-evangelist/refuel-ai/refs/heads/main/apis.yml
+name: Refuel
+kind: company
+description: Refuel is an AI data-labeling and data-enrichment platform that uses LLMs
+  to label, clean, structure, and enrich enterprise datasets. Refuel Cloud exposes a
+  REST API where datasets, tasks, and deployed applications transform new data in
+  realtime, and the open-source autolabel library lets teams run the same LLM
+  labeling workflows in their own environment.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- AI
+- LLM
+- Data Labeling
+- Data Enrichment
+- Autolabel
+created: '2026-06-21'
+modified: '2026-06-21'
+specificationVersion: '0.19'
+apis:
+- aid: refuel-ai:refuel-applications-api
+  name: Refuel Applications API
+  tags:
+  - Applications
+  - Label
+  - Predict
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.refuel.ai/catalog/introduction
+  baseURL: https://cloud-api.refuel.ai
+  properties:
+  - url: https://docs.refuel.ai/catalog/introduction
+    type: Documentation
+  - url: https://docs.refuel.ai
+    type: APIReference
+  - url: openapi/refuel-ai-openapi.yml
+    type: OpenAPI
+  - url: collections/refuel-ai.postman_collection.json
+    type: PostmanCollection
+  - url: collections/refuel-ai.opencollection.json
+    type: OpenCollection
+  - url: https://github.com/refuel-ai
+    type: GitHub
+  description: Deployed applications are versioned snapshots of a Task served behind
+    a REST API. Call POST /applications/{application-name}/label with a JSON array of
+    rows to transform new data in realtime using the application's LLM guidelines.
+- aid: refuel-ai:refuel-tasks-api
+  name: Refuel Tasks API
+  tags:
+  - Tasks
+  - Guidelines
+  - Transformations
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.refuel.ai/quickstart
+  baseURL: https://cloud-api.refuel.ai
+  properties:
+  - url: https://docs.refuel.ai/quickstart
+    type: Documentation
+  - url: openapi/refuel-ai-openapi.yml
+    type: OpenAPI
+  - url: collections/refuel-ai.postman_collection.json
+    type: PostmanCollection
+  - url: collections/refuel-ai.opencollection.json
+    type: OpenCollection
+  - url: https://github.com/refuel-ai
+    type: GitHub
+  description: A Task is a set of LLM guidelines defining the transformation to perform
+    on a dataset (classification, extraction, structured output). Tasks support
+    structured outputs, batch processing, task chaining, evaluation, and scheduled
+    runs before being deployed as an Application.
+- aid: refuel-ai:refuel-datasets-api
+  name: Refuel Datasets API
+  tags:
+  - Datasets
+  - Upload
+  - Data
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.refuel.ai/quickstart
+  baseURL: https://cloud-api.refuel.ai
+  properties:
+  - url: https://docs.refuel.ai/quickstart
+    type: Documentation
+  - url: openapi/refuel-ai-openapi.yml
+    type: OpenAPI
+  - url: collections/refuel-ai.postman_collection.json
+    type: PostmanCollection
+  - url: collections/refuel-ai.opencollection.json
+    type: OpenCollection
+  - url: https://github.com/refuel-ai
+    type: GitHub
+  description: A dataset is a collection of structured / semi-structured rows you want
+    to transform with LLMs. Datasets can be uploaded directly or imported from cloud
+    storage (S3, GCS) and data warehouses (Snowflake, Databricks), including documents
+    and images.
+- aid: refuel-ai:refuel-labeling-predict-api
+  name: Refuel Labeling and Predict API
+  tags:
+  - Labeling
+  - Predict
+  - Runs
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.refuel.ai/catalog/introduction
+  baseURL: https://cloud-api.refuel.ai
+  properties:
+  - url: https://docs.refuel.ai/catalog/introduction
+    type: Documentation
+  - url: openapi/refuel-ai-openapi.yml
+    type: OpenAPI
+  - url: collections/refuel-ai.postman_collection.json
+    type: PostmanCollection
+  - url: collections/refuel-ai.opencollection.json
+    type: OpenCollection
+  - url: https://github.com/refuel-ai
+    type: GitHub
+  description: Submit rows to a deployed application to run LLM labeling / prediction
+    in realtime via the label endpoint, returning enriched output values plus
+    confidence and explanations for each transformed field.
+- aid: refuel-ai:refuel-models-api
+  name: Refuel Models API
+  tags:
+  - Models
+  - Finetuning
+  - LLM
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.refuel.ai/quickstart
+  baseURL: https://cloud-api.refuel.ai
+  properties:
+  - url: https://docs.refuel.ai/quickstart
+    type: Documentation
+  - url: openapi/refuel-ai-openapi.yml
+    type: OpenAPI
+  - url: collections/refuel-ai.postman_collection.json
+    type: PostmanCollection
+  - url: collections/refuel-ai.opencollection.json
+    type: OpenCollection
+  - url: https://github.com/refuel-ai
+    type: GitHub
+  description: Refuel hosts and finetunes LLMs purpose-built for data labeling. Tasks
+    can use Refuel-hosted base models or custom finetuned models, with finetuning
+    runs tracked and finetuned models reusable across applications.
+- aid: refuel-ai:refuel-autolabel-oss
+  name: Refuel Autolabel (Open Source)
+  tags:
+  - Open Source
+  - Autolabel
+  - Python
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://github.com/refuel-ai/autolabel
+  baseURL: https://github.com/refuel-ai/autolabel
+  properties:
+  - url: https://github.com/refuel-ai/autolabel
+    type: GitHub
+  - url: https://docs.refuel.ai
+    type: Documentation
+  description: Autolabel is the open-source Python library (pip install
+    refuel-autolabel) to label, clean, and enrich text datasets with any LLM
+    (OpenAI, Anthropic, Google, HuggingFace, vLLM, Refuel-hosted). It is a local
+    library and SDK, not the hosted Refuel Cloud REST API; it covers classification,
+    NER, entity matching, and question answering with few-shot and chain-of-thought
+    prompting.
+common:
+- type: GitHubOrganization
+  url: https://github.com/refuel-ai
+- type: LinkedIn
+  url: https://www.linkedin.com/company/refuel-ai
+- type: Website
+  url: https://www.refuel.ai
+- type: Documentation
+  url: https://docs.refuel.ai
+- type: Plans
+  url: plans/refuel-ai-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/refuel-ai-rate-limits.yml
+- type: FinOps
+  url: finops/refuel-ai-finops.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

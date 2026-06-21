@@ -1,0 +1,93 @@
+openapi: 3.0.1
+info:
+  title: Refuel Cloud API
+  description: >-
+    REST API for the Refuel Cloud data-labeling and data-enrichment platform.
+    Refuel deploys a Task as a versioned Application served behind a REST
+    endpoint; callers submit rows of structured / semi-structured data to the
+    application's label endpoint to transform (label, clean, enrich) them in
+    realtime using the application's LLM guidelines. Authentication uses an API
+    key passed as a Bearer token. The only endpoint documented with a concrete
+    request shape in Refuel's public documentation is the application label
+    endpoint; dataset, task, application-management, and model/finetuning
+    operations are performed in the Refuel app and via the Python and JavaScript
+    SDKs.
+  termsOfService: https://www.refuel.ai
+  contact:
+    name: Refuel
+    url: https://www.refuel.ai
+  version: '1.0'
+servers:
+  - url: https://cloud-api.refuel.ai
+    description: Refuel Cloud API
+paths:
+  /applications/{applicationName}/label:
+    post:
+      operationId: labelWithApplication
+      tags:
+        - Applications
+      summary: Transform rows with a deployed application
+      description: >-
+        Submit a JSON array of input rows to a deployed application to run LLM
+        labeling / prediction in realtime. Each row is an object whose keys
+        match the application's expected input fields. The application applies
+        its Task guidelines and returns the transformed (labeled / enriched)
+        output for each row. Subject to a documented rate limit of 300 requests
+        per minute and up to 100 concurrent requests.
+      parameters:
+        - name: applicationName
+          in: path
+          required: true
+          description: The name of the deployed application (for example, resume-parsing).
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LabelRequest'
+            example:
+              - resume_link: https://path/to/resume.pdf
+      responses:
+        '200':
+          description: Rows transformed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabelResponse'
+        '401':
+          description: Missing or invalid API key.
+        '429':
+          description: >-
+            Rate limit exceeded (more than 300 requests per minute or more than
+            100 concurrent requests).
+      security:
+        - BearerAuth: []
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Refuel API key supplied as a Bearer token in the Authorization header:
+        Authorization: Bearer <YOUR_API_KEY>.
+  schemas:
+    LabelRequest:
+      type: array
+      description: >-
+        Array of input rows to transform. Each row is an object whose keys are
+        the input fields expected by the target application.
+      items:
+        type: object
+        additionalProperties: true
+    LabelResponse:
+      type: array
+      description: >-
+        Array of transformed rows. Each item contains the application's output
+        fields; outputs may include confidence scores and explanations per field.
+      items:
+        type: object
+        additionalProperties: true
+security:
+  - BearerAuth: []

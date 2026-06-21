@@ -1,0 +1,68 @@
+aid: refuel-ai
+name: Refuel
+review:
+  question: Does Refuel expose a documented public WebSocket or streaming API?
+  answer: false
+  date: '2026-06-21'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was created. Refuel Cloud documents only a synchronous
+    REST endpoint (POST /applications/{application-name}/label). No WebSocket
+    (ws:// or wss://) surface and no HTTP Server-Sent Events (SSE) streaming
+    transport is documented for the platform, so there is no in-scope async or
+    streaming surface to model.
+findings:
+  summary: |
+    Refuel does not publish a documented public WebSocket or streaming API. The
+    Refuel Cloud platform exposes a synchronous REST API under
+    https://cloud-api.refuel.ai, authenticated with an API key as a Bearer
+    token. The one endpoint documented with a concrete request shape is
+    POST /applications/{application-name}/label, which transforms a JSON array
+    of rows in realtime. Dataset, task, application-management, and
+    model / finetuning operations are performed in the Refuel app and via the
+    Python and JavaScript SDKs rather than fully documented public REST routes.
+    Separately, Refuel maintains the open-source autolabel Python library
+    (pip install refuel-autolabel), which is a local library / SDK, not the
+    hosted REST API.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://cloud-api.refuel.ai
+      documented: true
+    - protocol: SSE
+      scheme: https
+      documented: false
+      note: No Server-Sent Events streaming transport is documented for Refuel Cloud.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented in Refuel's public documentation as of the review date.
+  endpointsConfirmedRest:
+    - POST https://cloud-api.refuel.ai/applications/{application-name}/label
+  ossSurface:
+    - library: refuel-autolabel
+      install: pip install refuel-autolabel
+      repo: https://github.com/refuel-ai/autolabel
+      note: >-
+        Open-source Python library (LabelingAgent with JSON config) for
+        classification, NER, entity matching, and QA against any LLM provider.
+        Local library / SDK, not the hosted Refuel Cloud REST API.
+sources:
+  - url: https://docs.refuel.ai/catalog/introduction
+    type: Documentation
+    note: Documents the REST base URL, Bearer auth, the label endpoint, and rate limits (300 RPM, 100 concurrent, 429).
+  - url: https://docs.refuel.ai/quickstart
+    type: Documentation
+    note: Describes projects, datasets, tasks, applications, and models; UI/SDK workflow, no WebSocket or SSE.
+  - url: https://github.com/refuel-ai/autolabel
+    type: GitHub
+    note: Open-source autolabel library; local library / SDK, distinct from the cloud REST API.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket or SSE protocol surface exists in Refuel's public
+    documentation, so no AsyncAPI document was authored. The apis.yml catalog
+    models the documented REST surface plus the open-source autolabel library,
+    keeping the cloud platform and OSS clearly distinguished.
