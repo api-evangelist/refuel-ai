@@ -1,0 +1,14 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/refuel-ai-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: BearerAuth
+  type: http
+  scheme: bearer
+  description: 'Refuel API key supplied as a Bearer token in the Authorization header: Authorization:
+    Bearer <YOUR_API_KEY>.'
+  sources:
+  - openapi/refuel-ai-openapi.yml

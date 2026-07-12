@@ -158,6 +158,14 @@ apis:
     NER, entity matching, and question answering with few-shot and chain-of-thought
     prompting.
 common:
+- type: TrustCenter
+  url: security/refuel-ai-trust-center.yml
+- type: VulnerabilityDisclosure
+  url: security/refuel-ai-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/refuel-ai-domain-security.yml
+- type: Authentication
+  url: authentication/refuel-ai-authentication.yml
 - type: GitHubOrganization
   url: https://github.com/refuel-ai
 - type: LinkedIn
