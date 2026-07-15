@@ -158,6 +158,8 @@ apis:
     NER, entity matching, and question answering with few-shot and chain-of-thought
     prompting.
 common:
+- type: AgenticAccess
+  url: agentic-access/refuel-ai-agentic-access.yml
 - type: TrustCenter
   url: security/refuel-ai-trust-center.yml
 - type: VulnerabilityDisclosure
