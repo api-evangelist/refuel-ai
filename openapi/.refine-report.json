@@ -1,0 +1,14 @@
+{
+  "provider": "refuel-ai",
+  "sources": [
+    "refuel-ai-applications-api-openapi.yml"
+  ],
+  "outputs": [
+    "refuel-ai-applications-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
