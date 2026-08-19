@@ -4,8 +4,12 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Refuel
 providerId: refuel-ai
 created: '2026-06-21'
-modified: '2026-06-21'
+modified: '2026-08-14'
 reconciled: false
+generated: '2026-08-14'
+method: searched
+source: https://www.refuel.ai/get-started
+plan_count: 3
 tags:
 - AI
 - LLM

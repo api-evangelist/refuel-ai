@@ -1,0 +1,98 @@
+generated: '2026-08-14'
+method: derived
+source: openapi/refuel-ai-cloud-api-openapi.yml
+docs: https://docs.refuel.ai/catalog/introduction
+format: none
+description: >-
+  Error catalog derived from the 4xx/5xx responses declared in Refuel's harvested OpenAPI,
+  plus the throttling behaviour Refuel publishes in its catalog documentation. Refuel does
+  NOT use RFC 9457 problem+json — every error is application/json in one of two shapes, and
+  the API gateway adds a third. There is no documented error-code registry.
+envelope:
+  media_type: application/json
+  shapes:
+  - name: HTTPError
+    schema: '{ "detail": "<string>" }'
+    example: '{"detail": "HTTPException raised."}'
+    used_by: [409, 404]
+  - name: HTTPValidationError
+    schema: '{ "detail": [ { "loc": [<string|int>...], "msg": "<string>", "type": "<string>" } ] }'
+    used_by: [422]
+    note: The FastAPI default validation envelope, declared on 93 of 108 operations.
+  - name: ResponseModel
+    schema: '{ "success": <bool>, "error_msg": "<string>", "data": <any>, "count": <int> }'
+    used_by: [200]
+    note: >-
+      The 200 envelope carries `success: false` + `error_msg`, so a soft error can arrive
+      with HTTP 200. A client that only checks the status code will read a failed call as a
+      success. This is the most important runtime semantic in the Refuel error surface.
+  - name: gateway
+    schema: '{ "message": "Unauthorized" }'
+    used_by: [401]
+    note: >-
+      Emitted by the edge in front of cloud-api.refuel.ai for any request without a valid
+      Bearer token. It is NOT declared anywhere in the OpenAPI — no operation declares a
+      401 — but it is what every unauthenticated call actually returns. Observed by probe
+      on 2026-08-14.
+problems:
+- status: 401
+  title: Unauthorized
+  detail: Missing or invalid Bearer API key.
+  envelope: gateway
+  declared_in_spec: false
+  method: probed
+  evidence:
+    url: https://cloud-api.refuel.ai/datasets
+    http_status: 401
+    body: '{"message":"Unauthorized"}'
+  remediation: 'Send `Authorization: Bearer <REFUEL_API_KEY>`. The key is issued per team.'
+- status: 404
+  title: Not found
+  detail: The addressed resource does not exist or is not visible to the caller's team.
+  envelope: HTTPError
+  declared_in_spec: true
+  source_operations:
+  - openapi/refuel-ai-cloud-api-openapi.yml#get_finetuned_model_from_id_finetuned_models__model_id__get
+- status: 409
+  title: Conflict
+  detail: The requested state change conflicts with the resource's current state.
+  envelope: HTTPError
+  declared_in_spec: true
+  source_operations:
+  - openapi/refuel-ai-cloud-api-openapi.yml#calibrate_task_tasks__task_id__calibrations_post
+- status: 422
+  title: Validation Error
+  detail: >-
+    One or more path, query or body parameters failed validation. `detail[]` names the
+    failing location (`loc`), a human message (`msg`), and a machine error `type`.
+  envelope: HTTPValidationError
+  declared_in_spec: true
+  declared_on_operations: 93
+  remediation: Read `detail[].loc` to find the offending field; it is a JSON pointer-ish path array.
+- status: 429
+  title: Too Many Requests
+  detail: >-
+    The published rate limit (300 requests/minute, 100 concurrent) was exceeded on the
+    application label endpoint.
+  envelope: unknown
+  declared_in_spec: false
+  method: searched
+  source: https://docs.refuel.ai/catalog/introduction
+  quote: >-
+    "Requests will be throttled and the platform will return an HTTP 429 status code if
+    these limits are exceeded."
+  remediation: Back off exponentially with jitter and retry. Refuel does not document a Retry-After header.
+- status: 202
+  title: Accepted
+  detail: >-
+    Not an error, recorded for completeness — six operations (exports, ingest, finetuning,
+    calibration) return 202 and complete asynchronously. Poll the corresponding GET route.
+  declared_in_spec: true
+  declared_on_operations: 6
+gaps:
+- No RFC 9457 application/problem+json anywhere in the spec or docs.
+- No 401 / 403 / 429 / 5xx declared on any operation, despite 401 and 429 both being live behaviours.
+- No stable machine-readable error code (only free-text `detail` / `error_msg` strings).
+- >-
+  No public error reference page. Refuel's documentation mentions HTTP 429 once, in the
+  catalog introduction; there is no error index for an agent to consult.

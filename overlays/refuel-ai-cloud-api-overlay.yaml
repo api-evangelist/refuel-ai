@@ -1,0 +1,59 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Refuel Cloud API
+  version: 1.0.0
+extends: openapi/refuel-ai-cloud-api-openapi.yml
+x-generated: '2026-08-14'
+x-method: generated
+x-source: >-
+  Records every difference between openapi/_original/refuel-ai-cloud-api-openapi.json
+  (harvested verbatim from https://cloud-api.refuel.ai/openapi.json on 2026-08-14) and the
+  working copy at openapi/refuel-ai-cloud-api-openapi.yml. Apply this overlay to the
+  original to reproduce the working copy. Nothing here changes an operation, a path, a
+  parameter or a schema — only the info block and servers[], both of which the upstream
+  FastAPI document leaves at defaults.
+actions:
+- target: $.info
+  description: >-
+    The upstream document ships the FastAPI default info block — title "FastAPI",
+    version "0.1.0", no description, no contact, no termsOfService. Replaced with the real
+    product identity, taken from Refuel's own site and documentation.
+  update:
+    title: Refuel Cloud API
+    description: >-
+      REST API for the Refuel Cloud data-labeling and data-enrichment platform. Covers
+      projects, datasets, tasks, task runs, taxonomies, seedsets/evalsets, calibration,
+      finetuned models, deployed applications and their realtime label endpoint, users,
+      teams, usage, and integrations.
+    contact:
+      name: Refuel
+      url: https://www.refuel.ai
+      email: support@refuel.ai
+    termsOfService: https://www.refuel.ai/terms-of-service
+    x-harvested-from: https://cloud-api.refuel.ai/openapi.json
+    x-harvested-on: '2026-08-14'
+- target: $
+  description: >-
+    The upstream document declares no servers[], so a consumer cannot resolve a relative
+    path. The host below is the one Refuel publishes in its own catalog documentation —
+    `curl -X POST https://cloud-api.refuel.ai/applications/resume-parsing/label`
+    (https://docs.refuel.ai/catalog/introduction) — and is also the host that serves this
+    very spec.
+  update:
+    servers:
+    - url: https://cloud-api.refuel.ai
+      description: Refuel Cloud API
+not_applied:
+- description: >-
+    NOT applied, deliberately: no tags were added. All 108 operations are untagged in the
+    upstream document, and inventing a tag taxonomy would change how the spec reads while
+    claiming Refuel authored it. The capability grouping API Evangelist derived lives in
+    mcp/refuel-ai-tool-crosswalk.yml (rest_only[]) instead, where it is clearly ours.
+- description: >-
+    NOT applied: no 401 / 429 responses were added, even though both are live behaviours
+    observed by probe. They are recorded in errors/refuel-ai-problem-types.yml with
+    `declared_in_spec: false`, which keeps the gap visible instead of quietly closing it.
+- description: >-
+    NOT applied: no response schemas were invented for Project, Dataset, Task, Application,
+    Item or Model. The upstream spec returns an untyped ResponseModel envelope everywhere;
+    that gap is recorded in data-model/refuel-ai-data-model.yml.

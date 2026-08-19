@@ -1,0 +1,59 @@
+generated: '2026-08-14'
+method: searched
+source: >-
+  https://docs.refuel.ai/quickstart, https://docs.refuel.ai/catalog/introduction,
+  https://docs.refuel.ai/guides/applications/using_applications
+description: >-
+  Refuel's test surface is an in-product PLAYGROUND, not a sandbox. There is no test mode,
+  no test/live key separation, no fixture or trigger tooling, and no magic test values.
+  Every call an agent or developer makes runs against production data with a production API
+  key. What Refuel does provide is a browser playground per deployed application and per
+  catalog transformation, from which you can copy working code snippets.
+test_live_separation:
+  supported: false
+  key_prefixes: none
+  note: >-
+    One API key per team, issued in the app. No `test_`/`live_` prefix, no mode header, no
+    separate sandbox host. cloud-api.refuel.ai is the only base URL Refuel publishes.
+playground:
+- name: Application Playground
+  type: hosted-console
+  url: https://app.refuel.ai
+  auth: account login required
+  docs: https://docs.refuel.ai/quickstart
+  description: >-
+    Every deployed application has a Playground tab where you submit sample rows and see the
+    transformed output. Refuel's quickstart calls it "a great way to test out your
+    application, and retrieve the relevant code snippets to integrate it programmatically
+    into your stack."
+- name: Catalog transformation playground
+  type: hosted-console
+  url: https://app.refuel.ai/catalog
+  auth: account login required
+  docs: https://docs.refuel.ai/catalog/introduction
+  description: >-
+    "Each transformation published in the catalog has a dedicated playground, where you can
+    test the transformation with your own data." You can also call the same transformation
+    over REST — the docs publish
+    `POST https://cloud-api.refuel.ai/applications/resume-parsing/label`.
+sample_data:
+- name: Yelp reviews sample dataset
+  type: sample-dataset
+  url: https://gist.github.com/nihit/74abe1d926acba2d45c68631f216b096
+  format: csv
+  description: >-
+    The CSV of Yelp business reviews Refuel's quickstart tells you to upload as your first
+    dataset. Published by a Refuel co-founder as a public gist. This is the only concrete
+    test fixture Refuel publishes.
+test_values: []
+test_clocks:
+  supported: false
+fixtures_or_triggers:
+  supported: false
+gaps:
+- No test mode and no sandbox environment — all testing consumes production quota.
+- No published test credentials, no anonymous demo endpoint.
+- >-
+  The playground requires an account, and account signup is a sales-gated form at
+  https://www.refuel.ai/get-started, so the console is not reachable for evaluation without
+  contacting Refuel.

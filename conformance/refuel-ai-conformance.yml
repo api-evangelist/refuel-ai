@@ -1,0 +1,94 @@
+generated: '2026-08-14'
+method: searched
+source: >-
+  openapi/refuel-ai-cloud-api-openapi.yml, https://www.refuel.ai/security,
+  https://docs.refuel.ai/catalog/introduction
+description: >-
+  Standards and compliance posture. Two published certifications (SOC 2, GDPR) carry the
+  compliance side; the technical standards side is thin — Refuel ships a valid OpenAPI 3.1.0
+  and HTTP Bearer auth and essentially nothing else from the cross-cutting standards shelf.
+standards:
+- id: openapi-3.1
+  conforms: true
+  evidence: >-
+    https://cloud-api.refuel.ai/openapi.json is a FastAPI-generated OpenAPI 3.1.0 document
+    with 77 paths / 108 operations and 49 component schemas. Parsed 2026-08-14.
+- id: http-bearer-auth
+  conforms: true
+  evidence: components.securitySchemes.HTTPBearer is {type http, scheme bearer}, applied to 99 of 108 operations.
+- id: oauth2
+  conforms: false
+  evidence: No oauth2 security scheme in the spec; no OAuth documented. No scopes/ artifact is written.
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404 on www and docs, 401 on the API host.
+- id: rfc8414-oauth-authorization-server
+  conforms: false
+  evidence: /.well-known/oauth-authorization-server returns 404/401 on every Refuel host.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    No application/problem+json anywhere. Errors use FastAPI's {detail} and
+    {detail:[{loc,msg,type}]} shapes. See errors/refuel-ai-problem-types.yml.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: No /.well-known/security.txt on any host, though security@refuel.ai is published on the security page.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No deprecation or sunset policy published; no operation marked deprecated.
+- id: rfc6585-429-throttling
+  conforms: true
+  evidence: >-
+    "Requests will be throttled and the platform will return an HTTP 429 status code" —
+    https://docs.refuel.ai/catalog/introduction. No RateLimit-* headers are returned.
+- id: idempotency-key
+  conforms: false
+  evidence: Zero occurrences of "idempoten" in the spec; not documented. See conventions/refuel-ai-conventions.yml.
+- id: pagination
+  conforms: partial
+  evidence: offset / max_items / num_items / order_bys / filters query parameters on a minority of read routes; no cursor, no Link header.
+- id: json-api
+  conforms: false
+- id: odata
+  conforms: false
+- id: scim2
+  conforms: false
+  evidence: User management is a bespoke /users surface, not SCIM 2.0.
+- id: asyncapi
+  conforms: false
+  evidence: No AsyncAPI document; the only event surface is inbound webhook receivers. See asyncapi/refuel-ai-events.yml.
+- id: mcp
+  conforms: true
+  evidence: >-
+    Live remote MCP server at https://docs.refuel.ai/mcp, protocol version 2025-06-18,
+    tools/list returned 200 anonymously. Documentation scope only — see mcp/refuel-ai-tool-crosswalk.yml.
+- id: a2a
+  conforms: true
+  grade: conformant
+  evidence: >-
+    https://docs.refuel.ai/.well-known/agent-card.json, A2A protocolVersion 0.3, capabilities
+    object, skills array (empty). See a2a/refuel-ai-a2a.yml.
+- id: llms-txt
+  conforms: true
+  evidence: https://docs.refuel.ai/llms.txt returns a 40-line index of 38 documentation pages.
+compliance:
+  published: true
+  page: https://www.refuel.ai/security
+  certifications:
+  - name: SOC 2
+    evidence: >-
+      "compliant with SOC 2 and GDPR"; "Our organization undergoes independent third-party
+      assessments to test our security controls, such as SOC 2." Also announced at
+      https://www.refuel.ai/blog-posts/refuel-soc2.
+  - name: GDPR
+    evidence: '"compliant with SOC 2 and GDPR" — https://www.refuel.ai/security'
+  practices_claimed:
+  - Annual third-party penetration testing
+  - TLS 1.2 in transit, AES at rest
+  - SSO and role-based access control
+  - Documented incident detection and response program
+  - Security awareness training
+  - Continuous monitoring
+  note: >-
+    Self-attested on a marketing page. Refuel operates no trust portal and publishes no
+    report, audit letter or certificate — a prospect must request evidence from Refuel.

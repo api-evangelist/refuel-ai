@@ -1,0 +1,100 @@
+generated: '2026-08-14'
+method: searched
+status: published
+source: https://docs.refuel.ai/mcp
+description: >-
+  Refuel serves a live, anonymous, remote MCP endpoint at https://docs.refuel.ai/mcp.
+  It is a DOCUMENTATION server, not a Refuel Cloud API server: the three tools search and
+  read the docs corpus and file docs feedback. None of them call the Refuel Cloud REST API
+  at cloud-api.refuel.ai, so an agent can read Refuel's documentation over MCP but cannot
+  create a project, ingest a dataset, or label a row over MCP. See
+  mcp/refuel-ai-tool-crosswalk.yml for the operation-level divergence.
+deployment:
+  mode: remote
+  endpoint: https://docs.refuel.ai/mcp
+  auth: none
+  verified: probed
+server:
+  name: Refuel.ai
+  version: 1.0.0
+  transport: http
+  url: https://docs.refuel.ai/mcp
+  protocol_version: '2025-06-18'
+  platform: Mintlify-hosted documentation MCP
+  capabilities:
+    tools:
+      listChanged: true
+    resources: {}
+  instructions: >-
+    "This Model Context Protocol server provides search and retrieval tools for the
+    Refuel.ai site. Use it to answer questions from public site content... Apart from the
+    submit_feedback tool, the server is read-only and scoped to" the documentation site.
+    (verbatim from the initialize response, truncated)
+tools:
+- name: search_refuel_ai
+  title: Search documentation
+  description: >-
+    Search across the Refuel.ai knowledge base to find relevant information, code examples,
+    API references, and guides.
+  input_schema:
+    type: object
+    required: [query]
+    properties:
+      query:
+        type: string
+        description: Search query
+  source_operation: null
+- name: query_docs_filesystem_refuel_ai
+  title: null
+  description: >-
+    Run a read-only shell-like query (rg/grep/find/tree/ls/cat/head/tail/jq and friends)
+    against a virtualized in-memory filesystem containing only the Refuel.ai documentation
+    pages. Stateless; output truncated to 30KB per call.
+  input_schema:
+    type: object
+    required: [command]
+    properties:
+      command:
+        type: string
+        description: A shell command to run against the virtualized documentation filesystem.
+  source_operation: null
+- name: submit_feedback
+  title: Submit documentation feedback
+  description: Report a problem with a Refuel.ai documentation page so the docs team can fix it.
+  input_schema:
+    type: object
+    required: [path, feedback]
+    properties:
+      path:
+        type: string
+        description: The documentation page path the feedback is about.
+      feedback:
+        type: string
+        description: A clear description of the documentation issue or suggestion.
+  source_operation: null
+observations:
+- >-
+  The tool description advertises a virtual filesystem containing "documentation pages and
+  OpenAPI specs", but `find / -name "*openapi*"` over that filesystem returns nothing and
+  `ls -R /` lists only .mdx docs pages. The docs host publishes no OpenAPI; the real spec
+  is served at https://cloud-api.refuel.ai/openapi.json, on the API host.
+- >-
+  Two of the three tool descriptions carry unedited Mintlify boilerplate examples
+  (`/api-reference/create-customer.mdx`) that do not exist in Refuel's docs tree.
+negative_probes:
+- url: https://cloud-api.refuel.ai/mcp
+  http_status: 401
+  note: The Refuel Cloud API host answers 401 for /mcp, as it does for every path other than / and /openapi.json.
+- url: https://mcp.refuel.ai/mcp
+  http_status: null
+  note: DNS does not resolve.
+- url: https://docs.refuel.ai/sse
+  http_status: 405
+x-evidence:
+  fetched: '2026-08-14'
+  url: https://docs.refuel.ai/mcp
+  method: 'POST jsonrpc tools/list'
+  http_status: 200
+  content_type: text/event-stream
+  tools_returned: 3
+  raw: mcp/refuel-ai-mcp-tools-list.json

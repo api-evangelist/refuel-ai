@@ -1,0 +1,51 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Refuel Cloud Applications API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Applications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Transform rows with a deployed application",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cloud-api.refuel.ai/applications/:applicationName/label",
+            "params": [
+              {
+                "name": "applicationName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployed application (for example, resume-parsing)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Submit a JSON array of input rows to a deployed application to run LLM labeling / prediction in realtime. Each row is an object whose keys match the application's expected input fields. The application applies its Task guidelines and returns the transformed (labeled / enriched) output for each row. Subject to a documented rate limit of 300 requests per minute and up to 100 concurrent requests."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

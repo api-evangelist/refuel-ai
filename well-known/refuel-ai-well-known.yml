@@ -1,0 +1,83 @@
+generated: '2026-08-14'
+method: probed
+source: live GET probes of /.well-known/* on every Refuel host in apis.yml and OpenAPI servers[]
+description: >-
+  Full /.well-known/ discovery probe across all four Refuel hosts. One real document is
+  served: the A2A agent card on the documentation host (saved verbatim to
+  a2a/refuel-ai-agent-card.json). Everything else 404s, and cloud-api.refuel.ai answers
+  401 for every /.well-known/ path because the whole API is behind Bearer auth — an
+  authenticated 401, not a document.
+hosts:
+- host: https://docs.refuel.ai
+  documents:
+  - path: /.well-known/agent-card.json
+    status: 200
+    content_type: application/json
+    file: ../a2a/refuel-ai-agent-card.json
+    real_document: true
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://www.refuel.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  note: >-
+    The Webflow-hosted marketing site answers every /.well-known/* path with an HTTP 404
+    HTML page reading "Invalid .well-known request".
+- host: https://cloud-api.refuel.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 401
+  - path: /.well-known/agent-card.json
+    status: 401
+  - path: /.well-known/agent.json
+    status: 401
+  - path: /.well-known/openid-configuration
+    status: 401
+  - path: /.well-known/oauth-authorization-server
+    status: 401
+  - path: /.well-known/oauth-protected-resource
+    status: 401
+  - path: /.well-known/api-catalog
+    status: 401
+  - path: /.well-known/ai-plugin.json
+    status: 401
+  note: >-
+    Every unauthenticated path on the API host returns {"message":"Unauthorized"} with
+    HTTP 401 — except / and /openapi.json, which are open. No /.well-known/ document is
+    published; the 401 is a gateway default, not a discovery surface.
+- host: https://app.refuel.ai
+  documents:
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/security.txt
+    status: 404
+security_txt:
+  served: false
+  note: >-
+    No RFC 9116 security.txt on any Refuel host. Refuel does publish a security contact
+    (security@refuel.ai) on https://www.refuel.ai/security — captured in
+    security/refuel-ai-vulnerability-disclosure.yml — but not at the well-known path, so
+    no SecurityTxt pointer is emitted.

@@ -1,0 +1,207 @@
+generated: '2026-08-14'
+method: derived
+source: openapi/refuel-ai-cloud-api-openapi.yml
+docs: https://docs.refuel.ai/overview
+description: >-
+  Entity graph of the Refuel Cloud platform, derived from the path hierarchy, path
+  parameters and component schemas of the harvested OpenAPI. Refuel's model is a four-level
+  spine — Team > Project > Dataset/Task > Application — with Items as the row-level unit and
+  Models/Finetuned Models attached to Tasks. The FastAPI-generated spec exposes almost every
+  entity through path parameters rather than named response schemas (108 of 108 operations
+  return the generic ResponseModel envelope), so relationships below are derived from route
+  structure and request bodies, which is where Refuel's real cardinality is visible.
+identifiers:
+  style: uuid
+  note: >-
+    All resource ids are UUID strings (project_id, dataset_id, task_id, application_id,
+    item_id, model_id, taxonomy_id, calibration_id, export_id, integration_id, user_id).
+    No typed/prefixed id scheme. Several routes also accept a human name in place of the id
+    — Refuel's own catalog docs call POST /applications/resume-parsing/label, using the
+    application name where the spec declares {application_id}.
+entities:
+- name: Team
+  description: The top-level tenant. Owns users, projects, integrations, the API key and the usage quota.
+  operations: [get_team_team_get, update_team_team_post, get_teams_teams_get, get_team_usage_usage_get]
+  fields: [name, integrations, web_app, llm_config, api_key, api_key_sha, api_usage, created_at, email_domain, feature_flags]
+  note: >-
+    TeamSchema includes `api_key` and `api_key_sha`. GET /team therefore returns the team's
+    own API credential in its response body — an agent granted read access to /team is
+    granted the key itself. Recorded as a governance fact, not a vulnerability claim.
+- name: User
+  description: A member of a Team; lifecycle State is CREATED / INVITED / INVITE_FAILED / ACTIVE.
+  operations: [get_users_users_get, invite_users_users_post, get_user_users__user_id__get, update_user_users__user_id__patch, create_user_users__user_email__post, get_authenticated_user_user_get, update_authenticated_user_user_patch]
+- name: Project
+  description: A logical grouping of datasets, tasks, applications and finetuned models.
+  operations: [get_projects_projects_get, create_project_projects_post, get_project_projects__project_id__get, delete_project_projects__project_id__delete]
+- name: Dataset
+  description: >-
+    A collection of rows of structured / semi-structured data. DatasetSource is one of
+    databricks, file, s3, snowflake, uri. Ingest is two-step — presigned URL, then ingest.
+  operations: [get_datasets_datasets_get, ingest_dataset_datasets_ingest_post, ingest_dataset_v2_projects__project_id__datasets_post, update_dataset_datasets__dataset_id__patch, delete_dataset_datasets__dataset_id__delete, append_dataset_datasets__dataset_id__append_post, sample_dataset_datasets__dataset_id__sample_post]
+- name: Item
+  description: A single row inside a Dataset, and the unit labels and feedback attach to.
+  operations: [get_items_from_dataset_datasets__dataset_id__get, get_item_from_dataset_datasets__dataset_id__items__item_id__get, add_items_to_dataset_datasets__dataset_id__items_post, delete_item_from_dataset_datasets__dataset_id__items__item_id__delete, modify_item_properties_tasks__task_id__datasets__dataset_id__items__item_id__post]
+  fields: [in_evalset]
+- name: Task
+  description: A set of LLM guidelines describing the transformation to run over a Dataset.
+  operations: [get_team_tasks_tasks_get, get_tasks_projects__project_id__tasks_get, create_task_projects__project_id__tasks_post, get_task_tasks__task_id__get, edit_task_tasks__task_id__post, delete_task_tasks__task_id__delete]
+- name: Subtask
+  description: A step inside a chained Task.
+  operations: [delete_subtask_tasks__task_id__subtasks__subtask_id__delete]
+- name: Transform
+  description: A transformation step attached to a Task.
+  operations: [delete_transform_tasks__task_id__transforms__transform_id__delete]
+- name: TaskRun
+  description: The execution of a Task against a Dataset; carries metrics and can be cleared or cancelled.
+  operations: [get_task_runs_tasks__task_id__runs_get, get_task_run_tasks__task_id__runs__dataset_id__get, update_task_run_tasks__task_id__runs__dataset_id__post, update_task_run_v2_tasks__task_id__runs_post, clear_task_run_tasks__task_id__runs__dataset_id__delete, get_metrics_for_task_run_tasks__task_id__runs__dataset_id__metrics_get]
+- name: Seedset
+  description: The human-labeled examples that steer a Task (TagType `seedset`).
+  operations: [get_items_from_seedset_tasks__task_id__seedset_get, add_item_to_seedset_tasks__task_id__seedset_items_post, remove_item_from_seedset_tasks__task_id__seedset_items__item_id__delete]
+- name: Evalset
+  description: The held-out evaluation set for a Task (TagType `evalset`), with its own runs and metrics.
+  operations: [get_items_from_evalset_tasks__task_id__evalset_get, create_evalset_tasks__task_id__evalset_post, add_item_to_evalset_tasks__task_id__evalset_items_post, remove_item_from_evalset_tasks__task_id__evalset_items__item_id__delete, get_evalset_run_tasks__task_id__evalset_runs_get, update_task_run_evalset_tasks__task_id__evalset_runs_post, get_evalset_metrics_for_task_run_tasks__task_id__evalset_metrics_get]
+- name: Taxonomy
+  description: A managed label vocabulary attached to a Task; holds TaxonomyLabel children.
+  operations: [get_taxonomy_tasks__task_id__taxonomies__taxonomy_id__get, create_taxonomy_with_labels_file_tasks__task_id__taxonomies_post, add_labels_to_taxonomy_with_file_tasks__task_id__taxonomies__taxonomy_id__post, duplicate_taxonomy_tasks__task_id__taxonomies__taxonomy_id__duplicate_post, delete_taxonomy_tasks__task_id__taxonomies__taxonomy_id__delete]
+- name: TaxonomyLabel
+  description: A single label within a Taxonomy.
+  operations: [edit_taxonomy_label_tasks__task_id__taxonomies__taxonomy_id__labels__label_id__patch, delete_subtask_label_tasks__task_id__taxonomies__taxonomy_id__labels__label_id__delete]
+- name: Calibration
+  description: A confidence-calibration model fitted to a Task; CalibrationStatus IN_PROGRESS / COMPLETED / INTERRUPTED / DELETED.
+  operations: [get_calibration_models_tasks__task_id__calibrations_get, calibrate_task_tasks__task_id__calibrations_post, get_calibration_model_from_id_tasks__task_id__calibrations__calibration_id__get, update_calibration_model_tasks__task_id__calibrations__calibration_id__patch]
+- name: Model
+  description: A base LLM available to Tasks. TrainableBaseModels are refuel-llm-2-large / -small / -mini.
+  operations: [get_models_models_get, get_task_models_tasks__task_id__models_get, trainable_task_tasks__task_id__trainable_get]
+- name: FinetunedModel
+  description: A model finetuned from a base model on a Task's data (LoRA and augmented finetuning supported).
+  operations: [finetune_model_for_task_projects__project_id__finetuned_models_post, get_finetuned_models_for_project_task_projects__project_id__finetuned_models_get, get_finetuned_model_from_id_finetuned_models__model_id__get, update_finetuned_model_finetuned_models__model_id__patch, delete_finetuned_model_from_id_finetuned_models__model_id__delete]
+- name: Application
+  description: A versioned snapshot of a Task deployed behind a realtime REST label endpoint.
+  operations: [get_team_applications_applications_get, get_applications_projects__project_id__applications_get, create_application_projects__project_id__applications_post, get_application_applications__application_id__get, delete_application_applications__application_id__delete, online_label_applications__application_id__label_post, application_feedback_applications__application_id__items__item_id__label_post, get_items_from_application_applications__application_id__items_get, get_application_item_applications__application_id__items__item_id__get, get_application_usage_applications__application_id__usage_get]
+- name: Export
+  description: An asynchronous export job over a Dataset or a Task tag; created, then downloaded by export_id.
+  operations: [export_dataset_datasets__dataset_id__exports_post, download_dataset_datasets__dataset_id__exports__export_id__get, export_task_tasks__task_id___tag__exports_post, download_export_task_tasks__task_id___tag__exports__export_id__get]
+- name: Integration
+  description: A configured cloud-storage or warehouse connection (S3, GCS, Snowflake, Databricks).
+  operations: [get_integrations_integrations_get, get_integration_integrations__integration_id__get, update_integration_integrations__integration_id__patch]
+relationships:
+- from: Team
+  to: User
+  type: has_many
+  via: /users
+- from: Team
+  to: Project
+  type: has_many
+  via: /projects
+- from: Team
+  to: Integration
+  type: has_many
+  via: /integrations
+- from: Project
+  to: Dataset
+  type: has_many
+  via: /projects/{project_id}/datasets
+- from: Dataset
+  to: Project
+  type: has_many
+  via: /datasets/{dataset_id}/projects
+  note: >-
+    Explicitly many-to-many — a Dataset can be added to and removed from multiple Projects
+    via POST/DELETE /datasets/{dataset_id}/projects/{project_id}.
+- from: Project
+  to: Task
+  type: has_many
+  via: /projects/{project_id}/tasks
+- from: Project
+  to: Application
+  type: has_many
+  via: /projects/{project_id}/applications
+- from: Project
+  to: FinetunedModel
+  type: has_many
+  via: /projects/{project_id}/finetuned_models
+- from: Dataset
+  to: Item
+  type: has_many
+  via: /datasets/{dataset_id}/items
+- from: Dataset
+  to: Export
+  type: has_many
+  via: /datasets/{dataset_id}/exports
+- from: Task
+  to: TaskRun
+  type: has_many
+  via: /tasks/{task_id}/runs/{dataset_id}
+  note: A TaskRun is keyed by the (task_id, dataset_id) pair — the join between a Task and the Dataset it ran over.
+- from: TaskRun
+  to: Dataset
+  type: belongs_to
+  via: dataset_id
+- from: Task
+  to: Subtask
+  type: has_many
+  via: /tasks/{task_id}/subtasks/{subtask_id}
+- from: Task
+  to: Transform
+  type: has_many
+  via: /tasks/{task_id}/transforms/{transform_id}
+- from: Task
+  to: Seedset
+  type: has_one
+  via: /tasks/{task_id}/seedset
+- from: Task
+  to: Evalset
+  type: has_one
+  via: /tasks/{task_id}/evalset
+- from: Task
+  to: Taxonomy
+  type: has_many
+  via: /tasks/{task_id}/taxonomies
+- from: Taxonomy
+  to: TaxonomyLabel
+  type: has_many
+  via: /tasks/{task_id}/taxonomies/{taxonomy_id}/labels
+- from: Task
+  to: Calibration
+  type: has_many
+  via: /tasks/{task_id}/calibrations
+- from: Task
+  to: Model
+  type: has_many
+  via: /tasks/{task_id}/models
+- from: FinetunedModel
+  to: Task
+  type: belongs_to
+  via: task_id
+  note: TrainModelRequest carries project_id, task_id, base_model and datasets[].
+- from: Application
+  to: Task
+  type: belongs_to
+  via: >-
+    Refuel's docs define an Application as "a versioned snapshot of a Task deployed behind
+    an API"; the spec has no explicit task_id field on the create request body schema.
+- from: Application
+  to: Item
+  type: has_many
+  via: /applications/{application_id}/items
+enumerations:
+  DatasetSource: [databricks, file, s3, snowflake, uri]
+  TagType: [seedset, evalset]
+  State: [CREATED, INVITED, INVITE_FAILED, ACTIVE]
+  UserAction: [STARTED, INTERRUPTED]
+  CalibrationStatus: [IN_PROGRESS, COMPLETED, INTERRUPTED, DELETED]
+  AvailabilityStatus: [UNAVAILABLE, AVAILABLE]
+  TrainableBaseModels: [refuel-llm-2-large, refuel-llm-2-small, refuel-llm-2-mini]
+  SamplingType: [random, stratified, sorted]
+  SampleColumnType: [metadata, label, confidence]
+  WebhookEventCategory: [aws, datasaur]
+gaps:
+- >-
+  No named response schema for any core entity. Project, Dataset, Task, Application, Item
+  and Model have no components.schemas entry — every 200 returns ResponseModel with an
+  untyped `data` field. A consumer cannot learn an entity's fields from this spec, only its
+  routes. This is the single largest contract-quality gap in the Refuel Cloud API.
+- >-
+  No pagination metadata schema. ResponseModel carries a `count` integer, and read routes
+  take offset / max_items / order_bys / filters, but none of that is described as a
+  reusable component.

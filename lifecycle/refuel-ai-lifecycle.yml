@@ -1,0 +1,111 @@
+generated: '2026-08-14'
+method: searched
+source: >-
+  https://www.refuel.ai/blog-posts/we-are-joining-together-ai, https://www.refuel.ai/,
+  https://docs.refuel.ai/, https://cloud-api.refuel.ai/openapi.json, and registry metadata
+  for the first-party SDKs
+description: >-
+  Lifecycle posture of Refuel. The dominant fact is an acquisition: Refuel.ai was acquired
+  by Together AI, announced 2025-05-14, with the whole team joining Together and the
+  platform stated to "continue to operate as-is for now". As of this probe the Refuel Cloud
+  API is still live and still serves a 108-operation OpenAPI, but every dated surface Refuel
+  controls — website, docs, SDK releases — stopped moving around the acquisition.
+ownership:
+  status: acquired
+  acquirer: Together AI
+  announced: '2025-05-14'
+  announcement: https://www.refuel.ai/blog-posts/we-are-joining-together-ai
+  quote: >-
+    "Today, we're thrilled to announce that Refuel.ai has been acquired by Together.ai...
+    Our platform will continue to operate as-is for now... Refuel LLM-2 is available on
+    Together.ai's platform."
+  banner: >-
+    Every page of www.refuel.ai carries a site-wide banner reading "Refuel.ai is joining
+    Together AI - learn more".
+  effect_on_api: >-
+    None announced. No sunset date, no migration guide, no deprecation notice on the API or
+    in the docs. Customers were told "there's no immediate action required on your part".
+versioning:
+  scheme: none
+  current: null
+  docs: null
+  note: >-
+    Paths are unversioned. The only versioning signal is duplicated routes named "V2" in
+    their summaries (POST /projects/{project_id}/datasets "Ingest Dataset V2" beside POST
+    /datasets/ingest; POST /tasks/{task_id}/runs "Update Task Run V2" beside POST
+    /tasks/{task_id}/runs/{dataset_id}). The V1 forms remain live and undeprecated.
+  spec_version: '0.1.0'
+  spec_version_note: The FastAPI default. info.version conveys nothing about the API's real version.
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: unknown
+  deprecated_operations: []
+  note: >-
+    Zero operations carry `deprecated: true` in the harvested OpenAPI, and Refuel publishes
+    no deprecation or sunset policy. The superseded V1 routes described above are the case
+    a deprecation policy would normally cover, and none is marked.
+status_page:
+  url: null
+  published: false
+  probes:
+  - url: https://status.refuel.ai
+    result: NXDOMAIN
+  - url: https://refuel.statuspage.io
+    http_status: 200
+    result: >-
+      302s to https://www.atlassian.com/software/statuspage — the Statuspage marketing site,
+      not a Refuel page. The subdomain is unclaimed. NOT a status page; no StatusPage
+      pointer is emitted.
+  note: Refuel publishes no uptime or incident communication surface.
+sla:
+  url: null
+  uptime_target: null
+  note: No SLA published. Refuel Cloud is sales-led; any availability commitment would sit in a private contract.
+changelog:
+  url: null
+  published: false
+  probes:
+  - url: https://www.refuel.ai/changelog
+    http_status: 404
+  - url: https://docs.refuel.ai/changelog
+    http_status: 404
+  note: >-
+    No dated changelog on the marketing site or the docs host, and the docs MCP filesystem
+    (`ls -R /`) contains no changelog page. The company blog at https://www.refuel.ai/blog
+    is announcement-shaped, not release-shaped. No ChangeLog artifact is written.
+roadmap:
+  url: null
+  published: false
+  probe:
+    url: https://www.refuel.ai/roadmap
+    http_status: 404
+freshness_signals:
+- surface: marketing site
+  last_changed: '2025-05-15'
+  evidence: 'Webflow build comment in the HTML: "Last Published: Thu May 15 2025 17:14:08 GMT+0000".'
+- surface: JavaScript SDK (npm refuel-sdk)
+  last_release: '2025-02-04'
+  version: 0.25.0
+- surface: JavaScript SDK repository
+  last_push: '2025-02-18'
+- surface: Python SDK (PyPI refuel)
+  last_release: '2025-01-15'
+  version: 0.15.15
+- surface: autolabel (PyPI refuel-autolabel)
+  last_release: '2023-10-16'
+  version: 0.0.16
+- surface: autolabel repository
+  last_push: '2025-03-05'
+- surface: Refuel Cloud API
+  status: live
+  evidence: 'https://cloud-api.refuel.ai/openapi.json returned HTTP 200 with 108 operations on 2026-08-14.'
+- surface: documentation
+  status: live
+  evidence: 'docs.refuel.ai serves llms.txt, an MCP endpoint and an A2A agent card; all returned 200 on 2026-08-14.'
+assessment: >-
+  The API is running and its machine-readable contract is current enough to harvest, but no
+  Refuel-controlled surface has changed in roughly fifteen months, the newest first-party
+  SDK release predates the acquisition, and there is no status page, changelog, SLA or
+  deprecation policy to signal what happens next. Treat Refuel Cloud as a maintained but
+  frozen platform inside Together AI, and expect no notice if that changes.

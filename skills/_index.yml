@@ -1,0 +1,76 @@
+generated: '2026-08-14'
+method: generated
+source: >-
+  openapi/refuel-ai-cloud-api-openapi.yml (harvested from
+  https://cloud-api.refuel.ai/openapi.json) plus https://docs.refuel.ai
+description: >-
+  Packaged Agent Skills for the Refuel Cloud API, one per marquee flow. Every operationId
+  named in these skills was verified verbatim against the harvested OpenAPI. Refuel
+  publishes no AGENTS.md or first-party skill files; these are API Evangelist generations
+  grounded in the provider's own contract and documentation.
+skills:
+- file: refuel-ai-label-with-application.md
+  name: Label rows with a deployed Refuel application
+  api: openapi/refuel-ai-cloud-api-openapi.yml
+  operations:
+  - get_team_applications_applications_get
+  - get_application_applications__application_id__get
+  - online_label_applications__application_id__label_post
+  - get_items_from_application_applications__application_id__items_get
+  - get_application_item_applications__application_id__items__item_id__get
+  - application_feedback_applications__application_id__items__item_id__label_post
+  - get_application_usage_applications__application_id__usage_get
+- file: refuel-ai-ingest-dataset.md
+  name: Ingest a dataset into Refuel
+  api: openapi/refuel-ai-cloud-api-openapi.yml
+  operations:
+  - get_projects_projects_get
+  - create_project_projects_post
+  - get_presigned_url_datasets_url_post
+  - infer_schema_datasets_infer_schema_post
+  - ingest_dataset_datasets_ingest_post
+  - ingest_dataset_v2_projects__project_id__datasets_post
+  - get_datasets_datasets_get
+  - get_items_from_dataset_datasets__dataset_id__get
+  - add_items_to_dataset_datasets__dataset_id__items_post
+  - append_dataset_datasets__dataset_id__append_post
+  - update_dataset_datasets__dataset_id__patch
+  - add_project_to_dataset_datasets__dataset_id__projects__project_id__post
+- file: refuel-ai-run-task-and-export.md
+  name: Run a Refuel task and export the results
+  api: openapi/refuel-ai-cloud-api-openapi.yml
+  operations:
+  - create_task_projects__project_id__tasks_post
+  - get_tasks_projects__project_id__tasks_get
+  - get_task_tasks__task_id__get
+  - edit_task_tasks__task_id__post
+  - update_task_run_v2_tasks__task_id__runs_post
+  - update_task_run_tasks__task_id__runs__dataset_id__post
+  - get_task_runs_tasks__task_id__runs_get
+  - get_task_run_tasks__task_id__runs__dataset_id__get
+  - get_metrics_for_task_run_tasks__task_id__runs__dataset_id__metrics_get
+  - get_items_from_task_run_tasks__task_id__datasets__dataset_id__get
+  - clear_task_run_tasks__task_id__runs__dataset_id__delete
+  - export_task_tasks__task_id___tag__exports_post
+  - download_export_task_tasks__task_id___tag__exports__export_id__get
+  - export_dataset_datasets__dataset_id__exports_post
+  - download_dataset_datasets__dataset_id__exports__export_id__get
+- file: refuel-ai-finetune-model.md
+  name: Finetune a Refuel model on your labeled data
+  api: openapi/refuel-ai-cloud-api-openapi.yml
+  operations:
+  - add_item_to_seedset_tasks__task_id__seedset_items_post
+  - get_items_from_seedset_tasks__task_id__seedset_get
+  - create_evalset_tasks__task_id__evalset_post
+  - add_item_to_evalset_tasks__task_id__evalset_items_post
+  - edit_labels_v2_tasks__task_id__datasets__dataset_id__items__item_id__label_post
+  - trainable_task_tasks__task_id__trainable_get
+  - get_models_models_get
+  - get_task_models_tasks__task_id__models_get
+  - finetune_model_for_task_projects__project_id__finetuned_models_post
+  - get_finetuned_models_for_project_task_projects__project_id__finetuned_models_get
+  - get_finetuned_model_from_id_finetuned_models__model_id__get
+  - update_finetuned_model_finetuned_models__model_id__patch
+  - delete_finetuned_model_from_id_finetuned_models__model_id__delete
+  - calibrate_task_tasks__task_id__calibrations_post
+  - get_calibration_models_tasks__task_id__calibrations_get

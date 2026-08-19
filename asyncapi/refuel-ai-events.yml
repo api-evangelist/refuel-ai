@@ -1,0 +1,55 @@
+generated: '2026-08-14'
+method: derived
+source: openapi/refuel-ai-cloud-api-openapi.yml
+spec_type: none
+description: >-
+  Event-surface record for Refuel. There is no AsyncAPI document and no outbound webhook
+  catalog. The only event machinery in Refuel's contract is INBOUND — two receiver endpoints
+  that let external systems notify Refuel. This file exists so a later round does not re-run
+  the same search, and so the inbound-only shape is on the record.
+  NO `AsyncAPI` OR `Webhooks` POINTER IS EMITTED IN apis.yml: those types assert that the
+  provider publishes an event stream or notifies subscribers, and Refuel does neither.
+searched:
+- url: https://docs.refuel.ai/llms.txt
+  result: 200 — 38 documentation pages, none about webhooks, events or streaming.
+- url: https://docs.refuel.ai/asyncapi.yaml
+  result: not published (the docs MCP virtual filesystem `ls -R /` lists only guides, integrations, catalog and sdk pages)
+- url: https://github.com/refuel-ai
+  result: 4 public repos (autolabel, refuel-docs, refuel-sdk, .github); no event schema or AsyncAPI document.
+- surface: openapi
+  result: the harvested spec has no top-level `webhooks` key and no callbacks on any operation.
+inbound_webhooks:
+  direction: inbound
+  description: Refuel is the receiver. External platforms POST events to Refuel to trigger ingestion.
+  endpoints:
+  - path: /webhook/events
+    operationId: process_event_webhook_events_post
+    auth: HTTPBearer
+    request_schema: WebhookEventRequest
+    event_categories: [aws, datasaur]
+    event_types:
+    - id: s3_file_uploaded
+      category: aws
+      payload: AWSS3FileUploadedPayload
+      payload_fields: [dataset, project, s3_path, task]
+      meaning: An S3 object landed; Refuel ingests it into the named dataset and runs the named task.
+    - id: project_created
+      category: datasaur
+      payload: DatasaurProjectCreationPayload
+      meaning: A Datasaur annotation project was created.
+    response_schema: WebhookResponse
+  - path: /webhooks/{webhook_id}/events
+    operationId: process_webhook_event_webhooks__webhook_id__events_post
+    auth: none declared
+    request_schema: AirbyteWebhookRequest
+    request_fields: [text, blocks, data]
+    meaning: >-
+      Receives Airbyte sync notifications. The payload shape (text / blocks) is Slack's
+      message format, which Airbyte emits for its webhook notifications.
+outbound_webhooks:
+  supported: false
+  note: >-
+    Refuel sends no events. There is no subscription endpoint, no event catalog, no
+    signature-verification documentation and no delivery-retry policy. A consumer that needs
+    to know when a task run finishes must poll the GET route — see the 202-then-poll pattern
+    in conventions/refuel-ai-conventions.yml.

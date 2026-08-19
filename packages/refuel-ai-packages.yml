@@ -1,0 +1,63 @@
+generated: '2026-08-14'
+method: searched
+source: >-
+  https://docs.refuel.ai/sdk/python.md, https://docs.refuel.ai/sdk/javascript.md,
+  https://github.com/refuel-ai, and the PyPI / npm registry metadata endpoints
+description: >-
+  First-party Refuel client libraries. Refuel ships a Python SDK (`refuel`, PyPI),
+  a TypeScript/JavaScript SDK (`refuel-sdk`, npm), and the open-source `refuel-autolabel`
+  library. Every entry below carries a structured `version` + `published` read from the
+  registry metadata endpoint, not from prose. All three are stale relative to the live
+  Refuel Cloud API: the newest first-party release is 2025-02-04, and Refuel was acquired
+  by Together AI on 2025-05-14 (see lifecycle/refuel-ai-lifecycle.yml).
+packages:
+- language: python
+  registry: pypi
+  name: refuel
+  url: https://pypi.org/project/refuel/
+  install: pip install refuel
+  official: true
+  version: 0.15.15
+  published: '2025-01-15'
+  source_code: https://github.com/refuel-ai/refuel-python
+  note: >-
+    The Python SDK documented at https://docs.refuel.ai/sdk/python. Reads REFUEL_API_KEY from
+    the environment and wraps projects, datasets, tasks, task runs and applications. The
+    source repo named in the docs (github.com/refuel-ai/refuel-python) returns HTTP 404 on
+    the GitHub API — the package is published but its repository is not public.
+- language: typescript
+  registry: npm
+  name: refuel-sdk
+  url: https://www.npmjs.com/package/refuel-sdk
+  install: npm install refuel-sdk
+  official: true
+  version: 0.25.0
+  published: '2025-02-04'
+  source_code: https://github.com/refuel-ai/refuel-sdk
+  license: MIT
+  note: >-
+    Published by "Refuel.ai" with repository github.com/refuel-ai/refuel-sdk (last push
+    2025-02-18). The docs page https://docs.refuel.ai/sdk/javascript 307-redirects to the
+    repo's own generated TypeDoc under /tree/main/docs.
+- language: python
+  registry: pypi
+  name: refuel-autolabel
+  url: https://pypi.org/project/refuel-autolabel/
+  install: pip install refuel-autolabel
+  official: true
+  version: 0.0.16
+  published: '2023-10-16'
+  source_code: https://github.com/refuel-ai/autolabel
+  note: >-
+    The open-source autolabel library (2,329 GitHub stars). This is a local LLM-labeling
+    library, not a client for the Refuel Cloud REST API. Last PyPI release 2023-10-16;
+    repository last pushed 2025-03-05.
+absent:
+- registry: npm
+  name: refuel
+  note: >-
+    An npm package named `refuel` exists at version 0.0.0 with no author, description or
+    repository. It is a name squat / placeholder, NOT a Refuel client library — recorded
+    here so a later round does not mistake it for a first-party SDK.
+- registry: [maven, nuget, rubygems, packagist, crates, go]
+  note: No Refuel client library was found on Maven Central, NuGet, RubyGems, Packagist, crates.io or pkg.go.dev.

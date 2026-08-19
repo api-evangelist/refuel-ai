@@ -1,0 +1,203 @@
+generated: '2026-08-14'
+method: derived
+source: mcp/refuel-ai-mcp.yml (probed tools/list) + openapi/refuel-ai-cloud-api-openapi.yml
+description: >-
+  Crosswalk between Refuel's live MCP tool set and its REST OpenAPI. The headline finding is
+  a total divergence: all three MCP tools are documentation tools, and none of the 108 REST
+  operations has an MCP tool. An agent connected to https://docs.refuel.ai/mcp can read
+  about Refuel but cannot operate Refuel. Coverage is 0/108 — recorded rather than papered
+  over, because a "has MCP server" boolean would badly overstate what Refuel's agent
+  surface can actually do.
+surfaces:
+  openapi:
+    file: openapi/refuel-ai-cloud-api-openapi.yml
+    source: https://cloud-api.refuel.ai/openapi.json
+    gated: false
+    note: The spec document is anonymous; every operation it describes requires an HTTP Bearer API key.
+  mcp:
+    url: https://docs.refuel.ai/mcp
+    gated: false
+    note: tools/list returned 200 anonymously with three tools and full inputSchemas.
+  graphql:
+    endpoint: null
+    note: No GraphQL surface found on any Refuel host.
+crosswalk: []
+mcp_only:
+- tool: search_refuel_ai
+  reason: >-
+    Semantic search over the Refuel documentation corpus. Backed by the Mintlify docs index,
+    not by any Refuel Cloud API operation.
+- tool: query_docs_filesystem_refuel_ai
+  reason: >-
+    Read-only shell over a virtualized in-memory filesystem of Refuel's .mdx documentation
+    pages. No REST equivalent; it does not touch cloud-api.refuel.ai.
+- tool: submit_feedback
+  reason: >-
+    Files a documentation-quality report with the Mintlify docs platform. Not a Refuel Cloud
+    API operation.
+rest_only:
+- capability: tasks
+  count: 42
+  note: Task definition, task runs, seedsets/evalsets, metrics, taxonomies, calibration.
+  operations:
+  - get_team_tasks_tasks_get
+  - get_task_tasks__task_id__get
+  - edit_task_tasks__task_id__post
+  - delete_task_tasks__task_id__delete
+  - get_task_models_tasks__task_id__models_get
+  - delete_subtask_tasks__task_id__subtasks__subtask_id__delete
+  - delete_transform_tasks__task_id__transforms__transform_id__delete
+  - get_items_from_task_run_tasks__task_id__datasets__dataset_id__get
+  - get_items_from_seedset_tasks__task_id__seedset_get
+  - get_items_from_evalset_tasks__task_id__evalset_get
+  - create_evalset_tasks__task_id__evalset_post
+  - get_metrics_for_task_run_tasks__task_id__runs__dataset_id__metrics_get
+  - get_evalset_metrics_for_task_run_tasks__task_id__evalset_metrics_get
+  - get_task_run_tasks__task_id__runs__dataset_id__get
+  - update_task_run_tasks__task_id__runs__dataset_id__post
+  - clear_task_run_tasks__task_id__runs__dataset_id__delete
+  - get_task_runs_tasks__task_id__runs_get
+  - update_task_run_v2_tasks__task_id__runs_post
+  - preview_labels_v2_tasks__task_id__datasets__dataset_id__items__item_id__label_get
+  - edit_labels_v2_tasks__task_id__datasets__dataset_id__items__item_id__label_post
+  - remove_item_from_evalset_tasks__task_id__evalset_items__item_id__delete
+  - add_item_to_evalset_tasks__task_id__evalset_items_post
+  - remove_item_from_seedset_tasks__task_id__seedset_items__item_id__delete
+  - add_item_to_seedset_tasks__task_id__seedset_items_post
+  - get_item_from_task_run_tasks__task_id__datasets__dataset_id__items__item_id__get
+  - modify_item_properties_tasks__task_id__datasets__dataset_id__items__item_id__post
+  - get_evalset_run_tasks__task_id__evalset_runs_get
+  - update_task_run_evalset_tasks__task_id__evalset_runs_post
+  - export_task_tasks__task_id___tag__exports_post
+  - download_export_task_tasks__task_id___tag__exports__export_id__get
+  - get_taxonomy_tasks__task_id__taxonomies__taxonomy_id__get
+  - add_labels_to_taxonomy_with_file_tasks__task_id__taxonomies__taxonomy_id__post
+  - delete_taxonomy_tasks__task_id__taxonomies__taxonomy_id__delete
+  - create_taxonomy_with_labels_file_tasks__task_id__taxonomies_post
+  - delete_subtask_label_tasks__task_id__taxonomies__taxonomy_id__labels__label_id__delete
+  - edit_taxonomy_label_tasks__task_id__taxonomies__taxonomy_id__labels__label_id__patch
+  - duplicate_taxonomy_tasks__task_id__taxonomies__taxonomy_id__duplicate_post
+  - get_calibration_models_tasks__task_id__calibrations_get
+  - calibrate_task_tasks__task_id__calibrations_post
+  - get_calibration_model_from_id_tasks__task_id__calibrations__calibration_id__get
+  - update_calibration_model_tasks__task_id__calibrations__calibration_id__patch
+  - trainable_task_tasks__task_id__trainable_get
+- capability: datasets
+  count: 17
+  note: Dataset ingest (presigned URL, schema inference), items, exports, sampling, project association.
+  operations:
+  - get_presigned_url_datasets_url_post
+  - infer_schema_datasets_infer_schema_post
+  - ingest_dataset_datasets_ingest_post
+  - get_datasets_datasets_get
+  - get_items_from_dataset_datasets__dataset_id__get
+  - delete_dataset_datasets__dataset_id__delete
+  - update_dataset_datasets__dataset_id__patch
+  - get_dataset_projects_datasets__dataset_id__projects_get
+  - add_project_to_dataset_datasets__dataset_id__projects__project_id__post
+  - delete_project_from_dataset_datasets__dataset_id__projects__project_id__delete
+  - get_item_from_dataset_datasets__dataset_id__items__item_id__get
+  - delete_item_from_dataset_datasets__dataset_id__items__item_id__delete
+  - add_items_to_dataset_datasets__dataset_id__items_post
+  - export_dataset_datasets__dataset_id__exports_post
+  - download_dataset_datasets__dataset_id__exports__export_id__get
+  - sample_dataset_datasets__dataset_id__sample_post
+  - append_dataset_datasets__dataset_id__append_post
+- capability: projects
+  count: 11
+  note: Project CRUD and the project-scoped creation routes for datasets, tasks, applications and finetunes.
+  operations:
+  - get_projects_projects_get
+  - create_project_projects_post
+  - get_project_projects__project_id__get
+  - delete_project_projects__project_id__delete
+  - ingest_dataset_v2_projects__project_id__datasets_post
+  - get_tasks_projects__project_id__tasks_get
+  - create_task_projects__project_id__tasks_post
+  - get_applications_projects__project_id__applications_get
+  - create_application_projects__project_id__applications_post
+  - get_finetuned_models_for_project_task_projects__project_id__finetuned_models_get
+  - finetune_model_for_task_projects__project_id__finetuned_models_post
+- capability: applications
+  count: 8
+  note: Deployed applications and the realtime label endpoint that Refuel's own docs and catalog use.
+  operations:
+  - get_team_applications_applications_get
+  - get_application_applications__application_id__get
+  - delete_application_applications__application_id__delete
+  - online_label_applications__application_id__label_post
+  - get_application_item_applications__application_id__items__item_id__get
+  - get_items_from_application_applications__application_id__items_get
+  - application_feedback_applications__application_id__items__item_id__label_post
+  - get_application_usage_applications__application_id__usage_get
+- capability: users
+  count: 7
+  note: Team member management plus the authenticated-user profile routes.
+  operations:
+  - get_users_users_get
+  - invite_users_users_post
+  - get_user_users__user_id__get
+  - update_user_users__user_id__patch
+  - create_user_users__user_email__post
+  - get_authenticated_user_user_get
+  - update_authenticated_user_user_patch
+- capability: teams
+  count: 5
+  note: Team read/update, team-scoped presigned upload URL, and usage.
+  operations:
+  - get_teams_teams_get
+  - get_presigned_url_team_sign_url_get
+  - get_team_team_get
+  - update_team_team_post
+  - get_team_usage_usage_get
+- capability: models
+  count: 4
+  note: Model catalog and finetuned-model lifecycle.
+  operations:
+  - get_models_models_get
+  - get_finetuned_model_from_id_finetuned_models__model_id__get
+  - delete_finetuned_model_from_id_finetuned_models__model_id__delete
+  - update_finetuned_model_finetuned_models__model_id__patch
+- capability: integrations
+  count: 3
+  note: Read and update configured cloud-storage / warehouse integrations.
+  operations:
+  - get_integrations_integrations_get
+  - get_integration_integrations__integration_id__get
+  - update_integration_integrations__integration_id__patch
+- capability: access
+  count: 4
+  note: Internal access-request routes wired to Slack interaction callbacks; undocumented in the public docs.
+  operations:
+  - request_llm_access_access_llm_post
+  - handle_llm_slack_interactions_access_llm_interactions_post
+  - request_product_access_access_product_post
+  - handle_product_slack_interactions_access_product_interactions_post
+- capability: labs
+  count: 2
+  note: Experimental one-shot label and feedback routes; undocumented in the public docs.
+  operations:
+  - label_labs_label_post
+  - collect_feedback_labs_feedback_post
+- capability: webhooks-inbound
+  count: 2
+  note: >-
+    INBOUND webhook receivers — Refuel consuming AWS S3 / Datasaur / Airbyte events. Not an
+    outbound event surface; see asyncapi/refuel-ai-events.yml.
+  operations:
+  - process_event_webhook_events_post
+  - process_webhook_event_webhooks__webhook_id__events_post
+- capability: platform
+  count: 3
+  note: Root health check, JSON-schema validation helper, and CSP violation reporting.
+  operations:
+  - read_root__get
+  - validate_schema_schema_post
+  - csp_reports_csp_reports_post
+coverage:
+  tools_named: 3
+  tools_bound_to_rest: 0
+  mcp_only: 3
+  rest_operations_total: 108
+  rest_operations_with_a_tool: 0
+  rest_coverage_pct: 0.0

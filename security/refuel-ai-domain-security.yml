@@ -1,11 +1,11 @@
-generated: '2026-07-11'
+generated: '2026-08-14'
 method: probed
 source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
 hosts:
 - host: www.refuel.ai
   https: true
   tls_version: TLSv1.3
-  cert_expires: Sep 13 13:26:57 2026 GMT
+  cert_expires: Nov 11 13:52:39 2026 GMT
   hsts: true
   hsts_max_age: 31536000
 - host: docs.refuel.ai
@@ -17,7 +17,7 @@ hosts:
 - host: cloud-api.refuel.ai
   https: true
   tls_version: TLSv1.3
-  cert_expires: Sep 20 23:59:59 2026 GMT
+  cert_expires: Feb  5 23:59:59 2027 GMT
   hsts: null
 domains:
 - domain: refuel.ai

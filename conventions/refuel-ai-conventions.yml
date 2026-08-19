@@ -1,0 +1,120 @@
+generated: '2026-08-14'
+method: searched
+source: >-
+  https://docs.refuel.ai/sdk/python, https://docs.refuel.ai/catalog/introduction,
+  https://cloud-api.refuel.ai/openapi.json
+description: >-
+  Cross-cutting request/response semantics for the Refuel Cloud API, read from Refuel's
+  documentation and derived from the harvested OpenAPI. Refuel is a thin FastAPI surface:
+  Bearer auth, an unversioned flat path space, offset/limit-style read parameters, a
+  success-flag envelope on 200, and no idempotency, request-id or rate-limit headers of any
+  kind. Recorded honestly — the absences here are the finding.
+authentication:
+  style: http-bearer
+  header: 'Authorization: Bearer <REFUEL_API_KEY>'
+  scheme_name: HTTPBearer
+  key_source: >-
+    Issued per team. The Python SDK reads it from the REFUEL_API_KEY environment variable;
+    it can also be passed as the `api_key` init option. GET /team returns the team's own
+    `api_key` in the response body.
+  applied_to: 99 of 108 operations declare security; 9 (root, csp-reports, labs, some access routes) do not.
+  gateway_behaviour: >-
+    Every path on cloud-api.refuel.ai other than / and /openapi.json returns HTTP 401
+    {"message":"Unauthorized"} without a valid key — including /.well-known/* paths.
+  detail: authentication/refuel-ai-authentication.yml
+idempotency:
+  supported: false
+  header: null
+  evidence: >-
+    Zero occurrences of "idempoten" anywhere in the 106KB OpenAPI document, and no
+    idempotency key in any parameter, requestBody or header. Refuel's documentation does not
+    mention idempotency. No Idempotency pointer is emitted in apis.yml.
+  risk: >-
+    POST /applications/{application_id}/label is the billable realtime operation and has no
+    retry safety. A client that retries after a timeout may be charged twice and may write a
+    duplicate item.
+pagination:
+  style: offset
+  supported: partial
+  parameters:
+  - name: offset
+    in: query
+    used_by: 4 operations
+  - name: max_items
+    in: query
+    used_by: 5 operations
+  - name: num_items
+    in: query
+    used_by: 2 operations
+  - name: order_bys
+    in: query
+    used_by: 4 operations
+    note: Sort specification, JSON-encoded.
+  - name: filters
+    in: query
+    used_by: 12 operations
+    note: Filter specification, JSON-encoded.
+  response_fields:
+  - name: count
+    location: ResponseModel.count
+    note: Total row count; there is no next-page cursor or link.
+  gaps: >-
+    Only a minority of the collection routes take offset/max_items, and the parameter names
+    are inconsistent (max_items vs num_items). There is no cursor, no Link header and no
+    documented default or maximum page size.
+error_envelope:
+  media_type: application/json
+  shapes: [ResponseModel, HTTPError, HTTPValidationError, gateway]
+  soft_errors: >-
+    A 200 response can carry `success: false` with `error_msg`. Status code alone is not a
+    sufficient success test against this API.
+  detail: errors/refuel-ai-problem-types.yml
+rate_limiting:
+  documented_limits: 300 requests/minute, 100 concurrent requests (application label endpoint)
+  exhaustion_status: 429
+  response_headers: none
+  note: >-
+    Refuel publishes the numbers in prose but returns no RateLimit-* / X-RateLimit-* /
+    Retry-After headers, so an agent cannot read remaining budget at runtime.
+  detail: rate-limits/refuel-ai-rate-limits.yml
+versioning:
+  scheme: none
+  current: null
+  evidence: >-
+    No /v1 prefix, no version header, no version query parameter. Version drift is expressed
+    inside path names instead — /projects/{project_id}/datasets is "Ingest Dataset V2" and
+    POST /tasks/{task_id}/runs is "Update Task Run V2", living alongside their V1 routes.
+  risk: A consumer has no way to pin a version, and the spec's info.version is the FastAPI default 0.1.0.
+  detail: lifecycle/refuel-ai-lifecycle.yml
+request_tracing:
+  request_id_header: none
+  note: No X-Request-Id / X-Correlation-Id in the spec or docs. Support requests cannot cite a request id.
+async_operations:
+  pattern: 202-then-poll
+  operations_returning_202: 6
+  note: >-
+    Exports, dataset ingest, finetuning and calibration accept work and return 202; the
+    caller polls the matching GET route (for example
+    download_dataset_datasets__dataset_id__exports__export_id__get) for completion.
+uploads:
+  pattern: presigned-url
+  operations: [get_presigned_url_datasets_url_post, get_presigned_url_team_sign_url_get]
+  note: >-
+    Large files are uploaded by requesting a presigned URL, PUTting the file to object
+    storage, then calling ingest. Direct multipart upload is used only for taxonomy label
+    files.
+events:
+  outbound_webhooks: false
+  inbound_webhooks: true
+  note: >-
+    Refuel exposes two inbound webhook RECEIVERS (AWS S3 file-uploaded, Datasaur project
+    created, Airbyte). It does not send events to subscribers and publishes no AsyncAPI.
+  detail: asyncapi/refuel-ai-events.yml
+content_negotiation:
+  request: application/json (plus multipart/form-data for taxonomy label file uploads)
+  response: application/json on all 209 declared response bodies
+field_expansion:
+  supported: false
+metadata:
+  supported: partial
+  note: Item-level `properties` exist (ItemProperties.in_evalset) but there is no general customer-defined metadata bag.
