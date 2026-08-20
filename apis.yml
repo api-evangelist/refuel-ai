@@ -33,6 +33,19 @@ accessModel:
     only freely usable Refuel artifact.
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/refuel-ai.png
 tags:
+- Artificial Intelligence
+- LLM
+- Data Labeling
+- Data Enrichment
+- Autolabel
+- Machine-Learning
+- Data Quality
+- Training Data
+- Fine-Tuning
+- Data Transformation
+- Entity Resolution
+- Content Moderation
+tags_raw:
 - AI
 - LLM
 - Data Labeling
@@ -52,6 +65,10 @@ apis:
 - aid: refuel-ai:refuel-autolabel-oss
   name: Refuel Autolabel (Open Source)
   tags:
+  - Open-Source
+  - Autolabel
+  - Python
+  tags_raw:
   - Open Source
   - Autolabel
   - Python
@@ -84,6 +101,13 @@ apis:
   humanURL: https://docs.refuel.ai/overview
   baseURL: https://cloud-api.refuel.ai
   tags:
+  - Project
+  - Datasets
+  - Task
+  - Application
+  - Models
+  - Team
+  tags_raw:
   - Projects
   - Datasets
   - Tasks
@@ -121,6 +145,8 @@ apis:
   humanURL: https://docs.refuel.ai/catalog/introduction
   baseURL: https://cloud-api.refuel.ai
   tags:
+  - Application
+  tags_raw:
   - Applications
   properties:
   - type: OpenAPI
