@@ -86,62 +86,16 @@ apis:
     Autolabel is the open-source Python library (pip install refuel-autolabel) to label, clean, and enrich
     text datasets with any LLM (OpenAI, Anthropic, Google, HuggingFace, vLLM, Refuel-hosted). It is a
     local library and SDK, not the hosted Refuel Cloud REST API; it covers classification, NER, entity
-    matching, and question answering with few-shot and chain-of-thought prompting. Last PyPI release
-    0.0.16 on 2023-10-16; repository last pushed 2025-03-05.
-- aid: refuel-ai:refuel-cloud-api
-  name: Refuel Cloud API
-  description: >-
-    The full Refuel Cloud REST API — 108 operations across 77 paths, harvested verbatim from
-    https://cloud-api.refuel.ai/openapi.json on 2026-08-14. Covers projects, datasets and items,
-    tasks, task runs, seedsets and evalsets, taxonomies, confidence calibration, base and
-    finetuned models, deployed applications and their realtime label endpoint, users, teams,
-    usage and cloud/warehouse integrations. Authentication is an API key sent as an HTTP Bearer
-    token. The spec is FastAPI-generated: it declares no tags and returns a generic
-    ResponseModel envelope on every 200, so it names the routes but not the entity shapes.
-  humanURL: https://docs.refuel.ai/overview
-  baseURL: https://cloud-api.refuel.ai
-  tags:
-  - Project
-  - Datasets
-  - Task
-  - Application
-  - Models
-  - Team
-  tags_raw:
-  - Projects
-  - Datasets
-  - Tasks
-  - Applications
-  - Models
-  - Teams
-  properties:
-  - type: OpenAPI
-    url: openapi/refuel-ai-cloud-api-openapi.yml
-  - type: OpenAPIOriginal
-    url: openapi/_original/refuel-ai-cloud-api-openapi.json
-  - type: Overlay
-    url: overlays/refuel-ai-cloud-api-overlay.yaml
-  - type: APIReference
-    url: https://cloud-api.refuel.ai/docs
-  - type: Documentation
-    url: https://docs.refuel.ai
-  - type: GettingStarted
-    url: https://docs.refuel.ai/quickstart
-  - type: DataModel
-    url: data-model/refuel-ai-data-model.yml
-  - type: ErrorCatalog
-    url: errors/refuel-ai-problem-types.yml
-  - type: Conventions
-    url: conventions/refuel-ai-conventions.yml
+    matching, and question answering with few-shot and chain-of-thought prompting. Last PyPI release 0.0.16
+    on 2023-10-16; repository last pushed 2025-03-05.
 - aid: refuel-ai:refuel-ai-applications-api
   name: Refuel Applications API
   description: >-
-    The documented realtime application label surface — the endpoint Refuel's own catalog page
-    publishes as `POST https://cloud-api.refuel.ai/applications/{applicationName}/label`, with the
-    concrete request shape and the published 300 req/min, 100 concurrent rate limit. This entry
-    predates the harvest of the full Refuel Cloud API and describes the same product from the
-    documentation rather than the machine-readable contract; the operation it covers appears in
-    the Cloud API spec as online_label_applications__application_id__label_post.
+    The documented realtime application label surface — the endpoint Refuel's own catalog page publishes
+    as `POST https://cloud-api.refuel.ai/applications/{applicationName}/label`, with the concrete request
+    shape and the published 300 req/min, 100 concurrent rate limit. This entry predates the harvest of
+    the full Refuel Cloud API and describes the same product from the documentation rather than the machine-readable
+    contract; the operation it covers appears in the Cloud API spec as online_label_applications__application_id__label_post.
   humanURL: https://docs.refuel.ai/catalog/introduction
   baseURL: https://cloud-api.refuel.ai
   tags:
@@ -163,7 +117,441 @@ apis:
     url: https://github.com/refuel-ai
   - type: Documentation
     url: https://docs.refuel.ai/quickstart
+- aid: refuel-ai:refuel-ai-access-api
+  name: Refuel Access API
+  description: The Access API from Refuel — 4 operation(s) for access.
+  humanURL: https://github.com/refuel-ai/autolabel
+  baseURL: https://github.com/refuel-ai/autolabel
+  tags:
+  - Access
+  properties:
+  - type: OpenAPI
+    url: openapi/refuel-ai-access-api-openapi.yml
+  - type: OpenAPIOriginal
+    url: openapi/_original/refuel-ai-cloud-api-openapi.json
+  - type: APIReference
+    url: https://cloud-api.refuel.ai/docs
+  - type: Documentation
+    url: https://docs.refuel.ai
+  - type: GettingStarted
+    url: https://docs.refuel.ai/quickstart
+  - type: DataModel
+    url: data-model/refuel-ai-data-model.yml
+  - type: ErrorCatalog
+    url: errors/refuel-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/refuel-ai-conventions.yml
+- aid: refuel-ai:refuel-ai-csp-reports-api
+  name: Refuel Csp Reports API
+  description: The Csp Reports API from Refuel — 1 operation(s) for csp reports.
+  humanURL: https://github.com/refuel-ai/autolabel
+  baseURL: https://github.com/refuel-ai/autolabel
+  tags:
+  - Csp Reports
+  properties:
+  - type: OpenAPI
+    url: openapi/refuel-ai-csp-reports-api-openapi.yml
+  - type: OpenAPIOriginal
+    url: openapi/_original/refuel-ai-cloud-api-openapi.json
+  - type: APIReference
+    url: https://cloud-api.refuel.ai/docs
+  - type: Documentation
+    url: https://docs.refuel.ai
+  - type: GettingStarted
+    url: https://docs.refuel.ai/quickstart
+  - type: DataModel
+    url: data-model/refuel-ai-data-model.yml
+  - type: ErrorCatalog
+    url: errors/refuel-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/refuel-ai-conventions.yml
+- aid: refuel-ai:refuel-ai-datasets-api
+  name: Refuel Datasets API
+  description: The Datasets API from Refuel — 13 operation(s) for datasets.
+  humanURL: https://github.com/refuel-ai/autolabel
+  baseURL: https://github.com/refuel-ai/autolabel
+  tags:
+  - Datasets
+  properties:
+  - type: OpenAPI
+    url: openapi/refuel-ai-datasets-api-openapi.yml
+  - type: OpenAPIOriginal
+    url: openapi/_original/refuel-ai-cloud-api-openapi.json
+  - type: APIReference
+    url: https://cloud-api.refuel.ai/docs
+  - type: Documentation
+    url: https://docs.refuel.ai
+  - type: GettingStarted
+    url: https://docs.refuel.ai/quickstart
+  - type: DataModel
+    url: data-model/refuel-ai-data-model.yml
+  - type: ErrorCatalog
+    url: errors/refuel-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/refuel-ai-conventions.yml
+- aid: refuel-ai:refuel-ai-finetuned-models-api
+  name: Refuel Finetuned Models API
+  description: The Finetuned Models API from Refuel — 1 operation(s) for finetuned models.
+  humanURL: https://github.com/refuel-ai/autolabel
+  baseURL: https://github.com/refuel-ai/autolabel
+  tags:
+  - Finetuned Models
+  properties:
+  - type: OpenAPI
+    url: openapi/refuel-ai-finetuned-models-api-openapi.yml
+  - type: OpenAPIOriginal
+    url: openapi/_original/refuel-ai-cloud-api-openapi.json
+  - type: APIReference
+    url: https://cloud-api.refuel.ai/docs
+  - type: Documentation
+    url: https://docs.refuel.ai
+  - type: GettingStarted
+    url: https://docs.refuel.ai/quickstart
+  - type: DataModel
+    url: data-model/refuel-ai-data-model.yml
+  - type: ErrorCatalog
+    url: errors/refuel-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/refuel-ai-conventions.yml
+- aid: refuel-ai:refuel-ai-integrations-api
+  name: Refuel Integrations API
+  description: The Integrations API from Refuel — 2 operation(s) for integrations.
+  humanURL: https://github.com/refuel-ai/autolabel
+  baseURL: https://github.com/refuel-ai/autolabel
+  tags:
+  - Integrations
+  properties:
+  - type: OpenAPI
+    url: openapi/refuel-ai-integrations-api-openapi.yml
+  - type: OpenAPIOriginal
+    url: openapi/_original/refuel-ai-cloud-api-openapi.json
+  - type: APIReference
+    url: https://cloud-api.refuel.ai/docs
+  - type: Documentation
+    url: https://docs.refuel.ai
+  - type: GettingStarted
+    url: https://docs.refuel.ai/quickstart
+  - type: DataModel
+    url: data-model/refuel-ai-data-model.yml
+  - type: ErrorCatalog
+    url: errors/refuel-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/refuel-ai-conventions.yml
+- aid: refuel-ai:refuel-ai-labs-api
+  name: Refuel Labs API
+  description: The Labs API from Refuel — 2 operation(s) for labs.
+  humanURL: https://github.com/refuel-ai/autolabel
+  baseURL: https://github.com/refuel-ai/autolabel
+  tags:
+  - Labs
+  properties:
+  - type: OpenAPI
+    url: openapi/refuel-ai-labs-api-openapi.yml
+  - type: OpenAPIOriginal
+    url: openapi/_original/refuel-ai-cloud-api-openapi.json
+  - type: APIReference
+    url: https://cloud-api.refuel.ai/docs
+  - type: Documentation
+    url: https://docs.refuel.ai
+  - type: GettingStarted
+    url: https://docs.refuel.ai/quickstart
+  - type: DataModel
+    url: data-model/refuel-ai-data-model.yml
+  - type: ErrorCatalog
+    url: errors/refuel-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/refuel-ai-conventions.yml
+- aid: refuel-ai:refuel-ai-models-api
+  name: Refuel Models API
+  description: The Models API from Refuel — 1 operation(s) for models.
+  humanURL: https://github.com/refuel-ai/autolabel
+  baseURL: https://github.com/refuel-ai/autolabel
+  tags:
+  - Models
+  properties:
+  - type: OpenAPI
+    url: openapi/refuel-ai-models-api-openapi.yml
+  - type: OpenAPIOriginal
+    url: openapi/_original/refuel-ai-cloud-api-openapi.json
+  - type: APIReference
+    url: https://cloud-api.refuel.ai/docs
+  - type: Documentation
+    url: https://docs.refuel.ai
+  - type: GettingStarted
+    url: https://docs.refuel.ai/quickstart
+  - type: DataModel
+    url: data-model/refuel-ai-data-model.yml
+  - type: ErrorCatalog
+    url: errors/refuel-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/refuel-ai-conventions.yml
+- aid: refuel-ai:refuel-ai-projects-api
+  name: Refuel Projects API
+  description: The Projects API from Refuel — 6 operation(s) for projects.
+  humanURL: https://github.com/refuel-ai/autolabel
+  baseURL: https://github.com/refuel-ai/autolabel
+  tags:
+  - Projects
+  properties:
+  - type: OpenAPI
+    url: openapi/refuel-ai-projects-api-openapi.yml
+  - type: OpenAPIOriginal
+    url: openapi/_original/refuel-ai-cloud-api-openapi.json
+  - type: APIReference
+    url: https://cloud-api.refuel.ai/docs
+  - type: Documentation
+    url: https://docs.refuel.ai
+  - type: GettingStarted
+    url: https://docs.refuel.ai/quickstart
+  - type: DataModel
+    url: data-model/refuel-ai-data-model.yml
+  - type: ErrorCatalog
+    url: errors/refuel-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/refuel-ai-conventions.yml
+- aid: refuel-ai:refuel-ai-refuel-cloud-api-api
+  name: Refuel Refuel Cloud API
+  description: The Refuel Cloud API API from Refuel — 1 operation(s) for refuel cloud api.
+  humanURL: https://github.com/refuel-ai/autolabel
+  baseURL: https://github.com/refuel-ai/autolabel
+  tags:
+  - Refuel Cloud API
+  properties:
+  - type: OpenAPI
+    url: openapi/refuel-ai-refuel-cloud-api-api-openapi.yml
+  - type: OpenAPIOriginal
+    url: openapi/_original/refuel-ai-cloud-api-openapi.json
+  - type: APIReference
+    url: https://cloud-api.refuel.ai/docs
+  - type: Documentation
+    url: https://docs.refuel.ai
+  - type: GettingStarted
+    url: https://docs.refuel.ai/quickstart
+  - type: DataModel
+    url: data-model/refuel-ai-data-model.yml
+  - type: ErrorCatalog
+    url: errors/refuel-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/refuel-ai-conventions.yml
+- aid: refuel-ai:refuel-ai-schema-api
+  name: Refuel Schema API
+  description: The Schema API from Refuel — 1 operation(s) for schema.
+  humanURL: https://github.com/refuel-ai/autolabel
+  baseURL: https://github.com/refuel-ai/autolabel
+  tags:
+  - Schema
+  properties:
+  - type: OpenAPI
+    url: openapi/refuel-ai-schema-api-openapi.yml
+  - type: OpenAPIOriginal
+    url: openapi/_original/refuel-ai-cloud-api-openapi.json
+  - type: APIReference
+    url: https://cloud-api.refuel.ai/docs
+  - type: Documentation
+    url: https://docs.refuel.ai
+  - type: GettingStarted
+    url: https://docs.refuel.ai/quickstart
+  - type: DataModel
+    url: data-model/refuel-ai-data-model.yml
+  - type: ErrorCatalog
+    url: errors/refuel-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/refuel-ai-conventions.yml
+- aid: refuel-ai:refuel-ai-tasks-api
+  name: Refuel Tasks API
+  description: The Tasks API from Refuel — 28 operation(s) for tasks.
+  humanURL: https://github.com/refuel-ai/autolabel
+  baseURL: https://github.com/refuel-ai/autolabel
+  tags:
+  - Tasks
+  properties:
+  - type: OpenAPI
+    url: openapi/refuel-ai-tasks-api-openapi.yml
+  - type: OpenAPIOriginal
+    url: openapi/_original/refuel-ai-cloud-api-openapi.json
+  - type: APIReference
+    url: https://cloud-api.refuel.ai/docs
+  - type: Documentation
+    url: https://docs.refuel.ai
+  - type: GettingStarted
+    url: https://docs.refuel.ai/quickstart
+  - type: DataModel
+    url: data-model/refuel-ai-data-model.yml
+  - type: ErrorCatalog
+    url: errors/refuel-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/refuel-ai-conventions.yml
+- aid: refuel-ai:refuel-ai-team-api
+  name: Refuel Team API
+  description: The Team API from Refuel — 2 operation(s) for team.
+  humanURL: https://github.com/refuel-ai/autolabel
+  baseURL: https://github.com/refuel-ai/autolabel
+  tags:
+  - Team
+  properties:
+  - type: OpenAPI
+    url: openapi/refuel-ai-team-api-openapi.yml
+  - type: OpenAPIOriginal
+    url: openapi/_original/refuel-ai-cloud-api-openapi.json
+  - type: APIReference
+    url: https://cloud-api.refuel.ai/docs
+  - type: Documentation
+    url: https://docs.refuel.ai
+  - type: GettingStarted
+    url: https://docs.refuel.ai/quickstart
+  - type: DataModel
+    url: data-model/refuel-ai-data-model.yml
+  - type: ErrorCatalog
+    url: errors/refuel-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/refuel-ai-conventions.yml
+- aid: refuel-ai:refuel-ai-teams-api
+  name: Refuel Teams API
+  description: The Teams API from Refuel — 1 operation(s) for teams.
+  humanURL: https://github.com/refuel-ai/autolabel
+  baseURL: https://github.com/refuel-ai/autolabel
+  tags:
+  - Teams
+  properties:
+  - type: OpenAPI
+    url: openapi/refuel-ai-teams-api-openapi.yml
+  - type: OpenAPIOriginal
+    url: openapi/_original/refuel-ai-cloud-api-openapi.json
+  - type: APIReference
+    url: https://cloud-api.refuel.ai/docs
+  - type: Documentation
+    url: https://docs.refuel.ai
+  - type: GettingStarted
+    url: https://docs.refuel.ai/quickstart
+  - type: DataModel
+    url: data-model/refuel-ai-data-model.yml
+  - type: ErrorCatalog
+    url: errors/refuel-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/refuel-ai-conventions.yml
+- aid: refuel-ai:refuel-ai-usage-api
+  name: Refuel Usage API
+  description: The Usage API from Refuel — 1 operation(s) for usage.
+  humanURL: https://github.com/refuel-ai/autolabel
+  baseURL: https://github.com/refuel-ai/autolabel
+  tags:
+  - Usage
+  properties:
+  - type: OpenAPI
+    url: openapi/refuel-ai-usage-api-openapi.yml
+  - type: OpenAPIOriginal
+    url: openapi/_original/refuel-ai-cloud-api-openapi.json
+  - type: APIReference
+    url: https://cloud-api.refuel.ai/docs
+  - type: Documentation
+    url: https://docs.refuel.ai
+  - type: GettingStarted
+    url: https://docs.refuel.ai/quickstart
+  - type: DataModel
+    url: data-model/refuel-ai-data-model.yml
+  - type: ErrorCatalog
+    url: errors/refuel-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/refuel-ai-conventions.yml
+- aid: refuel-ai:refuel-ai-user-api
+  name: Refuel User API
+  description: The User API from Refuel — 1 operation(s) for user.
+  humanURL: https://github.com/refuel-ai/autolabel
+  baseURL: https://github.com/refuel-ai/autolabel
+  tags:
+  - User
+  properties:
+  - type: OpenAPI
+    url: openapi/refuel-ai-user-api-openapi.yml
+  - type: OpenAPIOriginal
+    url: openapi/_original/refuel-ai-cloud-api-openapi.json
+  - type: APIReference
+    url: https://cloud-api.refuel.ai/docs
+  - type: Documentation
+    url: https://docs.refuel.ai
+  - type: GettingStarted
+    url: https://docs.refuel.ai/quickstart
+  - type: DataModel
+    url: data-model/refuel-ai-data-model.yml
+  - type: ErrorCatalog
+    url: errors/refuel-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/refuel-ai-conventions.yml
+- aid: refuel-ai:refuel-ai-users-api
+  name: Refuel Users API
+  description: The Users API from Refuel — 3 operation(s) for users.
+  humanURL: https://github.com/refuel-ai/autolabel
+  baseURL: https://github.com/refuel-ai/autolabel
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/refuel-ai-users-api-openapi.yml
+  - type: OpenAPIOriginal
+    url: openapi/_original/refuel-ai-cloud-api-openapi.json
+  - type: APIReference
+    url: https://cloud-api.refuel.ai/docs
+  - type: Documentation
+    url: https://docs.refuel.ai
+  - type: GettingStarted
+    url: https://docs.refuel.ai/quickstart
+  - type: DataModel
+    url: data-model/refuel-ai-data-model.yml
+  - type: ErrorCatalog
+    url: errors/refuel-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/refuel-ai-conventions.yml
+- aid: refuel-ai:refuel-ai-webhook-api
+  name: Refuel Webhook API
+  description: The Webhook API from Refuel — 1 operation(s) for webhook.
+  humanURL: https://github.com/refuel-ai/autolabel
+  baseURL: https://github.com/refuel-ai/autolabel
+  tags:
+  - Webhook
+  properties:
+  - type: OpenAPI
+    url: openapi/refuel-ai-webhook-api-openapi.yml
+  - type: OpenAPIOriginal
+    url: openapi/_original/refuel-ai-cloud-api-openapi.json
+  - type: APIReference
+    url: https://cloud-api.refuel.ai/docs
+  - type: Documentation
+    url: https://docs.refuel.ai
+  - type: GettingStarted
+    url: https://docs.refuel.ai/quickstart
+  - type: DataModel
+    url: data-model/refuel-ai-data-model.yml
+  - type: ErrorCatalog
+    url: errors/refuel-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/refuel-ai-conventions.yml
+- aid: refuel-ai:refuel-ai-webhooks-api
+  name: Refuel Webhooks API
+  description: The Webhooks API from Refuel — 1 operation(s) for webhooks.
+  humanURL: https://github.com/refuel-ai/autolabel
+  baseURL: https://github.com/refuel-ai/autolabel
+  tags:
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/refuel-ai-webhooks-api-openapi.yml
+  - type: OpenAPIOriginal
+    url: openapi/_original/refuel-ai-cloud-api-openapi.json
+  - type: APIReference
+    url: https://cloud-api.refuel.ai/docs
+  - type: Documentation
+    url: https://docs.refuel.ai
+  - type: GettingStarted
+    url: https://docs.refuel.ai/quickstart
+  - type: DataModel
+    url: data-model/refuel-ai-data-model.yml
+  - type: ErrorCatalog
+    url: errors/refuel-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/refuel-ai-conventions.yml
 common:
+- type: Overlay
+  url: overlays/refuel-ai-cloud-api-overlay.yaml
 - type: AgenticAccess
   url: agentic-access/refuel-ai-agentic-access.yml
 - type: MCPServer
