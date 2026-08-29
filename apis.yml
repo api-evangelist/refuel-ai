@@ -12,6 +12,18 @@ description: >-
   against OpenAI, Anthropic, Google, HuggingFace, vLLM or Refuel-hosted models. Refuel.ai was
   acquired by Together AI in May 2025; the platform continues to operate and its API is still
   live.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: enterprise
   onboarding: sales
