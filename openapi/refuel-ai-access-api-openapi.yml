@@ -1,0 +1,98 @@
+openapi: 3.2.0
+info:
+  title: Refuel Cloud Access API
+  description: REST API for the Refuel Cloud data-labeling and data-enrichment platform. Harvested verbatim from https://cloud-api.refuel.ai/openapi.json (FastAPI-generated, OpenAPI 3.1.0). Covers projects, datasets, tasks, task runs, taxonomies, seedsets/evalsets, calibration, finetuned models, deployed applications and their realtime label endpoint, users, teams, usage, and integrations. Authentication is an API key sent as an HTTP Bearer token. The upstream document carries the FastAPI default info block (title "FastAPI", version 0.1.0) and no servers[]; API Evangelist supplies the title/description and the servers[] host documented in Refuel's own quickstart and catalog pages. See openapi/_original/ for the untouched document and overlays/ for every change.
+  version: 0.1.0
+  contact:
+    name: Refuel
+    url: https://www.refuel.ai
+    email: support@refuel.ai
+  termsOfService: https://www.refuel.ai/terms-of-service
+  x-harvested-from: https://cloud-api.refuel.ai/openapi.json
+  x-harvested-on: '2026-08-14'
+servers:
+- url: https://cloud-api.refuel.ai
+  description: Refuel Cloud API
+tags:
+- name: Access
+paths:
+  /access/llm:
+    post:
+      summary: Request Llm Access
+      operationId: request_llm_access_access_llm_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+      tags:
+      - Access
+  /access/llm/interactions:
+    post:
+      summary: Handle Llm Slack Interactions
+      description: 'Handles the interaction when an admin clicks on the button
+
+        to approve or reject the access key generation request'
+      operationId: handle_llm_slack_interactions_access_llm_interactions_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+      tags:
+      - Access
+  /access/product:
+    post:
+      summary: Request Product Access
+      operationId: request_product_access_access_product_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+      tags:
+      - Access
+  /access/product/interactions:
+    post:
+      summary: Handle Product Slack Interactions
+      description: 'Handles the interaction when an admin clicks on the button
+
+        to approve or reject the access key generation request'
+      operationId: handle_product_slack_interactions_access_product_interactions_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+      tags:
+      - Access
+components:
+  schemas:
+    ResponseModel:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

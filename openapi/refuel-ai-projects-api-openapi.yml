@@ -1,0 +1,581 @@
+openapi: 3.2.0
+info:
+  title: Refuel Cloud Projects API
+  description: REST API for the Refuel Cloud data-labeling and data-enrichment platform. Harvested verbatim from https://cloud-api.refuel.ai/openapi.json (FastAPI-generated, OpenAPI 3.1.0). Covers projects, datasets, tasks, task runs, taxonomies, seedsets/evalsets, calibration, finetuned models, deployed applications and their realtime label endpoint, users, teams, usage, and integrations. Authentication is an API key sent as an HTTP Bearer token. The upstream document carries the FastAPI default info block (title "FastAPI", version 0.1.0) and no servers[]; API Evangelist supplies the title/description and the servers[] host documented in Refuel's own quickstart and catalog pages. See openapi/_original/ for the untouched document and overlays/ for every change.
+  version: 0.1.0
+  contact:
+    name: Refuel
+    url: https://www.refuel.ai
+    email: support@refuel.ai
+  termsOfService: https://www.refuel.ai/terms-of-service
+  x-harvested-from: https://cloud-api.refuel.ai/openapi.json
+  x-harvested-on: '2026-08-14'
+servers:
+- url: https://cloud-api.refuel.ai
+  description: Refuel Cloud API
+tags:
+- name: Projects
+paths:
+  /projects:
+    get:
+      summary: Get Projects
+      operationId: get_projects_projects_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel_List_'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Projects
+    post:
+      summary: Create Project
+      operationId: create_project_projects_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Project Name
+        name: project_name
+        in: query
+      - required: true
+        schema:
+          type: string
+          title: Description
+        name: description
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel_List_'
+        '409':
+          description: Conflict Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPError'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Projects
+  /projects/{project_id}:
+    get:
+      summary: Get Project
+      operationId: get_project_projects__project_id__get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Project Id
+        name: project_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '404':
+          description: Not Found Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPError'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Projects
+    delete:
+      summary: Delete Project
+      operationId: delete_project_projects__project_id__delete
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Project Id
+        name: project_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel_ChangeResourceResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Projects
+  /projects/{project_id}/datasets:
+    post:
+      summary: Ingest Dataset V2
+      description: 'Ingests a dataset into the platform. We support the following ingestion methods:
+
+        1. Upload a CSV from local disk
+
+        2. Provide an accessible URI to a CSV file'
+      operationId: ingest_dataset_v2_projects__project_id__datasets_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Project Id
+        name: project_id
+        in: path
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_ingest_dataset_v2_projects__project_id__datasets_post'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Projects
+  /projects/{project_id}/tasks:
+    get:
+      summary: Get Tasks
+      description: "Get tasks for a specific project.\n\nArgs:\n----\n    project_id: ID of the project\n    token: Authentication token containing team info\n\nReturns:\n-------\n    ResponseModel: List of tasks for the project\n\nRaises:\n------\n    HTTPException: If project not found or unauthorized"
+      operationId: get_tasks_projects__project_id__tasks_get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Project Id
+        name: project_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel_List_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Projects
+    post:
+      summary: Create Task
+      description: "Create a new task in the specified project.\n\nArgs:\n----\n    project_id: ID of the project to create task in\n    task_name: Name of the new task\n    task_settings: Dictionary of task configuration settings\n    ref_task_id: Optional ID of reference task to copy settings from\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing the created task details\n\nRaises:\n------\n    HTTPException: If task creation fails or validation errors occur"
+      operationId: create_task_projects__project_id__tasks_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Project Id
+        name: project_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Task Name
+        name: task_name
+        in: query
+      - required: false
+        schema:
+          type: string
+          title: Ref Task Id
+        name: ref_task_id
+        in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              title: Task Settings
+              default: {}
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Projects
+  /projects/{project_id}/applications:
+    get:
+      summary: Get Applications
+      operationId: get_applications_projects__project_id__applications_get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Project Id
+        name: project_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel_List_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Projects
+    post:
+      summary: Create Application
+      operationId: create_application_projects__project_id__applications_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Project Id
+        name: project_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: query
+      - required: false
+        schema:
+          type: string
+          title: Application Name
+        name: application_name
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Projects
+  /projects/{project_id}/finetuned_models:
+    get:
+      summary: Get Finetuned Models For Project Task
+      description: Gets all finetuned models for a project.
+      operationId: get_finetuned_models_for_project_task_projects__project_id__finetuned_models_get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Project Id
+        name: project_id
+        in: path
+      - required: false
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Projects
+    post:
+      summary: Finetune Model For Task
+      description: 'Triggers finetuning on the given data.
+
+        Training data needs the following data per row:
+
+        - task input columns
+
+        - task instructions
+
+        - label'
+      operationId: finetune_model_for_task_projects__project_id__finetuned_models_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrainModelRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Projects
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ResponseModel:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel
+    DatasetSource:
+      type: string
+      enum:
+      - databricks
+      - file
+      - s3
+      - snowflake
+      - uri
+      title: DatasetSource
+      description: An enumeration.
+    HTTPError:
+      properties:
+        detail:
+          type: string
+          title: Detail
+      type: object
+      required:
+      - detail
+      title: HTTPError
+      example:
+        detail: HTTPException raised.
+    ResponseModel_ChangeResourceResponse_:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          $ref: '#/components/schemas/ChangeResourceResponse'
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel[ChangeResourceResponse]
+    TrainModelRequest:
+      properties:
+        project_id:
+          type: string
+          title: Project Id
+        task_id:
+          type: string
+          title: Task Id
+        base_model:
+          $ref: '#/components/schemas/TrainableBaseModels'
+        max_training_rows:
+          type: integer
+          title: Max Training Rows
+        lora:
+          type: boolean
+          title: Lora
+          default: true
+        augmented_finetuning_model:
+          type: string
+          title: Augmented Finetuning Model
+        hyperparameters:
+          type: object
+          title: Hyperparameters
+          default:
+            num_epochs: 1
+            learning_rate_multiplier: 20
+        datasets:
+          items: {}
+          type: array
+          title: Datasets
+        comparison_model:
+          type: string
+          title: Comparison Model
+          default: gpt-4o
+      type: object
+      required:
+      - project_id
+      - task_id
+      - base_model
+      title: TrainModelRequest
+    TrainableBaseModels:
+      type: string
+      enum:
+      - refuel-llm-2-large
+      - refuel-llm-2-small
+      - refuel-llm-2-mini
+      title: TrainableBaseModels
+      description: An enumeration.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ChangeResourceResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        error:
+          type: string
+          title: Error
+          default: ''
+      type: object
+      required:
+      - success
+      title: ChangeResourceResponse
+    Body_ingest_dataset_v2_projects__project_id__datasets_post:
+      properties:
+        file:
+          type: string
+          format: binary
+          title: File
+        name:
+          type: string
+          title: Name
+        integration_id:
+          type: string
+          title: Integration Id
+        redact_pii:
+          type: boolean
+          title: Redact Pii
+          default: false
+        source_path:
+          type: string
+          title: Source Path
+        schema:
+          type: string
+          title: Schema
+        source:
+          allOf:
+          - $ref: '#/components/schemas/DatasetSource'
+          default: file
+      type: object
+      required:
+      - name
+      title: Body_ingest_dataset_v2_projects__project_id__datasets_post
+    ResponseModel_List_:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          items: {}
+          type: array
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel[List]
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

@@ -1,0 +1,823 @@
+openapi: 3.2.0
+info:
+  title: Refuel Cloud Datasets API
+  description: REST API for the Refuel Cloud data-labeling and data-enrichment platform. Harvested verbatim from https://cloud-api.refuel.ai/openapi.json (FastAPI-generated, OpenAPI 3.1.0). Covers projects, datasets, tasks, task runs, taxonomies, seedsets/evalsets, calibration, finetuned models, deployed applications and their realtime label endpoint, users, teams, usage, and integrations. Authentication is an API key sent as an HTTP Bearer token. The upstream document carries the FastAPI default info block (title "FastAPI", version 0.1.0) and no servers[]; API Evangelist supplies the title/description and the servers[] host documented in Refuel's own quickstart and catalog pages. See openapi/_original/ for the untouched document and overlays/ for every change.
+  version: 0.1.0
+  contact:
+    name: Refuel
+    url: https://www.refuel.ai
+    email: support@refuel.ai
+  termsOfService: https://www.refuel.ai/terms-of-service
+  x-harvested-from: https://cloud-api.refuel.ai/openapi.json
+  x-harvested-on: '2026-08-14'
+servers:
+- url: https://cloud-api.refuel.ai
+  description: Refuel Cloud API
+tags:
+- name: Datasets
+paths:
+  /datasets/url:
+    post:
+      summary: Get Presigned Url
+      operationId: get_presigned_url_datasets_url_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Datasets
+  /datasets/infer_schema:
+    post:
+      summary: Infer Schema
+      operationId: infer_schema_datasets_infer_schema_post
+      parameters:
+      - required: false
+        schema:
+          type: string
+          title: Integration Id
+        name: integration_id
+        in: query
+      - required: false
+        schema:
+          type: string
+          title: Source Path
+        name: source_path
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Datasets
+  /datasets/ingest:
+    post:
+      summary: Ingest Dataset
+      operationId: ingest_dataset_datasets_ingest_post
+      parameters:
+      - required: false
+        schema:
+          type: string
+          title: S3 Path
+        name: s3_path
+        in: query
+      - required: false
+        schema:
+          type: string
+          title: Dataset Name
+        name: dataset_name
+        in: query
+      - required: false
+        schema:
+          type: string
+          title: Project Id
+        name: project_id
+        in: query
+      - required: false
+        schema:
+          type: boolean
+          title: Redact Pii
+          default: false
+        name: redact_pii
+        in: query
+      - required: false
+        schema:
+          type: string
+          title: Ref Dataset Id
+        name: ref_dataset_id
+        in: query
+      - required: false
+        schema:
+          type: string
+          title: Append Dataset Id
+        name: append_dataset_id
+        in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              title: Schema Dict
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Datasets
+  /datasets:
+    get:
+      summary: Get Datasets
+      operationId: get_datasets_datasets_get
+      parameters:
+      - required: false
+        schema:
+          type: string
+          title: Project Id
+        name: project_id
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel_List_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Datasets
+  /datasets/{dataset_id}:
+    get:
+      summary: Get Items From Dataset
+      operationId: get_items_from_dataset_datasets__dataset_id__get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: path
+      - required: false
+        schema:
+          type: integer
+          title: Offset
+          default: 0
+        name: offset
+        in: query
+      - required: false
+        schema:
+          type: integer
+          title: Max Items
+          default: 10
+        name: max_items
+        in: query
+      - required: false
+        schema:
+          items:
+            type: string
+          type: array
+          title: Filters
+        name: filters
+        in: query
+      - required: false
+        schema:
+          items:
+            type: string
+          type: array
+          title: Order Bys
+        name: order_bys
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Datasets
+    delete:
+      summary: Delete Dataset
+      operationId: delete_dataset_datasets__dataset_id__delete
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel_ChangeResourceResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Datasets
+    patch:
+      summary: Update Dataset
+      operationId: update_dataset_datasets__dataset_id__patch
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDatasetRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Datasets
+  /datasets/{dataset_id}/projects:
+    get:
+      summary: Get Dataset Projects
+      operationId: get_dataset_projects_datasets__dataset_id__projects_get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Datasets
+  /datasets/{dataset_id}/projects/{project_id}:
+    post:
+      summary: Add Project To Dataset
+      operationId: add_project_to_dataset_datasets__dataset_id__projects__project_id__post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Project Id
+        name: project_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Datasets
+    delete:
+      summary: Delete Project From Dataset
+      operationId: delete_project_from_dataset_datasets__dataset_id__projects__project_id__delete
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Project Id
+        name: project_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel_ChangeResourceResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Datasets
+  /datasets/{dataset_id}/items/{item_id}:
+    get:
+      summary: Get Item From Dataset
+      operationId: get_item_from_dataset_datasets__dataset_id__items__item_id__get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Item Id
+        name: item_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Datasets
+    delete:
+      summary: Delete Item From Dataset
+      operationId: delete_item_from_dataset_datasets__dataset_id__items__item_id__delete
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Item Id
+        name: item_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Datasets
+  /datasets/{dataset_id}/items:
+    post:
+      summary: Add Items To Dataset
+      operationId: add_items_to_dataset_datasets__dataset_id__items_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                type: object
+              type: array
+              title: Items
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Datasets
+  /datasets/{dataset_id}/exports:
+    post:
+      summary: Export Dataset
+      description: Exports dataset to S3 and emails the user a link to the S3 object
+      operationId: export_dataset_datasets__dataset_id__exports_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: path
+      - required: false
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: query
+      - required: false
+        schema:
+          type: string
+          title: Email Address
+        name: email_address
+        in: query
+      - required: false
+        schema:
+          type: boolean
+          title: Include Uuid
+          default: false
+        name: include_uuid
+        in: query
+      - required: false
+        schema:
+          type: boolean
+          title: Include Labels
+          default: false
+        name: include_labels
+        in: query
+      - required: false
+        schema:
+          type: string
+          title: Task Run Id
+        name: task_run_id
+        in: query
+      - required: false
+        schema:
+          items:
+            type: string
+          type: array
+          title: Filters
+        name: filters
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '202':
+          description: Accepted. Dataset export in progress.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Datasets
+  /datasets/{dataset_id}/exports/{export_id}:
+    get:
+      summary: Download Dataset
+      operationId: download_dataset_datasets__dataset_id__exports__export_id__get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Export Id
+        name: export_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '202':
+          description: Datset export is still in progress.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Datasets
+  /datasets/{dataset_id}/sample:
+    post:
+      summary: Sample Dataset
+      operationId: sample_dataset_datasets__dataset_id__sample_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SamplingParams'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Datasets
+  /datasets/{dataset_id}/append:
+    post:
+      summary: Append Dataset
+      operationId: append_dataset_datasets__dataset_id__append_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppendDatasetRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Datasets
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ResponseModel:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel
+    ResponseModel_ChangeResourceResponse_:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          $ref: '#/components/schemas/ChangeResourceResponse'
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel[ChangeResourceResponse]
+    SamplingParams:
+      properties:
+        sample_name:
+          type: string
+          title: Sample Name
+        sample_type:
+          $ref: '#/components/schemas/SamplingType'
+        sample_size:
+          type: integer
+          title: Sample Size
+        column:
+          type: string
+          title: Column
+        filters:
+          items:
+            type: string
+          type: array
+          title: Filters
+          default: []
+        sort_direction:
+          type: string
+          title: Sort Direction
+          default: DESC
+        dataset_id:
+          type: string
+          title: Dataset Id
+      type: object
+      required:
+      - sample_type
+      - sample_size
+      title: SamplingParams
+    AppendDatasetRequest:
+      properties:
+        source_path:
+          type: string
+          title: Source Path
+        redact_pii:
+          type: boolean
+          title: Redact Pii
+      type: object
+      required:
+      - source_path
+      - redact_pii
+      title: AppendDatasetRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SamplingType:
+      type: string
+      enum:
+      - random
+      - stratified
+      - sorted
+      title: SamplingType
+      description: An enumeration.
+    ChangeResourceResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        error:
+          type: string
+          title: Error
+          default: ''
+      type: object
+      required:
+      - success
+      title: ChangeResourceResponse
+    UpdateDatasetRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+        scheduled_ids:
+          items:
+            type: string
+          type: array
+          title: Scheduled Ids
+      type: object
+      title: UpdateDatasetRequest
+    ResponseModel_List_:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          items: {}
+          type: array
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel[List]
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

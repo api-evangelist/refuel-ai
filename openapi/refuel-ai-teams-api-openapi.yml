@@ -1,0 +1,114 @@
+openapi: 3.2.0
+info:
+  title: Refuel Cloud Teams API
+  description: REST API for the Refuel Cloud data-labeling and data-enrichment platform. Harvested verbatim from https://cloud-api.refuel.ai/openapi.json (FastAPI-generated, OpenAPI 3.1.0). Covers projects, datasets, tasks, task runs, taxonomies, seedsets/evalsets, calibration, finetuned models, deployed applications and their realtime label endpoint, users, teams, usage, and integrations. Authentication is an API key sent as an HTTP Bearer token. The upstream document carries the FastAPI default info block (title "FastAPI", version 0.1.0) and no servers[]; API Evangelist supplies the title/description and the servers[] host documented in Refuel's own quickstart and catalog pages. See openapi/_original/ for the untouched document and overlays/ for every change.
+  version: 0.1.0
+  contact:
+    name: Refuel
+    url: https://www.refuel.ai
+    email: support@refuel.ai
+  termsOfService: https://www.refuel.ai/terms-of-service
+  x-harvested-from: https://cloud-api.refuel.ai/openapi.json
+  x-harvested-on: '2026-08-14'
+servers:
+- url: https://cloud-api.refuel.ai
+  description: Refuel Cloud API
+tags:
+- name: Teams
+paths:
+  /teams:
+    get:
+      summary: Get Teams
+      operationId: get_teams_teams_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel_List_refuel_cloud_core.schemas.team.TeamSchema__'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Teams
+components:
+  schemas:
+    ResponseModel_List_refuel_cloud_core.schemas.team.TeamSchema__:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          items:
+            $ref: '#/components/schemas/TeamSchema'
+          type: array
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel[List[refuel_cloud_core.schemas.team.TeamSchema]]
+    APIUsage:
+      properties:
+        quota:
+          type: integer
+          title: Quota
+        monthly_quota:
+          type: integer
+          title: Monthly Quota
+        monthly_usage:
+          type: integer
+          title: Monthly Usage
+          default: 0
+      type: object
+      required:
+      - quota
+      title: APIUsage
+    TeamSchema:
+      properties:
+        name:
+          type: string
+          title: Name
+        integrations:
+          type: object
+          title: Integrations
+          default: {}
+        web_app:
+          type: object
+          title: Web App
+          default: {}
+        llm_config:
+          type: object
+          title: Llm Config
+          default: {}
+        api_key:
+          type: string
+          title: Api Key
+        api_key_sha:
+          type: string
+          title: Api Key Sha
+        api_usage:
+          $ref: '#/components/schemas/APIUsage'
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        email_domain:
+          type: string
+          title: Email Domain
+        feature_flags:
+          type: object
+          title: Feature Flags
+          default: {}
+      type: object
+      required:
+      - name
+      title: TeamSchema
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

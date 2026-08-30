@@ -1,0 +1,170 @@
+openapi: 3.2.0
+info:
+  title: Refuel Cloud Webhook API
+  description: REST API for the Refuel Cloud data-labeling and data-enrichment platform. Harvested verbatim from https://cloud-api.refuel.ai/openapi.json (FastAPI-generated, OpenAPI 3.1.0). Covers projects, datasets, tasks, task runs, taxonomies, seedsets/evalsets, calibration, finetuned models, deployed applications and their realtime label endpoint, users, teams, usage, and integrations. Authentication is an API key sent as an HTTP Bearer token. The upstream document carries the FastAPI default info block (title "FastAPI", version 0.1.0) and no servers[]; API Evangelist supplies the title/description and the servers[] host documented in Refuel's own quickstart and catalog pages. See openapi/_original/ for the untouched document and overlays/ for every change.
+  version: 0.1.0
+  contact:
+    name: Refuel
+    url: https://www.refuel.ai
+    email: support@refuel.ai
+  termsOfService: https://www.refuel.ai/terms-of-service
+  x-harvested-from: https://cloud-api.refuel.ai/openapi.json
+  x-harvested-on: '2026-08-14'
+servers:
+- url: https://cloud-api.refuel.ai
+  description: Refuel Cloud API
+tags:
+- name: Webhook
+paths:
+  /webhook/events:
+    post:
+      summary: Process Event
+      description: Process incoming webhook events
+      operationId: process_event_webhook_events_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookEventRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Webhook
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AWSS3FileUploadedPayload:
+      properties:
+        dataset:
+          type: string
+          title: Dataset
+        project:
+          type: string
+          title: Project
+        s3_path:
+          type: string
+          title: S3 Path
+        task:
+          type: string
+          title: Task
+      type: object
+      required:
+      - dataset
+      - project
+      - s3_path
+      - task
+      title: AWSS3FileUploadedPayload
+    WebhookEventCategory:
+      type: string
+      enum:
+      - aws
+      - datasaur
+      title: WebhookEventCategory
+      description: An enumeration.
+    WebhookResponse:
+      properties:
+        status:
+          type: integer
+          title: Status
+        error:
+          type: string
+          title: Error
+      type: object
+      required:
+      - status
+      title: WebhookResponse
+    AWSEventType:
+      type: string
+      enum:
+      - s3_file_uploaded
+      title: AWSEventType
+      description: An enumeration.
+    WebhookEventRequest:
+      properties:
+        event_type:
+          anyOf:
+          - $ref: '#/components/schemas/DatasaurEventType'
+          - $ref: '#/components/schemas/AWSEventType'
+          title: Event Type
+        event_category:
+          $ref: '#/components/schemas/WebhookEventCategory'
+        payload:
+          anyOf:
+          - $ref: '#/components/schemas/DatasaurProjectCreationPayload'
+          - $ref: '#/components/schemas/AWSS3FileUploadedPayload'
+          title: Payload
+      type: object
+      required:
+      - event_type
+      - event_category
+      - payload
+      title: WebhookEventRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    DatasaurProjectCreationPayload:
+      properties:
+        project_id:
+          type: string
+          title: Project Id
+        project_name:
+          type: string
+          title: Project Name
+        refuel_task_name:
+          type: string
+          title: Refuel Task Name
+      type: object
+      required:
+      - project_id
+      - refuel_task_name
+      title: DatasaurProjectCreationPayload
+    DatasaurEventType:
+      type: string
+      enum:
+      - project_created
+      title: DatasaurEventType
+      description: An enumeration.
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

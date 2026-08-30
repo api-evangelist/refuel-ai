@@ -1,0 +1,164 @@
+openapi: 3.2.0
+info:
+  title: Refuel Cloud Finetuned Models API
+  description: REST API for the Refuel Cloud data-labeling and data-enrichment platform. Harvested verbatim from https://cloud-api.refuel.ai/openapi.json (FastAPI-generated, OpenAPI 3.1.0). Covers projects, datasets, tasks, task runs, taxonomies, seedsets/evalsets, calibration, finetuned models, deployed applications and their realtime label endpoint, users, teams, usage, and integrations. Authentication is an API key sent as an HTTP Bearer token. The upstream document carries the FastAPI default info block (title "FastAPI", version 0.1.0) and no servers[]; API Evangelist supplies the title/description and the servers[] host documented in Refuel's own quickstart and catalog pages. See openapi/_original/ for the untouched document and overlays/ for every change.
+  version: 0.1.0
+  contact:
+    name: Refuel
+    url: https://www.refuel.ai
+    email: support@refuel.ai
+  termsOfService: https://www.refuel.ai/terms-of-service
+  x-harvested-from: https://cloud-api.refuel.ai/openapi.json
+  x-harvested-on: '2026-08-14'
+servers:
+- url: https://cloud-api.refuel.ai
+  description: Refuel Cloud API
+tags:
+- name: Finetuned Models
+paths:
+  /finetuned_models/{model_id}:
+    get:
+      summary: Get Finetuned Model From Id
+      description: Gets the training status for a finetuned model.
+      operationId: get_finetuned_model_from_id_finetuned_models__model_id__get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Model Id
+        name: model_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Finetuned Models
+    delete:
+      summary: Delete Finetuned Model From Id
+      description: Deletes a finetuned model.
+      operationId: delete_finetuned_model_from_id_finetuned_models__model_id__delete
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Model Id
+        name: model_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Finetuned Models
+    patch:
+      summary: Update Finetuned Model
+      description: Update an existing finetuned model.
+      operationId: update_finetuned_model_finetuned_models__model_id__patch
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Model Id
+        name: model_id
+        in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditModelRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Finetuned Models
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    UserAction:
+      type: string
+      enum:
+      - STARTED
+      - INTERRUPTED
+      title: UserAction
+      description: An enumeration.
+    AvailabilityStatus:
+      type: string
+      enum:
+      - UNAVAILABLE
+      - AVAILABLE
+      title: AvailabilityStatus
+      description: An enumeration.
+    EditModelRequest:
+      properties:
+        availability_status:
+          $ref: '#/components/schemas/AvailabilityStatus'
+        finetuning_run_status:
+          $ref: '#/components/schemas/UserAction'
+      type: object
+      title: EditModelRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

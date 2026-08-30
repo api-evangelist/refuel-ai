@@ -1,0 +1,297 @@
+openapi: 3.2.0
+info:
+  title: Refuel Cloud Users API
+  description: REST API for the Refuel Cloud data-labeling and data-enrichment platform. Harvested verbatim from https://cloud-api.refuel.ai/openapi.json (FastAPI-generated, OpenAPI 3.1.0). Covers projects, datasets, tasks, task runs, taxonomies, seedsets/evalsets, calibration, finetuned models, deployed applications and their realtime label endpoint, users, teams, usage, and integrations. Authentication is an API key sent as an HTTP Bearer token. The upstream document carries the FastAPI default info block (title "FastAPI", version 0.1.0) and no servers[]; API Evangelist supplies the title/description and the servers[] host documented in Refuel's own quickstart and catalog pages. See openapi/_original/ for the untouched document and overlays/ for every change.
+  version: 0.1.0
+  contact:
+    name: Refuel
+    url: https://www.refuel.ai
+    email: support@refuel.ai
+  termsOfService: https://www.refuel.ai/terms-of-service
+  x-harvested-from: https://cloud-api.refuel.ai/openapi.json
+  x-harvested-on: '2026-08-14'
+servers:
+- url: https://cloud-api.refuel.ai
+  description: Refuel Cloud API
+tags:
+- name: Users
+paths:
+  /users:
+    get:
+      summary: Get Users
+      operationId: get_users_users_get
+      parameters:
+      - required: false
+        schema:
+          items:
+            type: string
+            format: email
+          type: array
+          title: Emails
+          default: []
+        name: emails
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel_List_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Users
+    post:
+      summary: Invite Users
+      operationId: invite_users_users_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                type: string
+                format: email
+              type: array
+              title: Emails
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateUsersResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Users
+  /users/{user_id}:
+    get:
+      summary: Get User
+      operationId: get_user_users__user_id__get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: User Id
+        name: user_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Users
+    patch:
+      summary: Update User
+      operationId: update_user_users__user_id__patch
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: User Id
+        name: user_id
+        in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Users
+  /users/{user_email}:
+    post:
+      summary: Create User
+      operationId: create_user_users__user_email__post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          format: email
+          title: User Email
+        name: user_email
+        in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              title: Request
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Users
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ResponseModel:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel
+    CreateUsersResponse:
+      properties:
+        success:
+          items:
+            type: string
+          type: array
+          title: Success
+        failed:
+          items:
+            type: string
+          type: array
+          title: Failed
+          default: []
+      type: object
+      required:
+      - success
+      title: CreateUsersResponse
+    UpdateUserRequest:
+      properties:
+        auth0_username:
+          type: string
+          title: Auth0 Username
+        name:
+          type: string
+          title: Name
+        permissions:
+          items:
+            type: string
+          type: array
+          title: Permissions
+        picture:
+          type: string
+          title: Picture
+        update_picture:
+          type: boolean
+          title: Update Picture
+          default: false
+        state:
+          $ref: '#/components/schemas/State'
+      type: object
+      title: UpdateUserRequest
+    State:
+      type: string
+      enum:
+      - CREATED
+      - INVITED
+      - INVITE_FAILED
+      - ACTIVE
+      title: State
+      description: An enumeration.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ResponseModel_List_:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          items: {}
+          type: array
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel[List]
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

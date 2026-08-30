@@ -1,0 +1,2042 @@
+openapi: 3.2.0
+info:
+  title: Refuel Cloud Tasks API
+  description: REST API for the Refuel Cloud data-labeling and data-enrichment platform. Harvested verbatim from https://cloud-api.refuel.ai/openapi.json (FastAPI-generated, OpenAPI 3.1.0). Covers projects, datasets, tasks, task runs, taxonomies, seedsets/evalsets, calibration, finetuned models, deployed applications and their realtime label endpoint, users, teams, usage, and integrations. Authentication is an API key sent as an HTTP Bearer token. The upstream document carries the FastAPI default info block (title "FastAPI", version 0.1.0) and no servers[]; API Evangelist supplies the title/description and the servers[] host documented in Refuel's own quickstart and catalog pages. See openapi/_original/ for the untouched document and overlays/ for every change.
+  version: 0.1.0
+  contact:
+    name: Refuel
+    url: https://www.refuel.ai
+    email: support@refuel.ai
+  termsOfService: https://www.refuel.ai/terms-of-service
+  x-harvested-from: https://cloud-api.refuel.ai/openapi.json
+  x-harvested-on: '2026-08-14'
+servers:
+- url: https://cloud-api.refuel.ai
+  description: Refuel Cloud API
+tags:
+- name: Tasks
+paths:
+  /tasks:
+    get:
+      summary: Get Team Tasks
+      description: "Get all tasks for a team.\n\nArgs:\n----\n    token: Authentication token containing team info\n\nReturns:\n-------\n    ResponseModel: List of tasks for the team"
+      operationId: get_team_tasks_tasks_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel_List_'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}:
+    get:
+      summary: Get Task
+      description: "Get details for a specific task.\n\nArgs:\n----\n    task_id: ID of the task to retrieve\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing the task details\n\nRaises:\n------\n    HTTPException: If task not found or unauthorized"
+      operationId: get_task_tasks__task_id__get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+    post:
+      summary: Edit Task
+      description: "Edit properties of an existing task.\n\nArgs:\n----\n    task_id: ID of the task to edit\n    edits: Dictionary of edits to apply to the task\n    clear_labels_and_feedback: Whether to clear existing labels and feedback\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing the updated task details\n\nRaises:\n------\n    HTTPException: If task not found, unauthorized, or edits are invalid"
+      operationId: edit_task_tasks__task_id__post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: false
+        schema:
+          type: boolean
+          title: Clear Labels And Feedback
+          default: false
+        name: clear_labels_and_feedback
+        in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              title: Edits
+              default: {}
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+    delete:
+      summary: Delete Task
+      description: "Delete a task and all associated resources.\n\nArgs:\n----\n    task_id: ID of the task to delete\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing success/failure status\n\nRaises:\n------\n    HTTPException: If task not found, unauthorized, or deletion fails"
+      operationId: delete_task_tasks__task_id__delete
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel_ChangeResourceResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/models:
+    get:
+      summary: Get Task Models
+      description: "Get available models for a task.\n\nArgs:\n----\n    task_id: ID of the task to get models for\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing list of available and in-progress models\n\nRaises:\n------\n    HTTPException: If task not found or unauthorized"
+      operationId: get_task_models_tasks__task_id__models_get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/subtasks/{subtask_id}:
+    delete:
+      summary: Delete Subtask
+      description: "Delete a subtask from a task.\n\nArgs:\n----\n    task_id: ID of the task containing the subtask\n    subtask_id: ID of the subtask to delete\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel indicating success/failure\n\nRaises:\n------\n    HTTPException: If task/subtask not found or unauthorized"
+      operationId: delete_subtask_tasks__task_id__subtasks__subtask_id__delete
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Subtask Id
+        name: subtask_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/transforms/{transform_id}:
+    delete:
+      summary: Delete Transform
+      description: "Delete a transform from a task.\n\nArgs:\n----\n    task_id: ID of the task containing the transform\n    transform_id: ID of the transform to delete\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel indicating success/failure\n\nRaises:\n------\n    HTTPException: If task/transform not found or unauthorized"
+      operationId: delete_transform_tasks__task_id__transforms__transform_id__delete
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Transform Id
+        name: transform_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/datasets/{dataset_id}:
+    get:
+      summary: Get Items From Task Run
+      description: "Get items from a task run for a specific dataset.\n\nArgs:\n----\n    task_id: ID of the task to get items from\n    dataset_id: ID of the dataset to get items from\n    eval: Whether to get evaluation set items\n    offset: Number of items to skip for pagination\n    max_items: Maximum number of items to return\n    filters: List of filters to apply to the query\n    order_bys: List of order by clauses to apply\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing the items and metadata\n\nRaises:\n------\n    HTTPException: If task/dataset not found or unauthorized"
+      operationId: get_items_from_task_run_tasks__task_id__datasets__dataset_id__get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: path
+      - required: false
+        schema:
+          type: boolean
+          title: Eval
+          default: false
+        name: eval
+        in: query
+      - required: false
+        schema:
+          type: integer
+          title: Offset
+          default: 0
+        name: offset
+        in: query
+      - required: false
+        schema:
+          type: integer
+          title: Max Items
+          default: 10
+        name: max_items
+        in: query
+      - required: false
+        schema:
+          items:
+            type: string
+          type: array
+          title: Filters
+        name: filters
+        in: query
+      - required: false
+        schema:
+          items:
+            type: string
+          type: array
+          title: Order Bys
+        name: order_bys
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/seedset:
+    get:
+      summary: Get Items From Seedset
+      description: "Get items from a task's seedset with filtering and pagination.\n\nArgs:\n----\n    task_id: ID of the task to get seedset items from\n    offset: Number of items to skip for pagination\n    max_items: Maximum number of items to return\n    filters: List of filters to apply to the results\n    order_bys: List of fields to order results by\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing the filtered and paginated seedset items\n\nRaises:\n------\n    HTTPException: If task not found or unauthorized"
+      operationId: get_items_from_seedset_tasks__task_id__seedset_get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: false
+        schema:
+          type: integer
+          title: Offset
+          default: 0
+        name: offset
+        in: query
+      - required: false
+        schema:
+          type: integer
+          title: Max Items
+          default: 10
+        name: max_items
+        in: query
+      - required: false
+        schema:
+          items:
+            type: string
+          type: array
+          title: Filters
+        name: filters
+        in: query
+      - required: false
+        schema:
+          items:
+            type: string
+          type: array
+          title: Order Bys
+        name: order_bys
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/evalset:
+    get:
+      summary: Get Items From Evalset
+      description: "Get items from a task's evaluation set.\n\nArgs:\n----\n    task_id: ID of the task to get evaluation items from\n    model_id: Optional model ID to filter results\n    offset: Number of items to skip for pagination\n    max_items: Maximum number of items to return\n    filters: List of filters to apply to results\n    order_bys: List of fields to order results by\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing evaluation set items with:\n        - schema: Dataset schema\n        - items: List of evaluation items\n        - total_count: Total number of items\n        - task/dataset metadata\n\nRaises:\n------\n    HTTPException: If task not found or unauthorized"
+      operationId: get_items_from_evalset_tasks__task_id__evalset_get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: false
+        schema:
+          type: string
+          title: Model Id
+        name: model_id
+        in: query
+      - required: false
+        schema:
+          type: integer
+          title: Offset
+          default: 0
+        name: offset
+        in: query
+      - required: false
+        schema:
+          type: integer
+          title: Max Items
+          default: 10
+        name: max_items
+        in: query
+      - required: false
+        schema:
+          items:
+            type: string
+          type: array
+          title: Filters
+        name: filters
+        in: query
+      - required: false
+        schema:
+          items:
+            type: string
+          type: array
+          title: Order Bys
+        name: order_bys
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+    post:
+      summary: Create Evalset
+      description: "Create an evaluation set for a task by sampling items from a dataset.\n\nArgs:\n----\n    task_id: ID of the task to create evalset for\n    dataset_id: ID of the dataset to sample from\n    sampling_parameters: Parameters for sampling items\n    filters: List of filters to apply when sampling\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing success status\n\nRaises:\n------\n    HTTPException: If task/dataset not found or unauthorized"
+      operationId: create_evalset_tasks__task_id__evalset_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: query
+      - required: false
+        schema:
+          items:
+            type: string
+          type: array
+          title: Filters
+        name: filters
+        in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SamplingEvent'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel_ChangeResourceResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/runs/{dataset_id}/metrics:
+    get:
+      summary: Get Metrics For Task Run
+      description: "Get metrics for a specific task run.\n\nArgs:\n----\n    task_id: ID of the task to get metrics for\n    dataset_id: ID of the dataset to get metrics for\n    filters: List of filters to apply when calculating metrics\n    eval: Whether to get metrics for evaluation mode\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing metrics data\n\nRaises:\n------\n    HTTPException: If task/dataset not found or unauthorized"
+      operationId: get_metrics_for_task_run_tasks__task_id__runs__dataset_id__metrics_get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: path
+      - required: false
+        schema:
+          type: boolean
+          title: Eval
+          default: false
+        name: eval
+        in: query
+      - required: false
+        schema:
+          items:
+            type: string
+          type: array
+          title: Filters
+        name: filters
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/evalset/metrics:
+    get:
+      summary: Get Evalset Metrics For Task Run
+      description: "Get evaluation metrics for a task's evaluation set.\n\nArgs:\n----\n    task_id: ID of the task to get metrics for\n    filters: Optional list of filters to apply to the evaluation set\n    model_id: Optional model ID to filter results by\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing metrics data with:\n        - Mapping of subtask IDs to list of MetricResult objects\n        - Each MetricResult contains metric name, value and support count\n\nRaises:\n------\n    HTTPException: If task not found or unauthorized"
+      operationId: get_evalset_metrics_for_task_run_tasks__task_id__evalset_metrics_get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: false
+        schema:
+          type: string
+          title: Model Id
+        name: model_id
+        in: query
+      - required: false
+        schema:
+          items:
+            type: string
+          type: array
+          title: Filters
+        name: filters
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/runs/{dataset_id}:
+    get:
+      summary: Get Task Run
+      description: "Get details about a specific task run.\n\nArgs:\n----\n    task_id: ID of the task to get run details for\n    dataset_id: ID of the dataset the task was run on\n    eval: If True, get evaluation run instead of regular run\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing the task run details\n\nRaises:\n------\n    HTTPException: If task/dataset not found or unauthorized"
+      operationId: get_task_run_tasks__task_id__runs__dataset_id__get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: path
+      - required: false
+        schema:
+          type: boolean
+          title: Eval
+          default: false
+        name: eval
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+    post:
+      summary: Update Task Run
+      operationId: update_task_run_tasks__task_id__runs__dataset_id__post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: path
+      - required: false
+        schema:
+          type: boolean
+          title: Cancel Run
+          default: false
+        name: cancel_run
+        in: query
+      - required: false
+        schema:
+          type: integer
+          title: Num Items
+        name: num_items
+        in: query
+      - required: false
+        schema:
+          type: boolean
+          title: Eval
+          default: false
+        name: eval
+        in: query
+      - required: false
+        schema:
+          items:
+            type: string
+          type: array
+          title: Filters
+        name: filters
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+    delete:
+      summary: Clear Task Run
+      description: "Delete a task run and its associated data.\n\nArgs:\n----\n    task_id: ID of the task to clear run for\n    dataset_id: ID of the dataset containing the run\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel indicating success/failure\n\nRaises:\n------\n    HTTPException: If task/dataset not found or unauthorized"
+      operationId: clear_task_run_tasks__task_id__runs__dataset_id__delete
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/runs:
+    get:
+      summary: Get Task Runs
+      description: "Get all task runs for a specific task.\n\nArgs:\n----\n    task_id: ID of the task to get runs for\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing list of task runs with:\n        - id: str - Task run ID\n        - project_id: str - Project ID\n        - task_id: str - Task ID\n        - task_name: str - Task name\n        - model_name: str - Model name\n        - dataset_id: str - Dataset ID\n        - dataset_name: str - Dataset name\n        - status: str - Run status\n        - is_eval_run: bool - Whether this is an evaluation run\n        - created_at: datetime - Creation timestamp\n        - updated_at: datetime - Last update timestamp\n\nRaises:\n------\n    HTTPException: If task not found or unauthorized"
+      operationId: get_task_runs_tasks__task_id__runs_get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+    post:
+      summary: Update Task Run V2
+      description: "Update or manage a task run for a specific task.\n\nArgs:\n----\n    task_id: ID of the task to update run for\n    dataset_id: Optional ID of dataset to run task on\n    cancel_run: Whether to cancel an existing run\n    num_items: Number of items to process in run\n    filters: List of filters to apply to dataset\n    eval: Whether this is an evaluation run\n    token: Access token for authentication\n\nReturns:\n-------\n    Response indicating success/failure\n\nRaises:\n------\n    HTTPException: If task not found or unauthorized"
+      operationId: update_task_run_v2_tasks__task_id__runs_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: false
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: query
+      - required: false
+        schema:
+          type: boolean
+          title: Cancel Run
+          default: false
+        name: cancel_run
+        in: query
+      - required: false
+        schema:
+          type: integer
+          title: Num Items
+        name: num_items
+        in: query
+      - required: false
+        schema:
+          type: boolean
+          title: Eval
+          default: false
+        name: eval
+        in: query
+      - required: false
+        schema:
+          items:
+            type: string
+          type: array
+          title: Filters
+        name: filters
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/datasets/{dataset_id}/items/{item_id}/label:
+    get:
+      summary: Preview Labels V2
+      description: "Preview labels for a specific item in a dataset.\n\nArgs:\n----\n    task_id: ID of the task to preview labels for\n    dataset_id: ID of the dataset containing the item\n    item_id: ID of the item to preview labels for\n    model_id: Optional model ID to use for generating labels\n    subtask_id: Optional subtask ID to filter labels for\n    token: Access token for authentication\n    generate_missing_labels: Whether to generate missing labels\n    generate_missing_explanations: Whether to generate missing explanations\n\nReturns:\n-------\n    ResponseModel containing the previewed labels\n\nRaises:\n------\n    HTTPException: If dataset/task not found or unauthorized"
+      operationId: preview_labels_v2_tasks__task_id__datasets__dataset_id__items__item_id__label_get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Item Id
+        name: item_id
+        in: path
+      - required: false
+        schema:
+          type: string
+          title: Model Id
+        name: model_id
+        in: query
+      - required: false
+        schema:
+          type: string
+          title: Subtask Id
+        name: subtask_id
+        in: query
+      - required: false
+        schema:
+          type: boolean
+          title: Generate Missing Labels
+          default: true
+        name: generate_missing_labels
+        in: query
+      - required: false
+        schema:
+          type: boolean
+          title: Generate Missing Explanations
+          default: false
+        name: generate_missing_explanations
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+    post:
+      summary: Edit Labels V2
+      description: "Edit labels for a specific item in a dataset.\n\nArgs:\n----\n    task_id: ID of the task containing the item\n    dataset_id: ID of the dataset containing the item\n    item_id: ID of the item to edit labels for\n    label_edits: Dictionary containing label edits to apply\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel indicating success/failure\n\nRaises:\n------\n    HTTPException: If no label provided or validation fails"
+      operationId: edit_labels_v2_tasks__task_id__datasets__dataset_id__items__item_id__label_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Item Id
+        name: item_id
+        in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              title: Label Edits
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/evalset/items/{item_id}:
+    delete:
+      summary: Remove Item From Evalset
+      description: "Remove an item from a task's evaluation set.\n\nArgs:\n----\n    task_id: ID of the task containing the evalset\n    item_id: ID of the item to remove from evalset\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing success/failure status\n\nRaises:\n------\n    HTTPException: If task/item not found or unauthorized"
+      operationId: remove_item_from_evalset_tasks__task_id__evalset_items__item_id__delete
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Item Id
+        name: item_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel_ChangeResourceResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/evalset/items:
+    post:
+      summary: Add Item To Evalset
+      description: "Add an item to the evaluation set and set its expected label.\n\nArgs:\n----\n    task_id: ID of the task to add item to\n    dataset_id: ID of the dataset containing the item\n    item_id: ID of the item to add to evalset\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing success/failure status\n\nRaises:\n------\n    HTTPException: If task/dataset not found or unauthorized"
+      operationId: add_item_to_evalset_tasks__task_id__evalset_items_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: query
+      - required: true
+        schema:
+          type: string
+          title: Item Id
+        name: item_id
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel_ChangeResourceResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/seedset/items/{item_id}:
+    delete:
+      summary: Remove Item From Seedset
+      description: "Remove an item from a task's seedset and optionally add it to evalset.\n\nArgs:\n----\n    task_id: ID of the task containing the seedset\n    item_id: ID of the item to remove from seedset\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing success/failure status\n\nRaises:\n------\n    HTTPException: If task/item not found or unauthorized"
+      operationId: remove_item_from_seedset_tasks__task_id__seedset_items__item_id__delete
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Item Id
+        name: item_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel_ChangeResourceResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/seedset/items:
+    post:
+      summary: Add Item To Seedset
+      description: "Add an item to the seedset and set its expected label.\n\nArgs:\n----\n    task_id: ID of the task to add item to\n    dataset_id: ID of the dataset containing the item\n    item_id: ID of the item to add to seedset\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing success status\n\nRaises:\n------\n    HTTPException: If task/dataset not found, unauthorized, or item not verified"
+      operationId: add_item_to_seedset_tasks__task_id__seedset_items_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: query
+      - required: true
+        schema:
+          type: string
+          title: Item Id
+        name: item_id
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel_ChangeResourceResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/datasets/{dataset_id}/items/{item_id}:
+    get:
+      summary: Get Item From Task Run
+      description: "Get an item and its associated data from a task run.\n\nArgs:\n----\n    task_id: ID of the task to get item from\n    dataset_id: ID of the dataset containing the item\n    item_id: ID of the item to retrieve\n    model_id: Optional model ID to filter results\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing the item data with:\n        - fields: Dict[str, Any] - Item field values\n        - labels: List[Label] - Associated labels\n        - telemetry: List[Telemetry] - Telemetry data\n        - in_evalset: bool - Whether item is in evaluation set\n\nRaises:\n------\n    HTTPException: If task/dataset/item not found or unauthorized"
+      operationId: get_item_from_task_run_tasks__task_id__datasets__dataset_id__items__item_id__get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Item Id
+        name: item_id
+        in: path
+      - required: false
+        schema:
+          type: string
+          title: Model Id
+        name: model_id
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+    post:
+      summary: Modify Item Properties
+      description: "Modify properties of a labeled item in a dataset.\n\nThis endpoint allows modifying properties of items that have already been labeled.\nIt can add items to the evalset table and set their expected labels based on\nthe final merged label from LLM and human annotations.\n\nArgs:\n----\n    task_id: ID of the task containing the item\n    dataset_id: ID of the dataset containing the item\n    item_id: ID of the item to modify\n    item_properties: Properties to modify for the item\n    model_id: Optional model ID to use\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing success/failure status\n\nRaises:\n------\n    HTTPException: If dataset/task not found or unauthorized"
+      operationId: modify_item_properties_tasks__task_id__datasets__dataset_id__items__item_id__post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Dataset Id
+        name: dataset_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Item Id
+        name: item_id
+        in: path
+      - required: false
+        schema:
+          type: string
+          title: Model Id
+        name: model_id
+        in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemProperties'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel_ChangeResourceResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/evalset/runs:
+    get:
+      summary: Get Evalset Run
+      description: "Get evaluation run details for a task.\n\nArgs:\n----\n    task_id: ID of the task to get evaluation run for\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing evaluation run details\n\nRaises:\n------\n    HTTPException: If task not found or unauthorized"
+      operationId: get_evalset_run_tasks__task_id__evalset_runs_get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+    post:
+      summary: Update Task Run Evalset
+      description: "Update or cancel evaluation set runs for a task.\n\nArgs:\n----\n    task_id: ID of the task to update evalset runs for\n    cancel_run: Whether to cancel existing runs\n    filters: List of filters to apply to the evalset\n    model_ids: List of model IDs to run evaluation for\n    token: Access token for authentication\n\nReturns:\n-------\n    ChangeResourceResponse indicating success/failure\n\nRaises:\n------\n    HTTPException: If task not found or unauthorized"
+      operationId: update_task_run_evalset_tasks__task_id__evalset_runs_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: false
+        schema:
+          type: boolean
+          title: Cancel Run
+          default: false
+        name: cancel_run
+        in: query
+      - required: false
+        schema:
+          items:
+            type: string
+          type: array
+          title: Model Ids
+          default: []
+        name: model_ids
+        in: query
+      - required: false
+        schema:
+          items:
+            type: string
+          type: array
+          title: Filters
+        name: filters
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/{tag}/exports:
+    post:
+      summary: Export Task
+      description: "Export task data with optional filters and email notification.\n\nArgs:\n----\n    task_id: ID of the task to export\n    tag: Type of data to export (e.g. train, test)\n    email_address: Optional email to send export notification to\n    filters: Optional list of filters to apply to export\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel indicating export started\n\nRaises:\n------\n    HTTPException: If task not found or unauthorized"
+      operationId: export_task_tasks__task_id___tag__exports_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          $ref: '#/components/schemas/TagType'
+        name: tag
+        in: path
+      - required: false
+        schema:
+          type: string
+          title: Email Address
+        name: email_address
+        in: query
+      - required: false
+        schema:
+          items:
+            type: string
+          type: array
+          title: Filters
+        name: filters
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '202':
+          description: Accepted. Task export in progress.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/{tag}/exports/{export_id}:
+    get:
+      summary: Download Export Task
+      description: "Download an exported task file.\n\nArgs:\n----\n    task_id: ID of the task that was exported\n    tag: Type of export tag\n    export_id: ID of the export to download\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing download URL or progress status\n\nRaises:\n------\n    HTTPException: If task/export not found or unauthorized"
+      operationId: download_export_task_tasks__task_id___tag__exports__export_id__get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          $ref: '#/components/schemas/TagType'
+        name: tag
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Export Id
+        name: export_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '202':
+          description: Task export is still in progress.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/taxonomies/{taxonomy_id}:
+    get:
+      summary: Get Taxonomy
+      description: "Get a taxonomy and its labels for a task.\n\nArgs:\n----\n    task_id: ID of the task containing the taxonomy\n    taxonomy_id: ID of the taxonomy to retrieve\n    filter: Optional filter string to filter labels\n    start_index: Optional starting index for pagination\n    max_items: Optional maximum number of items to return\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing the taxonomy and its labels\n\nRaises:\n------\n    HTTPException: If task/taxonomy not found or unauthorized"
+      operationId: get_taxonomy_tasks__task_id__taxonomies__taxonomy_id__get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Taxonomy Id
+        name: taxonomy_id
+        in: path
+      - required: false
+        schema:
+          type: string
+          title: Filter
+        name: filter
+        in: query
+      - required: false
+        schema:
+          type: integer
+          title: Start Index
+          default: 0
+        name: start_index
+        in: query
+      - required: false
+        schema:
+          type: integer
+          title: Max Items
+          default: 100
+        name: max_items
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+    post:
+      summary: Add Labels To Taxonomy With File
+      description: "Add labels to an existing taxonomy from a file or JSON input.\n\nArgs:\n----\n    task_id: ID of the task containing the taxonomy\n    taxonomy_id: ID of the taxonomy to add labels to\n    labels: JSON string containing label objects to add\n    file: Optional CSV file containing labels to add\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing the updated taxonomy\n\nRaises:\n------\n    HTTPException: If parsing labels fails or validation errors occur"
+      operationId: add_labels_to_taxonomy_with_file_tasks__task_id__taxonomies__taxonomy_id__post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Taxonomy Id
+        name: taxonomy_id
+        in: path
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_add_labels_to_taxonomy_with_file_tasks__task_id__taxonomies__taxonomy_id__post'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+    delete:
+      summary: Delete Taxonomy
+      operationId: delete_taxonomy_tasks__task_id__taxonomies__taxonomy_id__delete
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Taxonomy Id
+        name: taxonomy_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/taxonomies:
+    post:
+      summary: Create Taxonomy With Labels File
+      description: "Create a new taxonomy with labels for a task.\n\nArgs:\n----\n    task_id: ID of the task to create taxonomy for\n    labels: JSON string containing list of taxonomy labels\n    file: Optional CSV file containing labels\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel containing the created taxonomy\n\nRaises:\n------\n    HTTPException: If label parsing fails or validation errors occur"
+      operationId: create_taxonomy_with_labels_file_tasks__task_id__taxonomies_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_create_taxonomy_with_labels_file_tasks__task_id__taxonomies_post'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/taxonomies/{taxonomy_id}/labels/{label_id}:
+    delete:
+      summary: Delete Subtask Label
+      description: "Delete a label from a task's taxonomy.\n\nArgs:\n----\n    task_id: ID of the task containing the taxonomy\n    taxonomy_id: ID of the taxonomy containing the label\n    label_id: ID of the label to delete\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel indicating success/failure\n\nRaises:\n------\n    HTTPException: If task/taxonomy/label not found or unauthorized"
+      operationId: delete_subtask_label_tasks__task_id__taxonomies__taxonomy_id__labels__label_id__delete
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Taxonomy Id
+        name: taxonomy_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Label Id
+        name: label_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+    patch:
+      summary: Edit Taxonomy Label
+      description: "Edit a label in a task's taxonomy.\n\nArgs:\n----\n    task_id: ID of the task containing the taxonomy\n    taxonomy_id: ID of the taxonomy containing the label\n    label_id: ID of the label to edit\n    taxonomy_label: Updated label data\n    token: Access token for authentication\n\nReturns:\n-------\n    ResponseModel indicating success/failure\n\nRaises:\n------\n    HTTPException: If task/taxonomy not found or unauthorized"
+      operationId: edit_taxonomy_label_tasks__task_id__taxonomies__taxonomy_id__labels__label_id__patch
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Taxonomy Id
+        name: taxonomy_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Label Id
+        name: label_id
+        in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaxonomyLabel'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/taxonomies/{taxonomy_id}/duplicate:
+    post:
+      summary: Duplicate Taxonomy
+      operationId: duplicate_taxonomy_tasks__task_id__taxonomies__taxonomy_id__duplicate_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Taxonomy Id
+        name: taxonomy_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/calibrations:
+    get:
+      summary: Get Calibration Models
+      description: Gets all calibration models for a given task
+      operationId: get_calibration_models_tasks__task_id__calibrations_get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  type: object
+                type: array
+                title: Response Get Calibration Models Tasks  Task Id  Calibrations Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+    post:
+      summary: Calibrate Task
+      description: Triggers training for a calibration model for a given task.
+      operationId: calibrate_task_tasks__task_id__calibrations_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCalibrationRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  type: object
+                type: array
+                title: Response Calibrate Task Tasks  Task Id  Calibrations Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/calibrations/{calibration_id}:
+    get:
+      summary: Get Calibration Model From Id
+      description: Gets the calibration model object from the id
+      operationId: get_calibration_model_from_id_tasks__task_id__calibrations__calibration_id__get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Calibration Id
+        name: calibration_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Response Get Calibration Model From Id Tasks  Task Id  Calibrations  Calibration Id  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+    patch:
+      summary: Update Calibration Model
+      description: Updates the calibration model object from the id
+      operationId: update_calibration_model_tasks__task_id__calibrations__calibration_id__patch
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Calibration Id
+        name: calibration_id
+        in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCalibrationRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Response Update Calibration Model Tasks  Task Id  Calibrations  Calibration Id  Patch
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+  /tasks/{task_id}/trainable:
+    get:
+      summary: Trainable Task
+      description: Gets whether a task is trainable.
+      operationId: trainable_task_tasks__task_id__trainable_get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Task Id
+        name: task_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainableResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Tasks
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CalibrationStatus:
+      type: string
+      enum:
+      - IN_PROGRESS
+      - COMPLETED
+      - INTERRUPTED
+      - DELETED
+      title: CalibrationStatus
+      description: An enumeration.
+    Body_add_labels_to_taxonomy_with_file_tasks__task_id__taxonomies__taxonomy_id__post:
+      properties:
+        labels:
+          type: string
+          title: Labels
+          default: '[]'
+        file:
+          type: string
+          format: binary
+          title: File
+      type: object
+      title: Body_add_labels_to_taxonomy_with_file_tasks__task_id__taxonomies__taxonomy_id__post
+    ResponseModel:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel
+    TaxonomyLabel:
+      properties:
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+        embedding:
+          items:
+            type: number
+          type: array
+          title: Embedding
+        level:
+          type: integer
+          title: Level
+        parents:
+          items:
+            type: string
+          type: array
+          title: Parents
+      type: object
+      title: TaxonomyLabel
+    SamplingEvent:
+      properties:
+        sample_strategy:
+          type: string
+          title: Sample Strategy
+          default: random
+        sample_size:
+          type: integer
+          title: Sample Size
+          default: 100
+        sampling_column:
+          $ref: '#/components/schemas/SamplingColumn'
+        sample_size_per_group:
+          type: integer
+          title: Sample Size Per Group
+          default: 20
+        num_buckets:
+          type: integer
+          title: Num Buckets
+          default: 10
+      type: object
+      title: SamplingEvent
+    SampleColumnType:
+      type: string
+      enum:
+      - metadata
+      - label
+      - confidence
+      title: SampleColumnType
+      description: An enumeration.
+    ResponseModel_ChangeResourceResponse_:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          $ref: '#/components/schemas/ChangeResourceResponse'
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel[ChangeResourceResponse]
+    ItemProperties:
+      properties:
+        in_evalset:
+          type: boolean
+          title: In Evalset
+      type: object
+      required:
+      - in_evalset
+      title: ItemProperties
+    CreateCalibrationRequest:
+      properties:
+        hyperparameters:
+          type: object
+          title: Hyperparameters
+          default: {}
+      type: object
+      title: CreateCalibrationRequest
+    UpdateCalibrationRequest:
+      properties:
+        status:
+          $ref: '#/components/schemas/CalibrationStatus'
+      type: object
+      title: UpdateCalibrationRequest
+    TagType:
+      type: string
+      enum:
+      - seedset
+      - evalset
+      title: TagType
+      description: An enumeration.
+    Body_create_taxonomy_with_labels_file_tasks__task_id__taxonomies_post:
+      properties:
+        labels:
+          type: string
+          title: Labels
+          default: '[]'
+        file:
+          type: string
+          format: binary
+          title: File
+      type: object
+      title: Body_create_taxonomy_with_labels_file_tasks__task_id__taxonomies_post
+    SamplingColumn:
+      properties:
+        column_name:
+          type: string
+          title: Column Name
+        column_type:
+          allOf:
+          - $ref: '#/components/schemas/SampleColumnType'
+          default: metadata
+        subtask_id:
+          type: string
+          title: Subtask Id
+      type: object
+      title: SamplingColumn
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ChangeResourceResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        error:
+          type: string
+          title: Error
+          default: ''
+      type: object
+      required:
+      - success
+      title: ChangeResourceResponse
+    TrainableResponse:
+      properties:
+        trainable:
+          type: boolean
+          title: Trainable
+        message:
+          type: string
+          title: Message
+          default: ''
+      type: object
+      required:
+      - trainable
+      title: TrainableResponse
+    ResponseModel_List_:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          items: {}
+          type: array
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel[List]
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer
