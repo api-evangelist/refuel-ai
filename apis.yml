@@ -89,18 +89,20 @@ apis:
     type: Documentation
   - url: https://pypi.org/project/refuel-autolabel/
     type: PyPI
-  description: Autolabel is the open-source Python library (pip install refuel-autolabel) to label, clean,
-    and enrich text datasets with any LLM (OpenAI, Anthropic, Google, HuggingFace, vLLM, Refuel-hosted).
-    It is a local library and SDK, not the hosted Refuel Cloud REST API; it covers classification, NER,
-    entity matching, and question answering with few-shot and chain-of-thought prompting. Last PyPI release
-    0.0.16 on 2023-10-16; repository last pushed 2025-03-05.
+  description: >-
+    Autolabel is the open-source Python library (pip install refuel-autolabel) to label, clean, and enrich
+    text datasets with any LLM (OpenAI, Anthropic, Google, HuggingFace, vLLM, Refuel-hosted). It is a
+    local library and SDK, not the hosted Refuel Cloud REST API; it covers classification, NER, entity
+    matching, and question answering with few-shot and chain-of-thought prompting. Last PyPI release 0.0.16
+    on 2023-10-16; repository last pushed 2025-03-05.
 - aid: refuel-ai:refuel-ai-applications-api
   name: Refuel Applications API
-  description: The documented realtime application label surface — the endpoint Refuel's own catalog page
-    publishes as `POST https://cloud-api.refuel.ai/applications/{applicationName}/label`, with the concrete
-    request shape and the published 300 req/min, 100 concurrent rate limit. This entry predates the harvest
-    of the full Refuel Cloud API and describes the same product from the documentation rather than the
-    machine-readable contract; the operation it covers appears in the Cloud API spec as online_label_applications__application_id__label_post.
+  description: >-
+    The documented realtime application label surface — the endpoint Refuel's own catalog page publishes
+    as `POST https://cloud-api.refuel.ai/applications/{applicationName}/label`, with the concrete request
+    shape and the published 300 req/min, 100 concurrent rate limit. This entry predates the harvest of
+    the full Refuel Cloud API and describes the same product from the documentation rather than the machine-readable
+    contract; the operation it covers appears in the Cloud API spec as online_label_applications__application_id__label_post.
   humanURL: https://docs.refuel.ai/catalog/introduction
   baseURL: https://cloud-api.refuel.ai
   tags:
@@ -306,30 +308,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/refuel-ai-projects-api-openapi.yml
-  - type: OpenAPIOriginal
-    url: openapi/_original/refuel-ai-cloud-api-openapi.json
-  - type: APIReference
-    url: https://cloud-api.refuel.ai/docs
-  - type: Documentation
-    url: https://docs.refuel.ai
-  - type: GettingStarted
-    url: https://docs.refuel.ai/quickstart
-  - type: DataModel
-    url: data-model/refuel-ai-data-model.yml
-  - type: ErrorCatalog
-    url: errors/refuel-ai-problem-types.yml
-  - type: Conventions
-    url: conventions/refuel-ai-conventions.yml
-- aid: refuel-ai:refuel-ai-refuel-cloud-api-api
-  name: Refuel Cloud API
-  description: The Refuel Cloud API API from Refuel — 1 operation(s) for refuel cloud api.
-  humanURL: https://github.com/refuel-ai/autolabel
-  baseURL: https://github.com/refuel-ai/autolabel
-  tags:
-  - Refuel Cloud API
-  properties:
-  - type: OpenAPI
-    url: openapi/refuel-ai-refuel-cloud-api-api-openapi.yml
   - type: OpenAPIOriginal
     url: openapi/_original/refuel-ai-cloud-api-openapi.json
   - type: APIReference
@@ -554,6 +532,30 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/refuel-ai-webhooks-api-openapi.yml
+  - type: OpenAPIOriginal
+    url: openapi/_original/refuel-ai-cloud-api-openapi.json
+  - type: APIReference
+    url: https://cloud-api.refuel.ai/docs
+  - type: Documentation
+    url: https://docs.refuel.ai
+  - type: GettingStarted
+    url: https://docs.refuel.ai/quickstart
+  - type: DataModel
+    url: data-model/refuel-ai-data-model.yml
+  - type: ErrorCatalog
+    url: errors/refuel-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/refuel-ai-conventions.yml
+- aid: refuel-ai:refuel-ai-fastapi-api
+  name: Refuel Fast API
+  description: The FastAPI API from Refuel — 1 operation(s) for fastapi.
+  humanURL: https://github.com/refuel-ai/autolabel
+  baseURL: https://github.com/refuel-ai/autolabel
+  tags:
+  - FastAPI
+  properties:
+  - type: OpenAPI
+    url: openapi/refuel-ai-fastapi-api-openapi.yml
   - type: OpenAPIOriginal
     url: openapi/_original/refuel-ai-cloud-api-openapi.json
   - type: APIReference
