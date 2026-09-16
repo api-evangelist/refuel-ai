@@ -2,16 +2,13 @@ aid: refuel-ai
 url: https://raw.githubusercontent.com/api-evangelist/refuel-ai/refs/heads/main/apis.yml
 name: Refuel
 kind: company
-description: >-
-  Refuel is an AI data-labeling and data-enrichment platform that uses large language models
-  to label, clean, structure and enrich enterprise datasets. Refuel Cloud exposes a REST API
-  at cloud-api.refuel.ai covering projects, datasets, tasks and task runs, taxonomies,
-  seedsets and evalsets, confidence calibration, Refuel LLM-2 finetuning, and deployed
-  applications whose realtime label endpoint transforms new rows on demand. The open-source
-  autolabel library lets teams run the same LLM labeling workflows in their own environment
-  against OpenAI, Anthropic, Google, HuggingFace, vLLM or Refuel-hosted models. Refuel.ai was
-  acquired by Together AI in May 2025; the platform continues to operate and its API is still
-  live.
+description: Refuel is an AI data-labeling and data-enrichment platform that uses large language models
+  to label, clean, structure and enrich enterprise datasets. Refuel Cloud exposes a REST API at cloud-api.refuel.ai
+  covering projects, datasets, tasks and task runs, taxonomies, seedsets and evalsets, confidence calibration,
+  Refuel LLM-2 finetuning, and deployed applications whose realtime label endpoint transforms new rows
+  on demand. The open-source autolabel library lets teams run the same LLM labeling workflows in their
+  own environment against OpenAI, Anthropic, Google, HuggingFace, vLLM or Refuel-hosted models. Refuel.ai
+  was acquired by Together AI in May 2025; the platform continues to operate and its API is still live.
 deliveryModel:
   model: saas
   open_source: false
@@ -37,12 +34,10 @@ accessModel:
   - plans/refuel-ai-plans-pricing.yml
   generated: '2026-08-14'
   method: searched
-  note: >-
-    Corrected from a prior derived read of "freemium / self-serve". https://www.refuel.ai/get-started
-    is a sales lead form (First Name, Work Email, Company, "Tell us about your use case",
-    "Thanks! We'll be in touch shortly"), not a signup. There is no public pricing page
-    (/pricing returns 404) and no self-serve trial. The open-source autolabel library is the
-    only freely usable Refuel artifact.
+  note: Corrected from a prior derived read of "freemium / self-serve". https://www.refuel.ai/get-started
+    is a sales lead form (First Name, Work Email, Company, "Tell us about your use case", "Thanks! We'll
+    be in touch shortly"), not a signup. There is no public pricing page (/pricing returns 404) and no
+    self-serve trial. The open-source autolabel library is the only freely usable Refuel artifact.
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/refuel-ai.png
 tags:
 - Artificial Intelligence
@@ -71,7 +66,7 @@ tags_raw:
 - Entity Resolution
 - Content Moderation
 created: '2026-06-21'
-modified: '2026-08-14'
+modified: '2026-09-16'
 specificationVersion: '0.23'
 apis:
 - aid: refuel-ai:refuel-autolabel-oss
@@ -94,20 +89,18 @@ apis:
     type: Documentation
   - url: https://pypi.org/project/refuel-autolabel/
     type: PyPI
-  description: >-
-    Autolabel is the open-source Python library (pip install refuel-autolabel) to label, clean, and enrich
-    text datasets with any LLM (OpenAI, Anthropic, Google, HuggingFace, vLLM, Refuel-hosted). It is a
-    local library and SDK, not the hosted Refuel Cloud REST API; it covers classification, NER, entity
-    matching, and question answering with few-shot and chain-of-thought prompting. Last PyPI release 0.0.16
-    on 2023-10-16; repository last pushed 2025-03-05.
+  description: Autolabel is the open-source Python library (pip install refuel-autolabel) to label, clean,
+    and enrich text datasets with any LLM (OpenAI, Anthropic, Google, HuggingFace, vLLM, Refuel-hosted).
+    It is a local library and SDK, not the hosted Refuel Cloud REST API; it covers classification, NER,
+    entity matching, and question answering with few-shot and chain-of-thought prompting. Last PyPI release
+    0.0.16 on 2023-10-16; repository last pushed 2025-03-05.
 - aid: refuel-ai:refuel-ai-applications-api
   name: Refuel Applications API
-  description: >-
-    The documented realtime application label surface — the endpoint Refuel's own catalog page publishes
-    as `POST https://cloud-api.refuel.ai/applications/{applicationName}/label`, with the concrete request
-    shape and the published 300 req/min, 100 concurrent rate limit. This entry predates the harvest of
-    the full Refuel Cloud API and describes the same product from the documentation rather than the machine-readable
-    contract; the operation it covers appears in the Cloud API spec as online_label_applications__application_id__label_post.
+  description: The documented realtime application label surface — the endpoint Refuel's own catalog page
+    publishes as `POST https://cloud-api.refuel.ai/applications/{applicationName}/label`, with the concrete
+    request shape and the published 300 req/min, 100 concurrent rate limit. This entry predates the harvest
+    of the full Refuel Cloud API and describes the same product from the documentation rather than the
+    machine-readable contract; the operation it covers appears in the Cloud API spec as online_label_applications__application_id__label_post.
   humanURL: https://docs.refuel.ai/catalog/introduction
   baseURL: https://cloud-api.refuel.ai
   tags:
@@ -328,7 +321,7 @@ apis:
   - type: Conventions
     url: conventions/refuel-ai-conventions.yml
 - aid: refuel-ai:refuel-ai-refuel-cloud-api-api
-  name: Refuel Refuel Cloud API
+  name: Refuel Cloud API
   description: The Refuel Cloud API API from Refuel — 1 operation(s) for refuel cloud api.
   humanURL: https://github.com/refuel-ai/autolabel
   baseURL: https://github.com/refuel-ai/autolabel
@@ -663,9 +656,8 @@ x-enrichment:
   artifacts_added: 23
   pass: local-v1
 x-not-published:
-  note: >-
-    Recorded so a later round does not re-probe. Refuel publishes none of the following, and
-    NO pointer is emitted for any of them.
+  note: Recorded so a later round does not re-probe. Refuel publishes none of the following, and NO pointer
+    is emitted for any of them.
   pricing:
     probe: https://www.refuel.ai/pricing
     status: 404
@@ -676,7 +668,8 @@ x-not-published:
       status: NXDOMAIN
     - url: https://refuel.statuspage.io
       status: 200
-      detail: Redirects to atlassian.com/software/statuspage — the subdomain is unclaimed, not a Refuel page.
+      detail: Redirects to atlassian.com/software/statuspage — the subdomain is unclaimed, not a Refuel
+        page.
   changelog:
     probes:
     - url: https://www.refuel.ai/changelog
@@ -689,13 +682,11 @@ x-not-published:
   security_txt:
     detail: No /.well-known/security.txt on any Refuel host; see well-known/refuel-ai-well-known.yml.
   idempotency:
-    detail: >-
-      Zero occurrences of "idempoten" in the 106KB OpenAPI and no mention in the docs, so no
-      Idempotency pointer is emitted. See conventions/refuel-ai-conventions.yml.
+    detail: Zero occurrences of "idempoten" in the 106KB OpenAPI and no mention in the docs, so no Idempotency
+      pointer is emitted. See conventions/refuel-ai-conventions.yml.
   asyncapi_webhooks:
-    detail: >-
-      No AsyncAPI and no outbound webhooks. The only event machinery is two inbound webhook
-      receivers; see asyncapi/refuel-ai-events.yml. No AsyncAPI or Webhooks pointer is emitted.
+    detail: No AsyncAPI and no outbound webhooks. The only event machinery is two inbound webhook receivers;
+      see asyncapi/refuel-ai-events.yml. No AsyncAPI or Webhooks pointer is emitted.
   cli:
     detail: No first-party CLI found in the docs, the GitHub org or any package registry.
   components:
@@ -705,6 +696,5 @@ x-not-published:
   grpc:
     detail: No .proto definitions in the GitHub org, on buf.build, or in the docs.
   oauth_scopes:
-    detail: >-
-      Auth is a single HTTP Bearer API key with no scope surface, so no scopes/ artifact is
-      written. See authentication/refuel-ai-authentication.yml.
+    detail: Auth is a single HTTP Bearer API key with no scope surface, so no scopes/ artifact is written.
+      See authentication/refuel-ai-authentication.yml.
