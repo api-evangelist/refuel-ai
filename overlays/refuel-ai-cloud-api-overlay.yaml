@@ -43,7 +43,7 @@ actions:
     servers:
     - url: https://cloud-api.refuel.ai
       description: Refuel Cloud API
-not_applied:
+x-not_applied:
 - description: >-
     NOT applied, deliberately: no tags were added. All 108 operations are untagged in the
     upstream document, and inventing a tag taxonomy would change how the spec reads while

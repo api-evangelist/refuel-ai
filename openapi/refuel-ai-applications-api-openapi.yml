@@ -1,20 +1,344 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Refuel Cloud Applications API
-  description: REST API for the Refuel Cloud data-labeling and data-enrichment platform. Refuel deploys a Task as a versioned Application served behind a REST endpoint; callers submit rows of structured / semi-structured data to the application's label endpoint to transform (label, clean, enrich) them in realtime using the application's LLM guidelines. Authentication uses an API key passed as a Bearer token. The only endpoint documented with a concrete request shape in Refuel's public documentation is the application label endpoint; dataset, task, application-management, and model/finetuning operations are performed in the Refuel app and via the Python and JavaScript SDKs.
-  termsOfService: https://www.refuel.ai
-  contact:
-    name: Refuel
-    url: https://www.refuel.ai
+  title: Refuel Ai Applications API
   version: '1.0'
+  description: 'Operations tagged Applications across 2 of this provider''s published API definitions: refuel-ai-cloud-api-openapi.json, refuel-ai-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://cloud-api.refuel.ai
   description: Refuel Cloud API
-security:
-- BearerAuth: []
 tags:
 - name: Applications
 paths:
+  /applications:
+    get:
+      summary: Get Team Applications
+      operationId: get_team_applications_applications_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel_List_'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Applications
+  /applications/{application_id}:
+    get:
+      summary: Get Application
+      operationId: get_application_applications__application_id__get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Application Id
+        name: application_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Applications
+    delete:
+      summary: Delete Application
+      operationId: delete_application_applications__application_id__delete
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Application Id
+        name: application_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel_ChangeResourceResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Applications
+  /applications/{application_id}/label:
+    post:
+      summary: Online Label
+      operationId: online_label_applications__application_id__label_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Application Id
+        name: application_id
+        in: path
+      - required: false
+        schema:
+          type: string
+          title: Model Id
+        name: model_id
+        in: query
+      - required: false
+        schema:
+          type: string
+          title: Item Id
+        name: item_id
+        in: query
+      - required: false
+        schema:
+          type: boolean
+          title: Is Async
+          default: false
+        name: is_async
+        in: query
+      - required: false
+        schema:
+          type: boolean
+          title: Log Data
+          default: true
+        name: log_data
+        in: query
+      - required: false
+        schema:
+          type: boolean
+          title: Explain
+          default: false
+        name: explain
+        in: query
+      - required: false
+        schema:
+          type: boolean
+          title: Redact Pii
+          default: false
+        name: redact_pii
+        in: query
+      - required: false
+        schema:
+          type: string
+          title: Explain Fields
+        name: explain_fields
+        in: query
+      - required: false
+        schema:
+          type: boolean
+          title: Telemetry
+          default: false
+        name: telemetry
+        in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                type: object
+              type: array
+              title: Items
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '202':
+          description: Accepted for Processing. When is_async is set to True
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      - HTTPBearer: []
+      tags:
+      - Applications
+  /applications/{application_id}/items/{item_id}:
+    get:
+      summary: Get Application Item
+      operationId: get_application_item_applications__application_id__items__item_id__get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Application Id
+        name: application_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Item Id
+        name: item_id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '202':
+          description: Application is still processing the request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Applications
+  /applications/{application_id}/items:
+    get:
+      summary: Get Items From Application
+      operationId: get_items_from_application_applications__application_id__items_get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Application Id
+        name: application_id
+        in: path
+      - required: false
+        schema:
+          items:
+            type: string
+          type: array
+          title: Item Ids
+        name: item_ids
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Applications
+  /applications/{application_id}/items/{item_id}/label:
+    post:
+      summary: Application Feedback
+      operationId: application_feedback_applications__application_id__items__item_id__label_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Application Id
+        name: application_id
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Item Id
+        name: item_id
+        in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              title: Feedback
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Applications
+  /applications/{application_id}/usage:
+    get:
+      summary: Get Application Usage
+      operationId: get_application_usage_applications__application_id__usage_get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Application Id
+        name: application_id
+        in: path
+      - required: false
+        schema:
+          type: string
+          title: Start Date
+        name: start_date
+        in: query
+      - required: false
+        schema:
+          type: string
+          title: End Date
+        name: end_date
+        in: query
+      - required: false
+        schema:
+          type: integer
+          title: Period
+        name: period
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+      tags:
+      - Applications
   /applications/{applicationName}/label:
     post:
       operationId: labelWithApplication
@@ -50,8 +374,104 @@ paths:
           description: Rate limit exceeded (more than 300 requests per minute or more than 100 concurrent requests).
       security:
       - BearerAuth: []
+    servers:
+    - url: https://cloud-api.refuel.ai
+      description: Refuel Cloud API
 components:
   schemas:
+    ResponseModel_ChangeResourceResponse_:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          $ref: '#/components/schemas/ChangeResourceResponse'
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel[ChangeResourceResponse]
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ResponseModel:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel
+    ResponseModel_List_:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          items: {}
+          type: array
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel[List]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ChangeResourceResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        error:
+          type: string
+          title: Error
+          default: ''
+      type: object
+      required:
+      - success
+      title: ChangeResourceResponse
     LabelResponse:
       type: array
       description: Array of transformed rows. Each item contains the application's output fields; outputs may include confidence scores and explanations per field.
@@ -65,7 +485,13 @@ components:
         type: object
         additionalProperties: true
   securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer
     BearerAuth:
       type: http
       scheme: bearer
       description: 'Refuel API key supplied as a Bearer token in the Authorization header: Authorization: Bearer <YOUR_API_KEY>.'
+x-refined-from:
+- refuel-ai-cloud-api-openapi.json
+- refuel-ai-openapi.yml

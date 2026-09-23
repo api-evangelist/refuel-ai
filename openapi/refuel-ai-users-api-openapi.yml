@@ -1,18 +1,7 @@
 openapi: 3.2.0
 info:
-  title: Refuel Cloud Users API
-  description: REST API for the Refuel Cloud data-labeling and data-enrichment platform. Harvested verbatim from https://cloud-api.refuel.ai/openapi.json (FastAPI-generated, OpenAPI 3.1.0). Covers projects, datasets, tasks, task runs, taxonomies, seedsets/evalsets, calibration, finetuned models, deployed applications and their realtime label endpoint, users, teams, usage, and integrations. Authentication is an API key sent as an HTTP Bearer token. The upstream document carries the FastAPI default info block (title "FastAPI", version 0.1.0) and no servers[]; API Evangelist supplies the title/description and the servers[] host documented in Refuel's own quickstart and catalog pages. See openapi/_original/ for the untouched document and overlays/ for every change.
+  title: Fast Users API
   version: 0.1.0
-  contact:
-    name: Refuel
-    url: https://www.refuel.ai
-    email: support@refuel.ai
-  termsOfService: https://www.refuel.ai/terms-of-service
-  x-harvested-from: https://cloud-api.refuel.ai/openapi.json
-  x-harvested-on: '2026-08-14'
-servers:
-- url: https://cloud-api.refuel.ai
-  description: Refuel Cloud API
 tags:
 - name: Users
 paths:
@@ -177,6 +166,23 @@ paths:
       - Users
 components:
   schemas:
+    CreateUsersResponse:
+      properties:
+        success:
+          items:
+            type: string
+          type: array
+          title: Success
+        failed:
+          items:
+            type: string
+          type: array
+          title: Failed
+          default: []
+      type: object
+      required:
+      - success
+      title: CreateUsersResponse
     ValidationError:
       properties:
         loc:
@@ -198,39 +204,6 @@ components:
       - msg
       - type
       title: ValidationError
-    ResponseModel:
-      properties:
-        success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
-          type: string
-          title: Error Msg
-        data:
-          title: Data
-        count:
-          type: integer
-          title: Count
-      type: object
-      title: ResponseModel
-    CreateUsersResponse:
-      properties:
-        success:
-          items:
-            type: string
-          type: array
-          title: Success
-        failed:
-          items:
-            type: string
-          type: array
-          title: Failed
-          default: []
-      type: object
-      required:
-      - success
-      title: CreateUsersResponse
     UpdateUserRequest:
       properties:
         auth0_username:
@@ -264,15 +237,22 @@ components:
       - ACTIVE
       title: State
       description: An enumeration.
-    HTTPValidationError:
+    ResponseModel:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          title: Data
+        count:
+          type: integer
+          title: Count
       type: object
-      title: HTTPValidationError
+      title: ResponseModel
     ResponseModel_List_:
       properties:
         success:
@@ -291,6 +271,15 @@ components:
           title: Count
       type: object
       title: ResponseModel[List]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
   securitySchemes:
     HTTPBearer:
       type: http

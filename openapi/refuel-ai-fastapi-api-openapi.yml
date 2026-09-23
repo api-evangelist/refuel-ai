@@ -1,14 +1,14 @@
 openapi: 3.2.0
 info:
-  title: Fast Csp Reports API
+  title: Fast API
   version: 0.1.0
 tags:
-- name: Csp Reports
+- name: FastAPI
 paths:
-  /csp-reports:
-    post:
-      summary: Csp Reports
-      operationId: csp_reports_csp_reports_post
+  /:
+    get:
+      summary: Read Root
+      operationId: read_root__get
       responses:
         '200':
           description: Successful Response
@@ -16,7 +16,7 @@ paths:
             application/json:
               schema: {}
       tags:
-      - Csp Reports
+      - FastAPI
 components:
   securitySchemes:
     HTTPBearer:

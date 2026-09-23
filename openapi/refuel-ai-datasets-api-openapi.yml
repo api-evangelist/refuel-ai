@@ -1,18 +1,7 @@
 openapi: 3.2.0
 info:
-  title: Refuel Cloud Datasets API
-  description: REST API for the Refuel Cloud data-labeling and data-enrichment platform. Harvested verbatim from https://cloud-api.refuel.ai/openapi.json (FastAPI-generated, OpenAPI 3.1.0). Covers projects, datasets, tasks, task runs, taxonomies, seedsets/evalsets, calibration, finetuned models, deployed applications and their realtime label endpoint, users, teams, usage, and integrations. Authentication is an API key sent as an HTTP Bearer token. The upstream document carries the FastAPI default info block (title "FastAPI", version 0.1.0) and no servers[]; API Evangelist supplies the title/description and the servers[] host documented in Refuel's own quickstart and catalog pages. See openapi/_original/ for the untouched document and overlays/ for every change.
+  title: Fast Datasets API
   version: 0.1.0
-  contact:
-    name: Refuel
-    url: https://www.refuel.ai
-    email: support@refuel.ai
-  termsOfService: https://www.refuel.ai/terms-of-service
-  x-harvested-from: https://cloud-api.refuel.ai/openapi.json
-  x-harvested-on: '2026-08-14'
-servers:
-- url: https://cloud-api.refuel.ai
-  description: Refuel Cloud API
 tags:
 - name: Datasets
 paths:
@@ -660,6 +649,30 @@ paths:
       - Datasets
 components:
   schemas:
+    SamplingType:
+      type: string
+      enum:
+      - random
+      - stratified
+      - sorted
+      title: SamplingType
+      description: An enumeration.
+    ResponseModel_ChangeResourceResponse_:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          $ref: '#/components/schemas/ChangeResourceResponse'
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel[ChangeResourceResponse]
     ValidationError:
       properties:
         loc:
@@ -697,22 +710,31 @@ components:
           title: Count
       type: object
       title: ResponseModel
-    ResponseModel_ChangeResourceResponse_:
+    UpdateDatasetRequest:
       properties:
-        success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
+        name:
           type: string
-          title: Error Msg
-        data:
-          $ref: '#/components/schemas/ChangeResourceResponse'
-        count:
-          type: integer
-          title: Count
+          title: Name
+        scheduled_ids:
+          items:
+            type: string
+          type: array
+          title: Scheduled Ids
       type: object
-      title: ResponseModel[ChangeResourceResponse]
+      title: UpdateDatasetRequest
+    AppendDatasetRequest:
+      properties:
+        source_path:
+          type: string
+          title: Source Path
+        redact_pii:
+          type: boolean
+          title: Redact Pii
+      type: object
+      required:
+      - source_path
+      - redact_pii
+      title: AppendDatasetRequest
     SamplingParams:
       properties:
         sample_name:
@@ -744,61 +766,6 @@ components:
       - sample_type
       - sample_size
       title: SamplingParams
-    AppendDatasetRequest:
-      properties:
-        source_path:
-          type: string
-          title: Source Path
-        redact_pii:
-          type: boolean
-          title: Redact Pii
-      type: object
-      required:
-      - source_path
-      - redact_pii
-      title: AppendDatasetRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    SamplingType:
-      type: string
-      enum:
-      - random
-      - stratified
-      - sorted
-      title: SamplingType
-      description: An enumeration.
-    ChangeResourceResponse:
-      properties:
-        success:
-          type: boolean
-          title: Success
-        error:
-          type: string
-          title: Error
-          default: ''
-      type: object
-      required:
-      - success
-      title: ChangeResourceResponse
-    UpdateDatasetRequest:
-      properties:
-        name:
-          type: string
-          title: Name
-        scheduled_ids:
-          items:
-            type: string
-          type: array
-          title: Scheduled Ids
-      type: object
-      title: UpdateDatasetRequest
     ResponseModel_List_:
       properties:
         success:
@@ -817,6 +784,28 @@ components:
           title: Count
       type: object
       title: ResponseModel[List]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ChangeResourceResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        error:
+          type: string
+          title: Error
+          default: ''
+      type: object
+      required:
+      - success
+      title: ChangeResourceResponse
   securitySchemes:
     HTTPBearer:
       type: http
