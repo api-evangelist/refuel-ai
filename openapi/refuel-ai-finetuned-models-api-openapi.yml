@@ -116,12 +116,12 @@ components:
       - msg
       - type
       title: ValidationError
-    UserAction:
+    AvailabilityStatus:
       type: string
       enum:
-      - STARTED
-      - INTERRUPTED
-      title: UserAction
+      - UNAVAILABLE
+      - AVAILABLE
+      title: AvailabilityStatus
       description: An enumeration.
     EditModelRequest:
       properties:
@@ -131,6 +131,13 @@ components:
           $ref: '#/components/schemas/UserAction'
       type: object
       title: EditModelRequest
+    UserAction:
+      type: string
+      enum:
+      - STARTED
+      - INTERRUPTED
+      title: UserAction
+      description: An enumeration.
     HTTPValidationError:
       properties:
         detail:
@@ -140,13 +147,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    AvailabilityStatus:
-      type: string
-      enum:
-      - UNAVAILABLE
-      - AVAILABLE
-      title: AvailabilityStatus
-      description: An enumeration.
   securitySchemes:
     HTTPBearer:
       type: http

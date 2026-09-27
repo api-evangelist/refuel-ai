@@ -48,6 +48,19 @@ paths:
       - User
 components:
   schemas:
+    UpdateAuthenticatedUserRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+        picture:
+          type: string
+          title: Picture
+        team:
+          type: string
+          title: Team
+      type: object
+      title: UpdateAuthenticatedUserRequest
     ValidationError:
       properties:
         loc:
@@ -69,15 +82,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ResponseModel_Dict_:
       properties:
         success:
@@ -95,19 +99,15 @@ components:
           title: Count
       type: object
       title: ResponseModel[Dict]
-    UpdateAuthenticatedUserRequest:
+    HTTPValidationError:
       properties:
-        name:
-          type: string
-          title: Name
-        picture:
-          type: string
-          title: Picture
-        team:
-          type: string
-          title: Team
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      title: UpdateAuthenticatedUserRequest
+      title: HTTPValidationError
   securitySchemes:
     HTTPBearer:
       type: http

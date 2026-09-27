@@ -11,15 +11,19 @@ description: Refuel is an AI data-labeling and data-enrichment platform that use
   was acquired by Together AI in May 2025; the platform continues to operate and its API is still live.
 deliveryModel:
   model: saas
-  open_source: false
+  license_evidence:
+    not_product:
+    - refuel-ai/autolabel
+  open_source: unknown
   commercial: true
   callable_host: true
   label: Hosted service · you call their endpoint
-  confidence: high
+  confidence: low
   source:
   - openapi
   - pricing
-  generated: '2026-08-28'
+  - repository-not-product
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: enterprise
@@ -45,13 +49,14 @@ tags:
 - Data Labeling
 - Data Enrichment
 - Autolabel
-- Machine-Learning
+- Machine Learning
 - Data Quality
 - Training Data
 - Fine-Tuning
 - Data Transformation
 - Entity Resolution
 - Content Moderation
+- A2A
 tags_raw:
 - AI
 - LLM
@@ -65,6 +70,8 @@ tags_raw:
 - Data Transformation
 - Entity Resolution
 - Content Moderation
+- Machine-Learning
+- A2A
 created: '2026-06-21'
 modified: '2026-09-16'
 specificationVersion: '0.23'
@@ -72,13 +79,14 @@ apis:
 - aid: refuel-ai:refuel-autolabel-oss
   name: Refuel Autolabel (Open Source)
   tags:
-  - Open-Source
+  - Open Source
   - Autolabel
   - Python
   tags_raw:
   - Open Source
   - Autolabel
   - Python
+  - Open-Source
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://github.com/refuel-ai/autolabel
   baseURL: https://github.com/refuel-ai/autolabel
@@ -700,3 +708,10 @@ x-not-published:
   oauth_scopes:
     detail: Auth is a single HTTP Bearer API key with no scope surface, so no scopes/ artifact is written.
       See authentication/refuel-ai-authentication.yml.
+x-a2a:
+  verified: true
+  probed: '2026-09-26'
+  url: "https://docs.refuel.ai/.well-known/agent-card.json"
+  grade: "conformant"
+  protocol_version: "0.3"
+  control: 404

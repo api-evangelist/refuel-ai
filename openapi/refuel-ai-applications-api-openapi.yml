@@ -379,22 +379,6 @@ paths:
       description: Refuel Cloud API
 components:
   schemas:
-    ResponseModel_ChangeResourceResponse_:
-      properties:
-        success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
-          type: string
-          title: Error Msg
-        data:
-          $ref: '#/components/schemas/ChangeResourceResponse'
-        count:
-          type: integer
-          title: Count
-      type: object
-      title: ResponseModel[ChangeResourceResponse]
     ValidationError:
       properties:
         loc:
@@ -416,22 +400,6 @@ components:
       - msg
       - type
       title: ValidationError
-    ResponseModel:
-      properties:
-        success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
-          type: string
-          title: Error Msg
-        data:
-          title: Data
-        count:
-          type: integer
-          title: Count
-      type: object
-      title: ResponseModel
     ResponseModel_List_:
       properties:
         success:
@@ -450,15 +418,38 @@ components:
           title: Count
       type: object
       title: ResponseModel[List]
-    HTTPValidationError:
+    ResponseModel_ChangeResourceResponse_:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          $ref: '#/components/schemas/ChangeResourceResponse'
+        count:
+          type: integer
+          title: Count
       type: object
-      title: HTTPValidationError
+      title: ResponseModel[ChangeResourceResponse]
+    ResponseModel:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel
     ChangeResourceResponse:
       properties:
         success:
@@ -472,15 +463,24 @@ components:
       required:
       - success
       title: ChangeResourceResponse
-    LabelResponse:
-      type: array
-      description: Array of transformed rows. Each item contains the application's output fields; outputs may include confidence scores and explanations per field.
-      items:
-        type: object
-        additionalProperties: true
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     LabelRequest:
       type: array
       description: Array of input rows to transform. Each row is an object whose keys are the input fields expected by the target application.
+      items:
+        type: object
+        additionalProperties: true
+    LabelResponse:
+      type: array
+      description: Array of transformed rows. Each item contains the application's output fields; outputs may include confidence scores and explanations per field.
       items:
         type: object
         additionalProperties: true

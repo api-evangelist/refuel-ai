@@ -59,6 +59,22 @@ paths:
       - Usage
 components:
   schemas:
+    ResponseModel:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel
     ValidationError:
       properties:
         loc:
@@ -80,22 +96,6 @@ components:
       - msg
       - type
       title: ValidationError
-    ResponseModel:
-      properties:
-        success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
-          type: string
-          title: Error Msg
-        data:
-          title: Data
-        count:
-          type: integer
-          title: Count
-      type: object
-      title: ResponseModel
     HTTPValidationError:
       properties:
         detail:

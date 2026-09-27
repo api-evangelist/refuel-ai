@@ -166,23 +166,15 @@ paths:
       - Users
 components:
   schemas:
-    CreateUsersResponse:
-      properties:
-        success:
-          items:
-            type: string
-          type: array
-          title: Success
-        failed:
-          items:
-            type: string
-          type: array
-          title: Failed
-          default: []
-      type: object
-      required:
-      - success
-      title: CreateUsersResponse
+    State:
+      type: string
+      enum:
+      - CREATED
+      - INVITED
+      - INVITE_FAILED
+      - ACTIVE
+      title: State
+      description: An enumeration.
     ValidationError:
       properties:
         loc:
@@ -204,6 +196,24 @@ components:
       - msg
       - type
       title: ValidationError
+    ResponseModel_List_:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          items: {}
+          type: array
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel[List]
     UpdateUserRequest:
       properties:
         auth0_username:
@@ -228,15 +238,6 @@ components:
           $ref: '#/components/schemas/State'
       type: object
       title: UpdateUserRequest
-    State:
-      type: string
-      enum:
-      - CREATED
-      - INVITED
-      - INVITE_FAILED
-      - ACTIVE
-      title: State
-      description: An enumeration.
     ResponseModel:
       properties:
         success:
@@ -253,24 +254,23 @@ components:
           title: Count
       type: object
       title: ResponseModel
-    ResponseModel_List_:
+    CreateUsersResponse:
       properties:
         success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
-          type: string
-          title: Error Msg
-        data:
-          items: {}
+          items:
+            type: string
           type: array
-          title: Data
-        count:
-          type: integer
-          title: Count
+          title: Success
+        failed:
+          items:
+            type: string
+          type: array
+          title: Failed
+          default: []
       type: object
-      title: ResponseModel[List]
+      required:
+      - success
+      title: CreateUsersResponse
     HTTPValidationError:
       properties:
         detail:

@@ -78,22 +78,44 @@ components:
       - msg
       - type
       title: ValidationError
-    ResponseModel:
+    LabsRequest:
       properties:
-        success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
+        session_id:
           type: string
-          title: Error Msg
-        data:
-          title: Data
-        count:
-          type: integer
-          title: Count
+          title: Session Id
+        comparison_id:
+          type: string
+          title: Comparison Id
+        referrer:
+          type: string
+          title: Referrer
+        task_type:
+          type: string
+          title: Task Type
+        guidelines:
+          type: string
+          title: Guidelines
+        labels:
+          items:
+            type: string
+          type: array
+          title: Labels
+        context:
+          type: string
+          title: Context
+        input:
+          type: string
+          title: Input
+        model:
+          type: string
+          title: Model
       type: object
-      title: ResponseModel
+      required:
+      - task_type
+      - guidelines
+      - input
+      - model
+      title: LabsRequest
     LabsFeedback:
       properties:
         session_id:
@@ -138,44 +160,22 @@ components:
       - llm_labels
       - feedback
       title: LabsFeedback
-    LabsRequest:
+    ResponseModel:
       properties:
-        session_id:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
           type: string
-          title: Session Id
-        comparison_id:
-          type: string
-          title: Comparison Id
-        referrer:
-          type: string
-          title: Referrer
-        task_type:
-          type: string
-          title: Task Type
-        guidelines:
-          type: string
-          title: Guidelines
-        labels:
-          items:
-            type: string
-          type: array
-          title: Labels
-        context:
-          type: string
-          title: Context
-        input:
-          type: string
-          title: Input
-        model:
-          type: string
-          title: Model
+          title: Error Msg
+        data:
+          title: Data
+        count:
+          type: integer
+          title: Count
       type: object
-      required:
-      - task_type
-      - guidelines
-      - input
-      - model
-      title: LabsRequest
+      title: ResponseModel
     HTTPValidationError:
       properties:
         detail:
