@@ -166,6 +166,23 @@ paths:
       - Users
 components:
   schemas:
+    CreateUsersResponse:
+      properties:
+        success:
+          items:
+            type: string
+          type: array
+          title: Success
+        failed:
+          items:
+            type: string
+          type: array
+          title: Failed
+          default: []
+      type: object
+      required:
+      - success
+      title: CreateUsersResponse
     State:
       type: string
       enum:
@@ -175,6 +192,22 @@ components:
       - ACTIVE
       title: State
       description: An enumeration.
+    ResponseModel:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel
     ValidationError:
       properties:
         loc:
@@ -196,24 +229,15 @@ components:
       - msg
       - type
       title: ValidationError
-    ResponseModel_List_:
+    HTTPValidationError:
       properties:
-        success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
-          type: string
-          title: Error Msg
-        data:
-          items: {}
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Data
-        count:
-          type: integer
-          title: Count
+          title: Detail
       type: object
-      title: ResponseModel[List]
+      title: HTTPValidationError
     UpdateUserRequest:
       properties:
         auth0_username:
@@ -238,7 +262,7 @@ components:
           $ref: '#/components/schemas/State'
       type: object
       title: UpdateUserRequest
-    ResponseModel:
+    ResponseModel_List_:
       properties:
         success:
           type: boolean
@@ -248,38 +272,14 @@ components:
           type: string
           title: Error Msg
         data:
+          items: {}
+          type: array
           title: Data
         count:
           type: integer
           title: Count
       type: object
-      title: ResponseModel
-    CreateUsersResponse:
-      properties:
-        success:
-          items:
-            type: string
-          type: array
-          title: Success
-        failed:
-          items:
-            type: string
-          type: array
-          title: Failed
-          default: []
-      type: object
-      required:
-      - success
-      title: CreateUsersResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
+      title: ResponseModel[List]
   securitySchemes:
     HTTPBearer:
       type: http

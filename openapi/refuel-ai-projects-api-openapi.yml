@@ -424,155 +424,6 @@ paths:
       - Projects
 components:
   schemas:
-    DatasetSource:
-      type: string
-      enum:
-      - databricks
-      - file
-      - s3
-      - snowflake
-      - uri
-      title: DatasetSource
-      description: An enumeration.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    ResponseModel_List_:
-      properties:
-        success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
-          type: string
-          title: Error Msg
-        data:
-          items: {}
-          type: array
-          title: Data
-        count:
-          type: integer
-          title: Count
-      type: object
-      title: ResponseModel[List]
-    ResponseModel_ChangeResourceResponse_:
-      properties:
-        success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
-          type: string
-          title: Error Msg
-        data:
-          $ref: '#/components/schemas/ChangeResourceResponse'
-        count:
-          type: integer
-          title: Count
-      type: object
-      title: ResponseModel[ChangeResourceResponse]
-    TrainableBaseModels:
-      type: string
-      enum:
-      - refuel-llm-2-large
-      - refuel-llm-2-small
-      - refuel-llm-2-mini
-      title: TrainableBaseModels
-      description: An enumeration.
-    TrainModelRequest:
-      properties:
-        project_id:
-          type: string
-          title: Project Id
-        task_id:
-          type: string
-          title: Task Id
-        base_model:
-          $ref: '#/components/schemas/TrainableBaseModels'
-        max_training_rows:
-          type: integer
-          title: Max Training Rows
-        lora:
-          type: boolean
-          title: Lora
-          default: true
-        augmented_finetuning_model:
-          type: string
-          title: Augmented Finetuning Model
-        hyperparameters:
-          type: object
-          title: Hyperparameters
-          default:
-            num_epochs: 1
-            learning_rate_multiplier: 20
-        datasets:
-          items: {}
-          type: array
-          title: Datasets
-        comparison_model:
-          type: string
-          title: Comparison Model
-          default: gpt-4o
-      type: object
-      required:
-      - project_id
-      - task_id
-      - base_model
-      title: TrainModelRequest
-    ResponseModel:
-      properties:
-        success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
-          type: string
-          title: Error Msg
-        data:
-          title: Data
-        count:
-          type: integer
-          title: Count
-      type: object
-      title: ResponseModel
-    HTTPError:
-      properties:
-        detail:
-          type: string
-          title: Detail
-      type: object
-      required:
-      - detail
-      title: HTTPError
-      example:
-        detail: HTTPException raised.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ChangeResourceResponse:
       properties:
         success:
@@ -616,6 +467,155 @@ components:
       required:
       - name
       title: Body_ingest_dataset_v2_projects__project_id__datasets_post
+    ResponseModel:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    DatasetSource:
+      type: string
+      enum:
+      - databricks
+      - file
+      - s3
+      - snowflake
+      - uri
+      title: DatasetSource
+      description: An enumeration.
+    TrainableBaseModels:
+      type: string
+      enum:
+      - refuel-llm-2-large
+      - refuel-llm-2-small
+      - refuel-llm-2-mini
+      title: TrainableBaseModels
+      description: An enumeration.
+    HTTPError:
+      properties:
+        detail:
+          type: string
+          title: Detail
+      type: object
+      required:
+      - detail
+      title: HTTPError
+      example:
+        detail: HTTPException raised.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    TrainModelRequest:
+      properties:
+        project_id:
+          type: string
+          title: Project Id
+        task_id:
+          type: string
+          title: Task Id
+        base_model:
+          $ref: '#/components/schemas/TrainableBaseModels'
+        max_training_rows:
+          type: integer
+          title: Max Training Rows
+        lora:
+          type: boolean
+          title: Lora
+          default: true
+        augmented_finetuning_model:
+          type: string
+          title: Augmented Finetuning Model
+        hyperparameters:
+          type: object
+          title: Hyperparameters
+          default:
+            num_epochs: 1
+            learning_rate_multiplier: 20
+        datasets:
+          items: {}
+          type: array
+          title: Datasets
+        comparison_model:
+          type: string
+          title: Comparison Model
+          default: gpt-4o
+      type: object
+      required:
+      - project_id
+      - task_id
+      - base_model
+      title: TrainModelRequest
+    ResponseModel_List_:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          items: {}
+          type: array
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel[List]
+    ResponseModel_ChangeResourceResponse_:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          $ref: '#/components/schemas/ChangeResourceResponse'
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel[ChangeResourceResponse]
   securitySchemes:
     HTTPBearer:
       type: http

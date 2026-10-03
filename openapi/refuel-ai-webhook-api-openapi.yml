@@ -35,60 +35,6 @@ paths:
       - Webhook
 components:
   schemas:
-    WebhookEventRequest:
-      properties:
-        event_type:
-          anyOf:
-          - $ref: '#/components/schemas/DatasaurEventType'
-          - $ref: '#/components/schemas/AWSEventType'
-          title: Event Type
-        event_category:
-          $ref: '#/components/schemas/WebhookEventCategory'
-        payload:
-          anyOf:
-          - $ref: '#/components/schemas/DatasaurProjectCreationPayload'
-          - $ref: '#/components/schemas/AWSS3FileUploadedPayload'
-          title: Payload
-      type: object
-      required:
-      - event_type
-      - event_category
-      - payload
-      title: WebhookEventRequest
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    DatasaurEventType:
-      type: string
-      enum:
-      - project_created
-      title: DatasaurEventType
-      description: An enumeration.
-    WebhookEventCategory:
-      type: string
-      enum:
-      - aws
-      - datasaur
-      title: WebhookEventCategory
-      description: An enumeration.
     AWSS3FileUploadedPayload:
       properties:
         dataset:
@@ -110,6 +56,87 @@ components:
       - s3_path
       - task
       title: AWSS3FileUploadedPayload
+    WebhookEventCategory:
+      type: string
+      enum:
+      - aws
+      - datasaur
+      title: WebhookEventCategory
+      description: An enumeration.
+    AWSEventType:
+      type: string
+      enum:
+      - s3_file_uploaded
+      title: AWSEventType
+      description: An enumeration.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    WebhookEventRequest:
+      properties:
+        event_type:
+          anyOf:
+          - $ref: '#/components/schemas/DatasaurEventType'
+          - $ref: '#/components/schemas/AWSEventType'
+          title: Event Type
+        event_category:
+          $ref: '#/components/schemas/WebhookEventCategory'
+        payload:
+          anyOf:
+          - $ref: '#/components/schemas/DatasaurProjectCreationPayload'
+          - $ref: '#/components/schemas/AWSS3FileUploadedPayload'
+          title: Payload
+      type: object
+      required:
+      - event_type
+      - event_category
+      - payload
+      title: WebhookEventRequest
+    DatasaurEventType:
+      type: string
+      enum:
+      - project_created
+      title: DatasaurEventType
+      description: An enumeration.
+    WebhookResponse:
+      properties:
+        status:
+          type: integer
+          title: Status
+        error:
+          type: string
+          title: Error
+      type: object
+      required:
+      - status
+      title: WebhookResponse
     DatasaurProjectCreationPayload:
       properties:
         project_id:
@@ -126,33 +153,6 @@ components:
       - project_id
       - refuel_task_name
       title: DatasaurProjectCreationPayload
-    WebhookResponse:
-      properties:
-        status:
-          type: integer
-          title: Status
-        error:
-          type: string
-          title: Error
-      type: object
-      required:
-      - status
-      title: WebhookResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    AWSEventType:
-      type: string
-      enum:
-      - s3_file_uploaded
-      title: AWSEventType
-      description: An enumeration.
   securitySchemes:
     HTTPBearer:
       type: http

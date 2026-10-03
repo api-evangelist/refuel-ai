@@ -48,6 +48,23 @@ paths:
       - User
 components:
   schemas:
+    ResponseModel_Dict_:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          type: object
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel[Dict]
     UpdateAuthenticatedUserRequest:
       properties:
         name:
@@ -82,23 +99,6 @@ components:
       - msg
       - type
       title: ValidationError
-    ResponseModel_Dict_:
-      properties:
-        success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
-          type: string
-          title: Error Msg
-        data:
-          type: object
-          title: Data
-        count:
-          type: integer
-          title: Count
-      type: object
-      title: ResponseModel[Dict]
     HTTPValidationError:
       properties:
         detail:

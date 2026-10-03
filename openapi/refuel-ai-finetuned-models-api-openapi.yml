@@ -95,6 +95,14 @@ paths:
       - Finetuned Models
 components:
   schemas:
+    EditModelRequest:
+      properties:
+        availability_status:
+          $ref: '#/components/schemas/AvailabilityStatus'
+        finetuning_run_status:
+          $ref: '#/components/schemas/UserAction'
+      type: object
+      title: EditModelRequest
     ValidationError:
       properties:
         loc:
@@ -116,28 +124,6 @@ components:
       - msg
       - type
       title: ValidationError
-    AvailabilityStatus:
-      type: string
-      enum:
-      - UNAVAILABLE
-      - AVAILABLE
-      title: AvailabilityStatus
-      description: An enumeration.
-    EditModelRequest:
-      properties:
-        availability_status:
-          $ref: '#/components/schemas/AvailabilityStatus'
-        finetuning_run_status:
-          $ref: '#/components/schemas/UserAction'
-      type: object
-      title: EditModelRequest
-    UserAction:
-      type: string
-      enum:
-      - STARTED
-      - INTERRUPTED
-      title: UserAction
-      description: An enumeration.
     HTTPValidationError:
       properties:
         detail:
@@ -147,6 +133,20 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    AvailabilityStatus:
+      type: string
+      enum:
+      - UNAVAILABLE
+      - AVAILABLE
+      title: AvailabilityStatus
+      description: An enumeration.
+    UserAction:
+      type: string
+      enum:
+      - STARTED
+      - INTERRUPTED
+      title: UserAction
+      description: An enumeration.
   securitySchemes:
     HTTPBearer:
       type: http

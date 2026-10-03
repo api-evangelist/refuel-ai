@@ -2766,12 +2766,48 @@ paths:
       - Tasks
 components:
   schemas:
-    UpdateCalibrationRequest:
+    ChangeResourceResponse:
       properties:
-        status:
-          $ref: '#/components/schemas/CalibrationStatus'
+        success:
+          type: boolean
+          title: Success
+        error:
+          type: string
+          title: Error
+          default: ''
       type: object
-      title: UpdateCalibrationRequest
+      required:
+      - success
+      title: ChangeResourceResponse
+    ResponseModel:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel
+    TrainableResponse:
+      properties:
+        trainable:
+          type: boolean
+          title: Trainable
+        message:
+          type: string
+          title: Message
+          default: ''
+      type: object
+      required:
+      - trainable
+      title: TrainableResponse
     ValidationError:
       properties:
         loc:
@@ -2793,6 +2829,97 @@ components:
       - msg
       - type
       title: ValidationError
+    Body_create_taxonomy_with_labels_file_tasks__task_id__taxonomies_post:
+      properties:
+        labels:
+          type: string
+          title: Labels
+          default: '[]'
+        file:
+          type: string
+          format: binary
+          title: File
+      type: object
+      title: Body_create_taxonomy_with_labels_file_tasks__task_id__taxonomies_post
+    UpdateCalibrationRequest:
+      properties:
+        status:
+          $ref: '#/components/schemas/CalibrationStatus'
+      type: object
+      title: UpdateCalibrationRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CalibrationStatus:
+      type: string
+      enum:
+      - IN_PROGRESS
+      - COMPLETED
+      - INTERRUPTED
+      - DELETED
+      title: CalibrationStatus
+      description: An enumeration.
+    CreateCalibrationRequest:
+      properties:
+        hyperparameters:
+          type: object
+          title: Hyperparameters
+          default: {}
+      type: object
+      title: CreateCalibrationRequest
+    ItemProperties:
+      properties:
+        in_evalset:
+          type: boolean
+          title: In Evalset
+      type: object
+      required:
+      - in_evalset
+      title: ItemProperties
+    Body_add_labels_to_taxonomy_with_file_tasks__task_id__taxonomies__taxonomy_id__post:
+      properties:
+        labels:
+          type: string
+          title: Labels
+          default: '[]'
+        file:
+          type: string
+          format: binary
+          title: File
+      type: object
+      title: Body_add_labels_to_taxonomy_with_file_tasks__task_id__taxonomies__taxonomy_id__post
+    ResponseModel_List_:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          items: {}
+          type: array
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel[List]
+    SampleColumnType:
+      type: string
+      enum:
+      - metadata
+      - label
+      - confidence
+      title: SampleColumnType
+      description: An enumeration.
     SamplingEvent:
       properties:
         sample_strategy:
@@ -2815,156 +2942,20 @@ components:
           default: 10
       type: object
       title: SamplingEvent
-    TrainableResponse:
+    SamplingColumn:
       properties:
-        trainable:
-          type: boolean
-          title: Trainable
-        message:
+        column_name:
           type: string
-          title: Message
-          default: ''
-      type: object
-      required:
-      - trainable
-      title: TrainableResponse
-    ResponseModel_List_:
-      properties:
-        success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
+          title: Column Name
+        column_type:
+          allOf:
+          - $ref: '#/components/schemas/SampleColumnType'
+          default: metadata
+        subtask_id:
           type: string
-          title: Error Msg
-        data:
-          items: {}
-          type: array
-          title: Data
-        count:
-          type: integer
-          title: Count
+          title: Subtask Id
       type: object
-      title: ResponseModel[List]
-    Body_add_labels_to_taxonomy_with_file_tasks__task_id__taxonomies__taxonomy_id__post:
-      properties:
-        labels:
-          type: string
-          title: Labels
-          default: '[]'
-        file:
-          type: string
-          format: binary
-          title: File
-      type: object
-      title: Body_add_labels_to_taxonomy_with_file_tasks__task_id__taxonomies__taxonomy_id__post
-    TagType:
-      type: string
-      enum:
-      - seedset
-      - evalset
-      title: TagType
-      description: An enumeration.
-    ResponseModel_ChangeResourceResponse_:
-      properties:
-        success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
-          type: string
-          title: Error Msg
-        data:
-          $ref: '#/components/schemas/ChangeResourceResponse'
-        count:
-          type: integer
-          title: Count
-      type: object
-      title: ResponseModel[ChangeResourceResponse]
-    Body_create_taxonomy_with_labels_file_tasks__task_id__taxonomies_post:
-      properties:
-        labels:
-          type: string
-          title: Labels
-          default: '[]'
-        file:
-          type: string
-          format: binary
-          title: File
-      type: object
-      title: Body_create_taxonomy_with_labels_file_tasks__task_id__taxonomies_post
-    CreateCalibrationRequest:
-      properties:
-        hyperparameters:
-          type: object
-          title: Hyperparameters
-          default: {}
-      type: object
-      title: CreateCalibrationRequest
-    ResponseModel:
-      properties:
-        success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
-          type: string
-          title: Error Msg
-        data:
-          title: Data
-        count:
-          type: integer
-          title: Count
-      type: object
-      title: ResponseModel
-    ChangeResourceResponse:
-      properties:
-        success:
-          type: boolean
-          title: Success
-        error:
-          type: string
-          title: Error
-          default: ''
-      type: object
-      required:
-      - success
-      title: ChangeResourceResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    SampleColumnType:
-      type: string
-      enum:
-      - metadata
-      - label
-      - confidence
-      title: SampleColumnType
-      description: An enumeration.
-    ItemProperties:
-      properties:
-        in_evalset:
-          type: boolean
-          title: In Evalset
-      type: object
-      required:
-      - in_evalset
-      title: ItemProperties
-    CalibrationStatus:
-      type: string
-      enum:
-      - IN_PROGRESS
-      - COMPLETED
-      - INTERRUPTED
-      - DELETED
-      title: CalibrationStatus
-      description: An enumeration.
+      title: SamplingColumn
     TaxonomyLabel:
       properties:
         id:
@@ -2991,20 +2982,29 @@ components:
           title: Parents
       type: object
       title: TaxonomyLabel
-    SamplingColumn:
+    TagType:
+      type: string
+      enum:
+      - seedset
+      - evalset
+      title: TagType
+      description: An enumeration.
+    ResponseModel_ChangeResourceResponse_:
       properties:
-        column_name:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
           type: string
-          title: Column Name
-        column_type:
-          allOf:
-          - $ref: '#/components/schemas/SampleColumnType'
-          default: metadata
-        subtask_id:
-          type: string
-          title: Subtask Id
+          title: Error Msg
+        data:
+          $ref: '#/components/schemas/ChangeResourceResponse'
+        count:
+          type: integer
+          title: Count
       type: object
-      title: SamplingColumn
+      title: ResponseModel[ChangeResourceResponse]
   securitySchemes:
     HTTPBearer:
       type: http

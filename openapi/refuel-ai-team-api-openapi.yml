@@ -85,6 +85,22 @@ paths:
       - Team
 components:
   schemas:
+    ResponseModel:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel
     ValidationError:
       properties:
         loc:
@@ -115,22 +131,15 @@ components:
       required:
       - url
       title: SignedURLResponse
-    ResponseModel:
+    HTTPValidationError:
       properties:
-        success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
-          type: string
-          title: Error Msg
-        data:
-          title: Data
-        count:
-          type: integer
-          title: Count
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      title: ResponseModel
+      title: HTTPValidationError
     ResponseModel_Dict_:
       properties:
         success:
@@ -148,15 +157,6 @@ components:
           title: Count
       type: object
       title: ResponseModel[Dict]
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
   securitySchemes:
     HTTPBearer:
       type: http

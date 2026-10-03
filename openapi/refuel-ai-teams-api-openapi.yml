@@ -22,22 +22,6 @@ paths:
       - Teams
 components:
   schemas:
-    APIUsage:
-      properties:
-        quota:
-          type: integer
-          title: Quota
-        monthly_quota:
-          type: integer
-          title: Monthly Quota
-        monthly_usage:
-          type: integer
-          title: Monthly Usage
-          default: 0
-      type: object
-      required:
-      - quota
-      title: APIUsage
     TeamSchema:
       properties:
         name:
@@ -97,6 +81,22 @@ components:
           title: Count
       type: object
       title: ResponseModel[List[refuel_cloud_core.schemas.team.TeamSchema]]
+    APIUsage:
+      properties:
+        quota:
+          type: integer
+          title: Quota
+        monthly_quota:
+          type: integer
+          title: Monthly Quota
+        monthly_usage:
+          type: integer
+          title: Monthly Usage
+          default: 0
+      type: object
+      required:
+      - quota
+      title: APIUsage
   securitySchemes:
     HTTPBearer:
       type: http

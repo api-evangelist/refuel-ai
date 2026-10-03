@@ -649,6 +649,47 @@ paths:
       - Datasets
 components:
   schemas:
+    ChangeResourceResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        error:
+          type: string
+          title: Error
+          default: ''
+      type: object
+      required:
+      - success
+      title: ChangeResourceResponse
+    UpdateDatasetRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+        scheduled_ids:
+          items:
+            type: string
+          type: array
+          title: Scheduled Ids
+      type: object
+      title: UpdateDatasetRequest
+    ResponseModel:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel
     ValidationError:
       properties:
         loc:
@@ -670,6 +711,37 @@ components:
       - msg
       - type
       title: ValidationError
+    SamplingParams:
+      properties:
+        sample_name:
+          type: string
+          title: Sample Name
+        sample_type:
+          $ref: '#/components/schemas/SamplingType'
+        sample_size:
+          type: integer
+          title: Sample Size
+        column:
+          type: string
+          title: Column
+        filters:
+          items:
+            type: string
+          type: array
+          title: Filters
+          default: []
+        sort_direction:
+          type: string
+          title: Sort Direction
+          default: DESC
+        dataset_id:
+          type: string
+          title: Dataset Id
+      type: object
+      required:
+      - sample_type
+      - sample_size
+      title: SamplingParams
     AppendDatasetRequest:
       properties:
         source_path:
@@ -683,6 +755,23 @@ components:
       - source_path
       - redact_pii
       title: AppendDatasetRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SamplingType:
+      type: string
+      enum:
+      - random
+      - stratified
+      - sorted
+      title: SamplingType
+      description: An enumeration.
     ResponseModel_List_:
       properties:
         success:
@@ -717,95 +806,6 @@ components:
           title: Count
       type: object
       title: ResponseModel[ChangeResourceResponse]
-    ResponseModel:
-      properties:
-        success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
-          type: string
-          title: Error Msg
-        data:
-          title: Data
-        count:
-          type: integer
-          title: Count
-      type: object
-      title: ResponseModel
-    ChangeResourceResponse:
-      properties:
-        success:
-          type: boolean
-          title: Success
-        error:
-          type: string
-          title: Error
-          default: ''
-      type: object
-      required:
-      - success
-      title: ChangeResourceResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    SamplingType:
-      type: string
-      enum:
-      - random
-      - stratified
-      - sorted
-      title: SamplingType
-      description: An enumeration.
-    SamplingParams:
-      properties:
-        sample_name:
-          type: string
-          title: Sample Name
-        sample_type:
-          $ref: '#/components/schemas/SamplingType'
-        sample_size:
-          type: integer
-          title: Sample Size
-        column:
-          type: string
-          title: Column
-        filters:
-          items:
-            type: string
-          type: array
-          title: Filters
-          default: []
-        sort_direction:
-          type: string
-          title: Sort Direction
-          default: DESC
-        dataset_id:
-          type: string
-          title: Dataset Id
-      type: object
-      required:
-      - sample_type
-      - sample_size
-      title: SamplingParams
-    UpdateDatasetRequest:
-      properties:
-        name:
-          type: string
-          title: Name
-        scheduled_ids:
-          items:
-            type: string
-          type: array
-          title: Scheduled Ids
-      type: object
-      title: UpdateDatasetRequest
   securitySchemes:
     HTTPBearer:
       type: http
