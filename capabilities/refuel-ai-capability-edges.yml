@@ -1,0 +1,47 @@
+slug: refuel-ai
+provider: Refuel
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 3
+edges:
+- tag: Finetuned Models
+  spec_file: refuel-ai-finetuned-models-api-openapi.yml
+  capability_id: BC-610.60
+  capability_id_l1: BC-610
+  capability_name: Artificial Intelligence Management
+  confidence: 0.82
+  evidence: 'GET /finetuned_models/{model_id}  Get Finetuned Model From Id; PATCH ... Update Finetuned
+    Model; schemas: EditModelRequest, AvailabilityStatus'
+  reason: CRUD over fine-tuned LLM artefacts with availability status — ML model lifecycle management,
+    matching Artificial Intelligence Management (AI/ML model lifecycle, MLOps).
+- tag: Applications
+  spec_file: refuel-ai-applications-api-openapi.yml
+  capability_id: BC-610.60
+  capability_id_l1: BC-610
+  capability_name: Artificial Intelligence Management
+  confidence: 0.75
+  evidence: POST /applications/{applicationName}/label  Transform rows with a deployed application; POST
+    /applications/{application_id}/items/{item_id}/label  Application Feedback
+  reason: Lifecycle and runtime invocation of deployed LLM labeling applications, with feedback and usage
+    — AI/ML model deployment and operation (Artificial Intelligence Management). Some ambiguity as it
+    also serves data enrichment/quality purposes.
+- tag: Tasks
+  spec_file: refuel-ai-tasks-api-openapi.yml
+  capability_id: BC-610.60
+  capability_id_l1: BC-610
+  capability_name: Artificial Intelligence Management
+  confidence: 0.72
+  evidence: 'GET /tasks/{task_id}/evalset  Get Items From Evalset; GET /tasks/{task_id}/runs/{dataset_id}/metrics  Get
+    Metrics For Task Run; schemas: CreateCalibrationRequest, CalibrationStatus, TaxonomyLabel'
+  reason: 'Core labeling-task surface: taxonomies/labels, seedsets, evalsets, confidence calibration and
+    run metrics — this is AI/ML model training-data and evaluation lifecycle management (MLOps), not generic
+    work-item tracking.'

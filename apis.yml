@@ -579,6 +579,9 @@ apis:
   - type: Conventions
     url: conventions/refuel-ai-conventions.yml
 common:
+- type: CapabilityMap
+  url: capabilities/refuel-ai-capability-edges.yml
+  name: Refuel Business Capability Map
 - type: Overlay
   url: overlays/refuel-ai-cloud-api-overlay.yaml
 - type: AgenticAccess
