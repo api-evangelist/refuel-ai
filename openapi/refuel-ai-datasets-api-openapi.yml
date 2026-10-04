@@ -649,68 +649,36 @@ paths:
       - Datasets
 components:
   schemas:
-    ChangeResourceResponse:
+    SamplingType:
+      type: string
+      enum:
+      - random
+      - stratified
+      - sorted
+      title: SamplingType
+      description: An enumeration.
+    HTTPValidationError:
       properties:
-        success:
-          type: boolean
-          title: Success
-        error:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AppendDatasetRequest:
+      properties:
+        source_path:
           type: string
-          title: Error
-          default: ''
+          title: Source Path
+        redact_pii:
+          type: boolean
+          title: Redact Pii
       type: object
       required:
-      - success
-      title: ChangeResourceResponse
-    UpdateDatasetRequest:
-      properties:
-        name:
-          type: string
-          title: Name
-        scheduled_ids:
-          items:
-            type: string
-          type: array
-          title: Scheduled Ids
-      type: object
-      title: UpdateDatasetRequest
-    ResponseModel:
-      properties:
-        success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
-          type: string
-          title: Error Msg
-        data:
-          title: Data
-        count:
-          type: integer
-          title: Count
-      type: object
-      title: ResponseModel
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - source_path
+      - redact_pii
+      title: AppendDatasetRequest
     SamplingParams:
       properties:
         sample_name:
@@ -742,36 +710,84 @@ components:
       - sample_type
       - sample_size
       title: SamplingParams
-    AppendDatasetRequest:
+    UpdateDatasetRequest:
       properties:
-        source_path:
+        name:
           type: string
-          title: Source Path
-        redact_pii:
+          title: Name
+        scheduled_ids:
+          items:
+            type: string
+          type: array
+          title: Scheduled Ids
+      type: object
+      title: UpdateDatasetRequest
+    ResponseModel_ChangeResourceResponse_:
+      properties:
+        success:
           type: boolean
-          title: Redact Pii
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          $ref: '#/components/schemas/ChangeResourceResponse'
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel[ChangeResourceResponse]
+    ChangeResourceResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        error:
+          type: string
+          title: Error
+          default: ''
       type: object
       required:
-      - source_path
-      - redact_pii
-      title: AppendDatasetRequest
-    HTTPValidationError:
+      - success
+      title: ChangeResourceResponse
+    ValidationError:
       properties:
-        detail:
+        loc:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Detail
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
       type: object
-      title: HTTPValidationError
-    SamplingType:
-      type: string
-      enum:
-      - random
-      - stratified
-      - sorted
-      title: SamplingType
-      description: An enumeration.
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ResponseModel:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel
     ResponseModel_List_:
       properties:
         success:
@@ -790,22 +806,6 @@ components:
           title: Count
       type: object
       title: ResponseModel[List]
-    ResponseModel_ChangeResourceResponse_:
-      properties:
-        success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
-          type: string
-          title: Error Msg
-        data:
-          $ref: '#/components/schemas/ChangeResourceResponse'
-        count:
-          type: integer
-          title: Count
-      type: object
-      title: ResponseModel[ChangeResourceResponse]
   securitySchemes:
     HTTPBearer:
       type: http

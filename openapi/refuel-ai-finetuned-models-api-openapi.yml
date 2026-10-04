@@ -95,14 +95,15 @@ paths:
       - Finetuned Models
 components:
   schemas:
-    EditModelRequest:
+    HTTPValidationError:
       properties:
-        availability_status:
-          $ref: '#/components/schemas/AvailabilityStatus'
-        finetuning_run_status:
-          $ref: '#/components/schemas/UserAction'
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      title: EditModelRequest
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -124,15 +125,14 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
+    EditModelRequest:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        availability_status:
+          $ref: '#/components/schemas/AvailabilityStatus'
+        finetuning_run_status:
+          $ref: '#/components/schemas/UserAction'
       type: object
-      title: HTTPValidationError
+      title: EditModelRequest
     AvailabilityStatus:
       type: string
       enum:

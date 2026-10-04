@@ -424,19 +424,73 @@ paths:
       - Projects
 components:
   schemas:
-    ChangeResourceResponse:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    HTTPError:
+      properties:
+        detail:
+          type: string
+          title: Detail
+      type: object
+      required:
+      - detail
+      title: HTTPError
+      example:
+        detail: HTTPException raised.
+    DatasetSource:
+      type: string
+      enum:
+      - databricks
+      - file
+      - s3
+      - snowflake
+      - uri
+      title: DatasetSource
+      description: An enumeration.
+    ResponseModel_ChangeResourceResponse_:
       properties:
         success:
           type: boolean
           title: Success
-        error:
+          default: true
+        error_msg:
           type: string
-          title: Error
-          default: ''
+          title: Error Msg
+        data:
+          $ref: '#/components/schemas/ChangeResourceResponse'
+        count:
+          type: integer
+          title: Count
       type: object
-      required:
-      - success
-      title: ChangeResourceResponse
+      title: ResponseModel[ChangeResourceResponse]
     Body_ingest_dataset_v2_projects__project_id__datasets_post:
       properties:
         file:
@@ -467,81 +521,19 @@ components:
       required:
       - name
       title: Body_ingest_dataset_v2_projects__project_id__datasets_post
-    ResponseModel:
+    ChangeResourceResponse:
       properties:
         success:
           type: boolean
           title: Success
-          default: true
-        error_msg:
+        error:
           type: string
-          title: Error Msg
-        data:
-          title: Data
-        count:
-          type: integer
-          title: Count
-      type: object
-      title: ResponseModel
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
+          title: Error
+          default: ''
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    DatasetSource:
-      type: string
-      enum:
-      - databricks
-      - file
-      - s3
-      - snowflake
-      - uri
-      title: DatasetSource
-      description: An enumeration.
-    TrainableBaseModels:
-      type: string
-      enum:
-      - refuel-llm-2-large
-      - refuel-llm-2-small
-      - refuel-llm-2-mini
-      title: TrainableBaseModels
-      description: An enumeration.
-    HTTPError:
-      properties:
-        detail:
-          type: string
-          title: Detail
-      type: object
-      required:
-      - detail
-      title: HTTPError
-      example:
-        detail: HTTPException raised.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
+      - success
+      title: ChangeResourceResponse
     TrainModelRequest:
       properties:
         project_id:
@@ -582,6 +574,30 @@ components:
       - task_id
       - base_model
       title: TrainModelRequest
+    ResponseModel:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel
+    TrainableBaseModels:
+      type: string
+      enum:
+      - refuel-llm-2-large
+      - refuel-llm-2-small
+      - refuel-llm-2-mini
+      title: TrainableBaseModels
+      description: An enumeration.
     ResponseModel_List_:
       properties:
         success:
@@ -600,22 +616,6 @@ components:
           title: Count
       type: object
       title: ResponseModel[List]
-    ResponseModel_ChangeResourceResponse_:
-      properties:
-        success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
-          type: string
-          title: Error Msg
-        data:
-          $ref: '#/components/schemas/ChangeResourceResponse'
-        count:
-          type: integer
-          title: Count
-      type: object
-      title: ResponseModel[ChangeResourceResponse]
   securitySchemes:
     HTTPBearer:
       type: http

@@ -166,23 +166,6 @@ paths:
       - Users
 components:
   schemas:
-    CreateUsersResponse:
-      properties:
-        success:
-          items:
-            type: string
-          type: array
-          title: Success
-        failed:
-          items:
-            type: string
-          type: array
-          title: Failed
-          default: []
-      type: object
-      required:
-      - success
-      title: CreateUsersResponse
     State:
       type: string
       enum:
@@ -192,43 +175,6 @@ components:
       - ACTIVE
       title: State
       description: An enumeration.
-    ResponseModel:
-      properties:
-        success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
-          type: string
-          title: Error Msg
-        data:
-          title: Data
-        count:
-          type: integer
-          title: Count
-      type: object
-      title: ResponseModel
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     HTTPValidationError:
       properties:
         detail:
@@ -262,6 +208,60 @@ components:
           $ref: '#/components/schemas/State'
       type: object
       title: UpdateUserRequest
+    CreateUsersResponse:
+      properties:
+        success:
+          items:
+            type: string
+          type: array
+          title: Success
+        failed:
+          items:
+            type: string
+          type: array
+          title: Failed
+          default: []
+      type: object
+      required:
+      - success
+      title: CreateUsersResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ResponseModel:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel
     ResponseModel_List_:
       properties:
         success:

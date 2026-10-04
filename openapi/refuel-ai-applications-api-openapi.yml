@@ -379,6 +379,15 @@ paths:
       description: Refuel Cloud API
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ChangeResourceResponse:
       properties:
         success:
@@ -392,7 +401,7 @@ components:
       required:
       - success
       title: ChangeResourceResponse
-    ResponseModel:
+    ResponseModel_ChangeResourceResponse_:
       properties:
         success:
           type: boolean
@@ -402,12 +411,12 @@ components:
           type: string
           title: Error Msg
         data:
-          title: Data
+          $ref: '#/components/schemas/ChangeResourceResponse'
         count:
           type: integer
           title: Count
       type: object
-      title: ResponseModel
+      title: ResponseModel[ChangeResourceResponse]
     ValidationError:
       properties:
         loc:
@@ -429,15 +438,22 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
+    ResponseModel:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          title: Data
+        count:
+          type: integer
+          title: Count
       type: object
-      title: HTTPValidationError
+      title: ResponseModel
     ResponseModel_List_:
       properties:
         success:
@@ -456,22 +472,6 @@ components:
           title: Count
       type: object
       title: ResponseModel[List]
-    ResponseModel_ChangeResourceResponse_:
-      properties:
-        success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
-          type: string
-          title: Error Msg
-        data:
-          $ref: '#/components/schemas/ChangeResourceResponse'
-        count:
-          type: integer
-          title: Count
-      type: object
-      title: ResponseModel[ChangeResourceResponse]
     LabelResponse:
       type: array
       description: Array of transformed rows. Each item contains the application's output fields; outputs may include confidence scores and explanations per field.

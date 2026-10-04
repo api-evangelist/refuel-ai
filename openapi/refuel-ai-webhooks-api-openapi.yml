@@ -40,34 +40,6 @@ paths:
       - Webhooks
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    AirbyteWebhookRequest:
-      properties:
-        text:
-          type: string
-          title: Text
-        blocks:
-          items:
-            type: object
-          type: array
-          title: Blocks
-          default: []
-        data:
-          type: object
-          title: Data
-          default: {}
-      type: object
-      required:
-      - text
-      title: AirbyteWebhookRequest
     ValidationError:
       properties:
         loc:
@@ -89,6 +61,15 @@ components:
       - msg
       - type
       title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     WebhookResponse:
       properties:
         status:
@@ -101,6 +82,25 @@ components:
       required:
       - status
       title: WebhookResponse
+    AirbyteWebhookRequest:
+      properties:
+        text:
+          type: string
+          title: Text
+        blocks:
+          items:
+            type: object
+          type: array
+          title: Blocks
+          default: []
+        data:
+          type: object
+          title: Data
+          default: {}
+      type: object
+      required:
+      - text
+      title: AirbyteWebhookRequest
   securitySchemes:
     HTTPBearer:
       type: http

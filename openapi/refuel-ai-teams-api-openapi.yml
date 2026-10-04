@@ -22,6 +22,25 @@ paths:
       - Teams
 components:
   schemas:
+    ResponseModel_List_refuel_cloud_core.schemas.team.TeamSchema__:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          items:
+            $ref: '#/components/schemas/TeamSchema'
+          type: array
+          title: Data
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel[List[refuel_cloud_core.schemas.team.TeamSchema]]
     TeamSchema:
       properties:
         name:
@@ -62,25 +81,6 @@ components:
       required:
       - name
       title: TeamSchema
-    ResponseModel_List_refuel_cloud_core.schemas.team.TeamSchema__:
-      properties:
-        success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
-          type: string
-          title: Error Msg
-        data:
-          items:
-            $ref: '#/components/schemas/TeamSchema'
-          type: array
-          title: Data
-        count:
-          type: integer
-          title: Count
-      type: object
-      title: ResponseModel[List[refuel_cloud_core.schemas.team.TeamSchema]]
     APIUsage:
       properties:
         quota:
