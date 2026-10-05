@@ -1,0 +1,12 @@
+{
+ "url": "https://cloud-api.refuel.ai/openapi.json",
+ "requested_url": "https://cloud-api.refuel.ai/openapi.json",
+ "status": 200,
+ "content_type": "application/json",
+ "bytes": 106314,
+ "sha256": "7222db830e1d73ec15b30fe3e2356258da5a1e2c9ae2848414a547bb9ac306b9",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}
