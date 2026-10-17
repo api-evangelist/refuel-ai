@@ -379,28 +379,6 @@ paths:
       description: Refuel Cloud API
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ChangeResourceResponse:
-      properties:
-        success:
-          type: boolean
-          title: Success
-        error:
-          type: string
-          title: Error
-          default: ''
-      type: object
-      required:
-      - success
-      title: ChangeResourceResponse
     ResponseModel_ChangeResourceResponse_:
       properties:
         success:
@@ -417,6 +395,15 @@ components:
           title: Count
       type: object
       title: ResponseModel[ChangeResourceResponse]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -472,15 +459,28 @@ components:
           title: Count
       type: object
       title: ResponseModel[List]
-    LabelResponse:
-      type: array
-      description: Array of transformed rows. Each item contains the application's output fields; outputs may include confidence scores and explanations per field.
-      items:
-        type: object
-        additionalProperties: true
+    ChangeResourceResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        error:
+          type: string
+          title: Error
+          default: ''
+      type: object
+      required:
+      - success
+      title: ChangeResourceResponse
     LabelRequest:
       type: array
       description: Array of input rows to transform. Each row is an object whose keys are the input fields expected by the target application.
+      items:
+        type: object
+        additionalProperties: true
+    LabelResponse:
+      type: array
+      description: Array of transformed rows. Each item contains the application's output fields; outputs may include confidence scores and explanations per field.
       items:
         type: object
         additionalProperties: true

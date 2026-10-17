@@ -95,6 +95,13 @@ paths:
       - Finetuned Models
 components:
   schemas:
+    UserAction:
+      type: string
+      enum:
+      - STARTED
+      - INTERRUPTED
+      title: UserAction
+      description: An enumeration.
     HTTPValidationError:
       properties:
         detail:
@@ -104,6 +111,13 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    AvailabilityStatus:
+      type: string
+      enum:
+      - UNAVAILABLE
+      - AVAILABLE
+      title: AvailabilityStatus
+      description: An enumeration.
     ValidationError:
       properties:
         loc:
@@ -133,20 +147,6 @@ components:
           $ref: '#/components/schemas/UserAction'
       type: object
       title: EditModelRequest
-    AvailabilityStatus:
-      type: string
-      enum:
-      - UNAVAILABLE
-      - AVAILABLE
-      title: AvailabilityStatus
-      description: An enumeration.
-    UserAction:
-      type: string
-      enum:
-      - STARTED
-      - INTERRUPTED
-      title: UserAction
-      description: An enumeration.
   securitySchemes:
     HTTPBearer:
       type: http

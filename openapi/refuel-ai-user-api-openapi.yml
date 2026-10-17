@@ -74,19 +74,6 @@ components:
           title: Count
       type: object
       title: ResponseModel[Dict]
-    UpdateAuthenticatedUserRequest:
-      properties:
-        name:
-          type: string
-          title: Name
-        picture:
-          type: string
-          title: Picture
-        team:
-          type: string
-          title: Team
-      type: object
-      title: UpdateAuthenticatedUserRequest
     ValidationError:
       properties:
         loc:
@@ -108,6 +95,19 @@ components:
       - msg
       - type
       title: ValidationError
+    UpdateAuthenticatedUserRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+        picture:
+          type: string
+          title: Picture
+        team:
+          type: string
+          title: Team
+      type: object
+      title: UpdateAuthenticatedUserRequest
   securitySchemes:
     HTTPBearer:
       type: http

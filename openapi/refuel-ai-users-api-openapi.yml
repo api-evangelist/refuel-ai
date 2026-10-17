@@ -166,24 +166,6 @@ paths:
       - Users
 components:
   schemas:
-    State:
-      type: string
-      enum:
-      - CREATED
-      - INVITED
-      - INVITE_FAILED
-      - ACTIVE
-      title: State
-      description: An enumeration.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     UpdateUserRequest:
       properties:
         auth0_username:
@@ -208,6 +190,15 @@ components:
           $ref: '#/components/schemas/State'
       type: object
       title: UpdateUserRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     CreateUsersResponse:
       properties:
         success:
@@ -280,6 +271,15 @@ components:
           title: Count
       type: object
       title: ResponseModel[List]
+    State:
+      type: string
+      enum:
+      - CREATED
+      - INVITED
+      - INVITE_FAILED
+      - ACTIVE
+      title: State
+      description: An enumeration.
   securitySchemes:
     HTTPBearer:
       type: http

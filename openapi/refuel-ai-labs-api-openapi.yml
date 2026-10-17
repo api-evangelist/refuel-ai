@@ -66,44 +66,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    LabsRequest:
-      properties:
-        session_id:
-          type: string
-          title: Session Id
-        comparison_id:
-          type: string
-          title: Comparison Id
-        referrer:
-          type: string
-          title: Referrer
-        task_type:
-          type: string
-          title: Task Type
-        guidelines:
-          type: string
-          title: Guidelines
-        labels:
-          items:
-            type: string
-          type: array
-          title: Labels
-        context:
-          type: string
-          title: Context
-        input:
-          type: string
-          title: Input
-        model:
-          type: string
-          title: Model
-      type: object
-      required:
-      - task_type
-      - guidelines
-      - input
-      - model
-      title: LabsRequest
     LabsFeedback:
       properties:
         session_id:
@@ -148,6 +110,44 @@ components:
       - llm_labels
       - feedback
       title: LabsFeedback
+    LabsRequest:
+      properties:
+        session_id:
+          type: string
+          title: Session Id
+        comparison_id:
+          type: string
+          title: Comparison Id
+        referrer:
+          type: string
+          title: Referrer
+        task_type:
+          type: string
+          title: Task Type
+        guidelines:
+          type: string
+          title: Guidelines
+        labels:
+          items:
+            type: string
+          type: array
+          title: Labels
+        context:
+          type: string
+          title: Context
+        input:
+          type: string
+          title: Input
+        model:
+          type: string
+          title: Model
+      type: object
+      required:
+      - task_type
+      - guidelines
+      - input
+      - model
+      title: LabsRequest
     ValidationError:
       properties:
         loc:

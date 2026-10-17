@@ -35,6 +35,18 @@ paths:
       - Webhook
 components:
   schemas:
+    WebhookResponse:
+      properties:
+        status:
+          type: integer
+          title: Status
+        error:
+          type: string
+          title: Error
+      type: object
+      required:
+      - status
+      title: WebhookResponse
     WebhookEventRequest:
       properties:
         event_type:
@@ -55,6 +67,18 @@ components:
       - event_category
       - payload
       title: WebhookEventRequest
+    AWSEventType:
+      type: string
+      enum:
+      - s3_file_uploaded
+      title: AWSEventType
+      description: An enumeration.
+    DatasaurEventType:
+      type: string
+      enum:
+      - project_created
+      title: DatasaurEventType
+      description: An enumeration.
     HTTPValidationError:
       properties:
         detail:
@@ -70,51 +94,6 @@ components:
       - aws
       - datasaur
       title: WebhookEventCategory
-      description: An enumeration.
-    AWSEventType:
-      type: string
-      enum:
-      - s3_file_uploaded
-      title: AWSEventType
-      description: An enumeration.
-    AWSS3FileUploadedPayload:
-      properties:
-        dataset:
-          type: string
-          title: Dataset
-        project:
-          type: string
-          title: Project
-        s3_path:
-          type: string
-          title: S3 Path
-        task:
-          type: string
-          title: Task
-      type: object
-      required:
-      - dataset
-      - project
-      - s3_path
-      - task
-      title: AWSS3FileUploadedPayload
-    WebhookResponse:
-      properties:
-        status:
-          type: integer
-          title: Status
-        error:
-          type: string
-          title: Error
-      type: object
-      required:
-      - status
-      title: WebhookResponse
-    DatasaurEventType:
-      type: string
-      enum:
-      - project_created
-      title: DatasaurEventType
       description: An enumeration.
     ValidationError:
       properties:
@@ -137,6 +116,27 @@ components:
       - msg
       - type
       title: ValidationError
+    AWSS3FileUploadedPayload:
+      properties:
+        dataset:
+          type: string
+          title: Dataset
+        project:
+          type: string
+          title: Project
+        s3_path:
+          type: string
+          title: S3 Path
+        task:
+          type: string
+          title: Task
+      type: object
+      required:
+      - dataset
+      - project
+      - s3_path
+      - task
+      title: AWSS3FileUploadedPayload
     DatasaurProjectCreationPayload:
       properties:
         project_id:

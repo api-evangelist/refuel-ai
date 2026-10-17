@@ -85,6 +85,15 @@ paths:
       - Team
 components:
   schemas:
+    SignedURLResponse:
+      properties:
+        url:
+          type: string
+          title: Url
+      type: object
+      required:
+      - url
+      title: SignedURLResponse
     HTTPValidationError:
       properties:
         detail:
@@ -148,15 +157,6 @@ components:
           title: Count
       type: object
       title: ResponseModel
-    SignedURLResponse:
-      properties:
-        url:
-          type: string
-          title: Url
-      type: object
-      required:
-      - url
-      title: SignedURLResponse
   securitySchemes:
     HTTPBearer:
       type: http

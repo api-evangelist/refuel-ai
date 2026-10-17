@@ -649,23 +649,6 @@ paths:
       - Datasets
 components:
   schemas:
-    SamplingType:
-      type: string
-      enum:
-      - random
-      - stratified
-      - sorted
-      title: SamplingType
-      description: An enumeration.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     AppendDatasetRequest:
       properties:
         source_path:
@@ -679,6 +662,31 @@ components:
       - source_path
       - redact_pii
       title: AppendDatasetRequest
+    ResponseModel_ChangeResourceResponse_:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          default: true
+        error_msg:
+          type: string
+          title: Error Msg
+        data:
+          $ref: '#/components/schemas/ChangeResourceResponse'
+        count:
+          type: integer
+          title: Count
+      type: object
+      title: ResponseModel[ChangeResourceResponse]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     SamplingParams:
       properties:
         sample_name:
@@ -710,47 +718,14 @@ components:
       - sample_type
       - sample_size
       title: SamplingParams
-    UpdateDatasetRequest:
-      properties:
-        name:
-          type: string
-          title: Name
-        scheduled_ids:
-          items:
-            type: string
-          type: array
-          title: Scheduled Ids
-      type: object
-      title: UpdateDatasetRequest
-    ResponseModel_ChangeResourceResponse_:
-      properties:
-        success:
-          type: boolean
-          title: Success
-          default: true
-        error_msg:
-          type: string
-          title: Error Msg
-        data:
-          $ref: '#/components/schemas/ChangeResourceResponse'
-        count:
-          type: integer
-          title: Count
-      type: object
-      title: ResponseModel[ChangeResourceResponse]
-    ChangeResourceResponse:
-      properties:
-        success:
-          type: boolean
-          title: Success
-        error:
-          type: string
-          title: Error
-          default: ''
-      type: object
-      required:
-      - success
-      title: ChangeResourceResponse
+    SamplingType:
+      type: string
+      enum:
+      - random
+      - stratified
+      - sorted
+      title: SamplingType
+      description: An enumeration.
     ValidationError:
       properties:
         loc:
@@ -806,6 +781,31 @@ components:
           title: Count
       type: object
       title: ResponseModel[List]
+    ChangeResourceResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        error:
+          type: string
+          title: Error
+          default: ''
+      type: object
+      required:
+      - success
+      title: ChangeResourceResponse
+    UpdateDatasetRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+        scheduled_ids:
+          items:
+            type: string
+          type: array
+          title: Scheduled Ids
+      type: object
+      title: UpdateDatasetRequest
   securitySchemes:
     HTTPBearer:
       type: http
