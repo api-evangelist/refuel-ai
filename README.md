@@ -1,4 +1,4 @@
-# Refuel (refuel-ai)
+# Refuel
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,160 +64,168 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Refuel is an AI data-labeling and data-enrichment platform that uses LLMs to label, clean, structure, and enrich enterprise datasets. Refuel Cloud exposes a REST API where datasets, tasks, and deployed applications transform new data in realtime, and the open-source autolabel library lets teams run the same LLM labeling workflows in their own environment.
+Refuel is an AI data-labeling and data-enrichment platform that uses large language models to label, clean, structure and enrich enterprise datasets. Refuel Cloud exposes a REST API at cloud-api.refuel.ai covering projects, datasets, tasks and task runs, taxonomies, seedsets and evalsets, confidence calibration, Refuel LLM-2 finetuning, and deployed applications whose realtime label endpoint transforms new rows on demand. The open-source autolabel library lets teams run the same LLM labeling workflows in their own environment against OpenAI, Anthropic, Google, HuggingFace, vLLM or Refuel-hosted models. Refuel.ai was acquired by Together AI in May 2025; the platform continues to operate and its API is still live.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/refuel-ai/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/refuel-ai/refs/heads/main/apis.yml)
+**Areas:** Artificial Intelligence · LLM · Data Labeling · Data Enrichment · Autolabel · Machine Learning · Data Quality · Training Data · Fine-Tuning · Data Transformation · Entity Resolution · Content Moderation
 
-## Tags
+## Refuel on APIs.io
 
-- AI
-- LLM
-- Data Labeling
-- Data Enrichment
-- Autolabel
+Everything profiled for Refuel is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/refuel-ai/](https://apis.io/providers/refuel-ai/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (20)
 
-- **Created:** 2026-06-21
-- **Modified:** 2026-06-21
+- [Refuel Autolabel (Open Source)](https://apis.io/apis/refuel-ai/refuel-autolabel-oss/) — Autolabel is the open-source Python library (pip install refuel-autolabel) to label, clean, and enrich text datasets with any LLM (OpenAI, Anthropic,…
+- [Refuel Applications API](https://apis.io/apis/refuel-ai/refuel-ai-applications-api/) — The documented realtime application label surface — the endpoint Refuel's own catalog page publishes as `POST…
+- [Refuel Access API](https://apis.io/apis/refuel-ai/refuel-ai-access-api/) — The Access API from Refuel — 4 operation(s) for access.
+- [Refuel Csp Reports API](https://apis.io/apis/refuel-ai/refuel-ai-csp-reports-api/) — The Csp Reports API from Refuel — 1 operation(s) for csp reports.
+- [Refuel Datasets API](https://apis.io/apis/refuel-ai/refuel-ai-datasets-api/) — The Datasets API from Refuel — 13 operation(s) for datasets.
+- [Refuel Finetuned Models API](https://apis.io/apis/refuel-ai/refuel-ai-finetuned-models-api/) — The Finetuned Models API from Refuel — 1 operation(s) for finetuned models.
+- [Refuel Integrations API](https://apis.io/apis/refuel-ai/refuel-ai-integrations-api/) — The Integrations API from Refuel — 2 operation(s) for integrations.
+- [Refuel Labs API](https://apis.io/apis/refuel-ai/refuel-ai-labs-api/) — The Labs API from Refuel — 2 operation(s) for labs.
+- [Refuel Models API](https://apis.io/apis/refuel-ai/refuel-ai-models-api/) — The Models API from Refuel — 1 operation(s) for models.
+- [Refuel Projects API](https://apis.io/apis/refuel-ai/refuel-ai-projects-api/) — The Projects API from Refuel — 6 operation(s) for projects.
+- [Refuel Schema API](https://apis.io/apis/refuel-ai/refuel-ai-schema-api/) — The Schema API from Refuel — 1 operation(s) for schema.
+- [Refuel Tasks API](https://apis.io/apis/refuel-ai/refuel-ai-tasks-api/) — The Tasks API from Refuel — 28 operation(s) for tasks.
+- [Refuel Team API](https://apis.io/apis/refuel-ai/refuel-ai-team-api/) — The Team API from Refuel — 2 operation(s) for team.
+- [Refuel Teams API](https://apis.io/apis/refuel-ai/refuel-ai-teams-api/) — The Teams API from Refuel — 1 operation(s) for teams.
+- [Refuel Usage API](https://apis.io/apis/refuel-ai/refuel-ai-usage-api/) — The Usage API from Refuel — 1 operation(s) for usage.
+- [Refuel User API](https://apis.io/apis/refuel-ai/refuel-ai-user-api/) — The User API from Refuel — 1 operation(s) for user.
+- [Refuel Users API](https://apis.io/apis/refuel-ai/refuel-ai-users-api/) — The Users API from Refuel — 3 operation(s) for users.
+- [Refuel Webhook API](https://apis.io/apis/refuel-ai/refuel-ai-webhook-api/) — The Webhook API from Refuel — 1 operation(s) for webhook.
+- [Refuel Webhooks API](https://apis.io/apis/refuel-ai/refuel-ai-webhooks-api/) — The Webhooks API from Refuel — 1 operation(s) for webhooks.
+- [Refuel Fast API](https://apis.io/apis/refuel-ai/refuel-ai-fastapi-api/) — The FastAPI API from Refuel — 1 operation(s) for fastapi.
 
-## APIs
+### Published properties
 
-### Refuel Applications API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-Deployed applications are versioned snapshots of a Task served behind a REST API. Call POST /applications/{application-name}/label with a JSON array of rows to transform new data in realtime using the application's LLM guidelines.
+#### AsyncAPI (1)
 
-- **Human URL:** [https://docs.refuel.ai/catalog/introduction](https://docs.refuel.ai/catalog/introduction)
-- **Base URL:** `https://cloud-api.refuel.ai`
+Event-driven and webhook contracts.
 
-#### Tags
+- [Refuel Ai Events](https://apis.io/asyncapis/refuel-ai/refuel-ai-events/)
 
-- Applications
-- Label
-- Predict
+#### MCP servers (1)
 
-#### Properties
+Model Context Protocol servers that expose the API to agents.
 
-- [Documentation](https://docs.refuel.ai/catalog/introduction)
-- [API Reference](https://docs.refuel.ai)
-- [OpenAPI](openapi/refuel-ai-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/refuel-ai.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/refuel-ai.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [GitHub](https://github.com/refuel-ai)
+- [Refuel.ai](https://apis.io/servers/refuel-ai/refuel-ai/)
 
-### Refuel Tasks API
+#### Agentic access (1)
 
-A Task is a set of LLM guidelines defining the transformation to perform on a dataset (classification, extraction, structured output). Tasks support structured outputs, batch processing, task chaining, evaluation, and scheduled runs before being deployed as an Application.
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- **Human URL:** [https://docs.refuel.ai/quickstart](https://docs.refuel.ai/quickstart)
-- **Base URL:** `https://cloud-api.refuel.ai`
+- [Refuel Ai Agentic Access](https://apis.io/agentic-access/refuel-ai/refuel-ai-agentic-access/)
 
-#### Tags
+#### Collections (2)
 
-- Tasks
-- Guidelines
-- Transformations
+Postman and Open Collection request collections.
 
-#### Properties
+- [Refuel Cloud API](https://apis.io/collections/refuel-ai/open-refuel-ai/)
+- [Refuel Cloud Applications API](https://apis.io/collections/refuel-ai/open-refuel-ai-applications-api/)
 
-- [Documentation](https://docs.refuel.ai/quickstart)
-- [OpenAPI](openapi/refuel-ai-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/refuel-ai.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/refuel-ai.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [GitHub](https://github.com/refuel-ai)
+#### Overlays (1)
 
-### Refuel Datasets API
+OpenAPI overlays, including conversational phrasing for each operation.
 
-A dataset is a collection of structured / semi-structured rows you want to transform with LLMs. Datasets can be uploaded directly or imported from cloud storage (S3, GCS) and data warehouses (Snowflake, Databricks), including documents and images.
+- [Refuel Ai Cloud Api Overlay](https://apis.io/overlays/refuel-ai/refuel-ai-cloud-api-overlay/)
 
-- **Human URL:** [https://docs.refuel.ai/quickstart](https://docs.refuel.ai/quickstart)
-- **Base URL:** `https://cloud-api.refuel.ai`
+#### Security (4)
 
-#### Tags
+Authentication, trust centre, and vulnerability disclosure.
 
-- Datasets
-- Upload
-- Data
+- [Refuel Ai Authentication](https://apis.io/security/refuel-ai/refuel-ai-authentication/)
+- [Refuel Ai Domain Security](https://apis.io/security/refuel-ai/refuel-ai-domain-security/)
+- [Refuel Ai Trust Center](https://apis.io/security/refuel-ai/refuel-ai-trust-center/)
+- [Refuel Ai Vulnerability Disclosure](https://apis.io/security/refuel-ai/refuel-ai-vulnerability-disclosure/)
 
-#### Properties
+#### Plans and pricing (1)
 
-- [Documentation](https://docs.refuel.ai/quickstart)
-- [OpenAPI](openapi/refuel-ai-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/refuel-ai.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/refuel-ai.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [GitHub](https://github.com/refuel-ai)
+Published plans, tiers and prices.
 
-### Refuel Labeling and Predict API
+- [Refuel Ai Plans Pricing](https://apis.io/plans/refuel-ai/refuel-ai-plans-pricing/)
 
-Submit rows to a deployed application to run LLM labeling / prediction in realtime via the label endpoint, returning enriched output values plus confidence and explanations for each transformed field.
+#### Rate limits (1)
 
-- **Human URL:** [https://docs.refuel.ai/catalog/introduction](https://docs.refuel.ai/catalog/introduction)
-- **Base URL:** `https://cloud-api.refuel.ai`
+Published request limits.
 
-#### Tags
+- [Refuel Ai Rate Limits](https://apis.io/rate-limits/refuel-ai/refuel-ai-rate-limits/)
 
-- Labeling
-- Predict
-- Runs
+#### FinOps (1)
 
-#### Properties
+What the API costs to run, by operation.
 
-- [Documentation](https://docs.refuel.ai/catalog/introduction)
-- [OpenAPI](openapi/refuel-ai-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/refuel-ai.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/refuel-ai.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [GitHub](https://github.com/refuel-ai)
+- [Refuel Ai Finops](https://apis.io/finops/refuel-ai/refuel-ai-finops/)
 
-### Refuel Models API
+## Where to find this API
 
-Refuel hosts and finetunes LLMs purpose-built for data labeling. Tasks can use Refuel-hosted base models or custom finetuned models, with finetuning runs tracked and finetuned models reusable across applications.
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-- **Human URL:** [https://docs.refuel.ai/quickstart](https://docs.refuel.ai/quickstart)
-- **Base URL:** `https://cloud-api.refuel.ai`
-
-#### Tags
-
-- Models
-- Finetuning
-- LLM
-
-#### Properties
-
-- [Documentation](https://docs.refuel.ai/quickstart)
-- [OpenAPI](openapi/refuel-ai-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/refuel-ai.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/refuel-ai.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [GitHub](https://github.com/refuel-ai)
-
-### Refuel Autolabel (Open Source)
-
-Autolabel is the open-source Python library (pip install refuel-autolabel) to label, clean, and enrich text datasets with any LLM (OpenAI, Anthropic, Google, HuggingFace, vLLM, Refuel-hosted). It is a local library and SDK, not the hosted Refuel Cloud REST API; it covers classification, NER, entity matching, and question answering with few-shot and chain-of-thought prompting.
-
-- **Human URL:** [https://github.com/refuel-ai/autolabel](https://github.com/refuel-ai/autolabel)
-- **Base URL:** `https://github.com/refuel-ai/autolabel`
-
-#### Tags
-
-- Open Source
-- Autolabel
-- Python
-
-#### Properties
-
-- [GitHub](https://github.com/refuel-ai/autolabel)
-- [Documentation](https://docs.refuel.ai)
-
-## Common Properties
-
-- [GitHub Organization](https://github.com/refuel-ai)
-- [LinkedIn](https://www.linkedin.com/company/refuel-ai)
 - [Website](https://www.refuel.ai)
 - [Documentation](https://docs.refuel.ai)
-- [Plans](plans/refuel-ai-plans-pricing.yml)
-- [Rate Limits](rate-limits/refuel-ai-rate-limits.yml)
-- [Fin Ops](finops/refuel-ai-finops.yml)
+- [Getting started](https://docs.refuel.ai/quickstart)
+- [API reference](https://cloud-api.refuel.ai/docs)
+- [Pricing](https://www.refuel.ai/get-started)
+- [Sign up](https://www.refuel.ai/get-started)
+- [Support](https://discord.gg/uEdr8nrMGm)
+- [Blog](https://www.refuel.ai/blog)
+- [Security](https://www.refuel.ai/security)
+- [Compliance](https://www.refuel.ai/security)
+- [Terms of service](https://www.refuel.ai/terms-of-service)
+- [Privacy policy](https://www.refuel.ai/privacy-policy)
+- [GitHub](https://github.com/refuel-ai)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 62.2** — strong · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 80.0 |
+| Contract quality | 52.1 |
+| Contract governance | 18.2 |
+| Operational transparency | 34.2 |
+| Developer ergonomics | 70.8 |
+| Access clarity | 92.1 |
+
+**Agent readiness 32.5** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | platform (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | derived (partial credit) |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 32.7** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/refuel-ai/](https://apis.io/providers/refuel-ai/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Refuel: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/refuel-ai/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
